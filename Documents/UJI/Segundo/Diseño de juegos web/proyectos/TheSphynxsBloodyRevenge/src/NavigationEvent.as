@@ -17,5 +17,4 @@ package
 			this.params = _params;
 		}	
 	}
-
 }

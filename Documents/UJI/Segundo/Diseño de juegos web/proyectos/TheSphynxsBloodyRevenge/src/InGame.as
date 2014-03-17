@@ -63,8 +63,10 @@ package
 			// dibuja gato
 			trace("cat");
 			sphynx = new Sphynx();
-			sphynx.x = 40;
-			sphynx.y = 40;
+			sphynx.x = 20;
+			sphynx.y = 120;
+			sphynx.scaleX = 0.6;
+			sphynx.scaleY = 0.6;
 			addChild(sphynx);
 		}
 

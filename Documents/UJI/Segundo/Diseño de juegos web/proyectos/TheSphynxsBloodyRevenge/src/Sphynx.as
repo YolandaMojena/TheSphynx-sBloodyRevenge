@@ -17,6 +17,8 @@ package
 	{
 		private var sphynxSprites:Image;
 		private var moving:Boolean;
+		private var state:String;
+		private var jumping:Boolean;
 		
 		public function Sphynx() 
 		{
@@ -46,28 +48,56 @@ package
 		
 		private function sphynxMoves(event:KeyboardEvent):void
 		{ 
-			if (event.keyCode == Keyboard.DOWN)
+			switch(event.keyCode)
 			{
-				moving = true;
-				trace("moving");
+				case Keyboard.UP:
+				
+					jumping = true;
+					break;
+				
+				case Keyboard.LEFT:
+				
+					state = "left";
+					break;
+					
+				case Keyboard.RIGHT:
+				
+					state = "right";
+					break;
+				
+				case Keyboard.X:
+				
+					state = "attack";
+					break;
 			}
 		}
 		
 		private function sphynxStops(event:KeyboardEvent):void
 		{ 
-			if (event.keyCode == Keyboard.DOWN)
-			{
-				moving = false;
-			}
+			state = "";
+			jumping = false;
 		}
 		
 		private function update(e:Event):void 
 		{
-			if (moving) this.x += 10;
+			switch(state)
+			{			
+				case "left":
+					
+					this.x -= 5;
+					break;
+				
+				case "right":
+					
+					this.x += 5;
+					break;
+					
+				case "attack":
+					
+					break;	
+			}
 			
+			if (jumping) this.y -= 5;
 		}
-
-		
 	}
-
 }
