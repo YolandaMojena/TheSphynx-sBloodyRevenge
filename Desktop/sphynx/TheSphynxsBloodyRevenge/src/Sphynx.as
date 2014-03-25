@@ -7,6 +7,12 @@ package
 	import starling.display.Image;
 	import flash.ui.Keyboard;
 	import starling.events.KeyboardEvent;
+	
+	import com.reyco1.physinjector.PhysInjector;
+    import com.reyco1.physinjector.data.PhysicsObject;
+    import com.reyco1.physinjector.data.PhysicsProperties;
+	
+	import Box2D.Common.Math.b2Vec2;
 
 	
 	/**

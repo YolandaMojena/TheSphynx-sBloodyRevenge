@@ -4,8 +4,10 @@ package
 	import flash.events.Event;	
 	import flash.events.StatusEvent;
 	import starling.core.Starling;
+    
+    import com.reyco1.physinjector.PhysInjector;
+
 		
-	
 	/**
 	 * ...
 	 * @author Yolanda
@@ -15,6 +17,7 @@ package
 	public class Main extends Sprite 
 	{
 		private var starling:Starling;
+		PhysInjector.STARLING = true;
 		
 		public function Main():void 
 		{
