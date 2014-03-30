@@ -1,7 +1,9 @@
 package  
 {
+	import flash.display.Stage;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.core.Starling;
 	
 	/**
 	 * ...
@@ -9,12 +11,15 @@ package
 	 */
 	public class Game extends Sprite 
 	{
-		var screenMenu:Menu;
-		var screenInGame:InGame;
+		public var screenMenu:Menu;
+		public var screenInGame:InGame;
+
+		private var main:Main;
 		
 		public function Game() 
 		{
 			super();
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
 		}	
@@ -43,6 +48,8 @@ package
 					break;
 			}
 		}
+		
+
 		
 
 	}

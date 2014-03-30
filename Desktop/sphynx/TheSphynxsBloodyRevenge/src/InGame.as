@@ -3,19 +3,25 @@ package
 	import adobe.utils.CustomActions;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import starling.animation.Tween;
 	import starling.display.Button;
+	import starling.display.Image;
 	import starling.events.Event;
 	import starling.display.Sprite;
-	import starling.events.Touch;
-	import starling.events.TouchEvent;
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
-	import starling.utils.deg2rad;
 	import starling.core.Starling;
 	import starling.textures.Texture;	
 	import flash.utils.getTimer;
-
+	import flash.display.Stage;
+	import starling.core.Starling;
 	
+	import com.reyco1.physinjector.PhysInjector;
+    import com.reyco1.physinjector.data.PhysicsObject;
+    import com.reyco1.physinjector.data.PhysicsProperties;
+	
+	import Box2D.Common.Math.b2Vec2;
+
 	/**
 	 * ...
 	 * @author Yolanda
@@ -25,12 +31,21 @@ package
 		private var timePrevious:Number;
 		private var timeCurrent:Number;
 		private var elapsed:Number;
-		private var floor:Sprite;
 		public var sphynx:Sphynx;
+		public var scene:Stage;
+		private var floorPlatform:Platform;
+		private var fishBone:FishBone;
+		
+		private var worldPhysics:PhysInjector;
+		
+		private var platforms:Vector.<Platform>;
+		private var fishBones:Vector.<FishBone>;
+	
 		
 		public function InGame() 
 		{
 			super();
+		
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -38,6 +53,9 @@ package
 		{
 			trace("InGame Screen");
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), true);
+			platforms = new Vector.<Platform>();
+			fishBones = new Vector.<FishBone>();
 			drawGame();
 
 		}
@@ -46,27 +64,29 @@ package
 		{
 			this.visible = true;
 			this.addEventListener(Event.ENTER_FRAME, checkedElapsed);
+			
 			trace("jugando");
 		}
 		
-		// provisional
+		// provisional, habrá bucles para las plataformas y las raspas
 		
 		private function drawGame():void
-		{
-			/*// crea suelo
-			trace("suelo");
-			floor = new Sprite();
-			floor.x = stage.stageWidth * 0.5 - floor.width * 0.5;
-			floor.y = stage.stageHeight - floor.height;
-			addChild( floor );
-			*/
+		{	
+			// dibuja suelo
+			floorPlatform = new Platform(worldPhysics, 0, 344);
+			this.addChild(floorPlatform);
+			platforms.push(floorPlatform);
 			
+			// dibuja raspas
+			fishBone = new FishBone(5, 300, 280);
+			this.addChild(fishBone);
+			fishBones.push(fishBone);
+
+
 			// dibuja gato
+			sphynx = new Sphynx(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146);
+			this.addChild(sphynx);
 			trace("cat");
-			sphynx = new Sphynx();
-			sphynx.x = 40;
-			sphynx.y = 250;
-			addChild(sphynx);
 		}
 
 		public function disposeTemporaly():void
@@ -79,8 +99,6 @@ package
 			timePrevious = timeCurrent;
 			timeCurrent = getTimer();
 			elapsed = (timeCurrent - timePrevious) * 0.001;
-			
-			
 		}
 		
 	}

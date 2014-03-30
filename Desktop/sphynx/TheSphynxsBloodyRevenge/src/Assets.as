@@ -14,6 +14,12 @@ package
 		[Embed(source = "../tempAssets/cat.png")]
 		public static const Cat:Class;
 		
+		[Embed(source = "../tempAssets/suelo.png")]
+		public static const Floor:Class;
+		
+		[Embed(source = "../tempAssets/blackFish.png")]
+		public static const FishBone:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
 
 		
