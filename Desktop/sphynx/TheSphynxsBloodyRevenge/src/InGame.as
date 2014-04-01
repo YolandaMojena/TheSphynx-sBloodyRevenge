@@ -35,11 +35,15 @@ package
 		public var scene:Stage;
 		private var floorPlatform:Platform;
 		private var fishBone:FishBone;
+		private var wall:Wall;
+		private var wall_2:Wall;
+		private var eye:Eye;
 		
 		private var worldPhysics:PhysInjector;
 		
 		private var platforms:Vector.<Platform>;
 		private var fishBones:Vector.<FishBone>;
+		//private var walls:Vector.<Wall>;
 	
 		
 		public function InGame() 
@@ -53,7 +57,7 @@ package
 		{
 			trace("InGame Screen");
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), true);
+			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), false); // false y asi no se puede mover con raton 
 			platforms = new Vector.<Platform>();
 			fishBones = new Vector.<FishBone>();
 			drawGame();
@@ -77,14 +81,27 @@ package
 			this.addChild(floorPlatform);
 			platforms.push(floorPlatform);
 			
+			// dibuja paredes
+			wall = new Wall(worldPhysics, 400, floorPlatform.platformSprite.y-100);
+			this.addChild(wall);
+			//walls.push(wall);
+			
+			wall_2 = new Wall(worldPhysics, 800, floorPlatform.platformSprite.y - 100);
+			this.addChild(wall_2);
+			
+			
 			// dibuja raspas
 			fishBone = new FishBone(5, 300, 280);
 			this.addChild(fishBone);
 			fishBones.push(fishBone);
-
+			
+			//dibuja ojo
+			eye = new Eye(worldPhysics, 550, 344);
+			this.addChild(eye);
+			
 
 			// dibuja gato
-			sphynx = new Sphynx(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146);
+			sphynx = new Sphynx(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146); 
 			this.addChild(sphynx);
 			trace("cat");
 		}
