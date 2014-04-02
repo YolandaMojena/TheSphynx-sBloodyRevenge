@@ -39,6 +39,7 @@ package
 		
 		
 		private static var gameTextures:Dictionary = new Dictionary();
+		private static var gameTextureAtlas:TextureAtlas;
 
 		
 		public static function getTexture(name:String):Texture
@@ -51,6 +52,20 @@ package
 			return gameTextures[name];
 			
 		}
+		
+		/*
+		public static function getAtlas():TextureAtlas
+		{	
+			if (gameTextureAtlas == null) {
+				
+				var texture:Texture = getTexture("AtlasTextureGame");
+				var xml:XML= XML(new AtlasXmlGame());
+				gameTextureAtlas = new TextureAtlas(texture, xml);
+			}
+			return gameTextureAtlas;
+			
+		}
+		*/
 		
 	}
 

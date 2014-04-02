@@ -32,6 +32,8 @@ package
 		private var timeCurrent:Number;
 		private var elapsed:Number;
 		public var sphynx:Sphynx;
+		public var sphynx2:Sphynx2;
+		
 		public var scene:Stage;
 		private var floorPlatform:Platform;
 		private var fishBone:FishBone;
@@ -45,6 +47,10 @@ package
 		private var fishBones:Vector.<FishBone>;
 		//private var walls:Vector.<Wall>;
 	
+		
+		private var scoreText:TextField;
+		private var timeText:TextField;
+		private var timeScore:TextField;
 		
 		public function InGame() 
 		{
@@ -60,7 +66,18 @@ package
 			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), false); // false y asi no se puede mover con raton 
 			platforms = new Vector.<Platform>();
 			fishBones = new Vector.<FishBone>();
+			
+			
 			drawGame();
+			
+			scoreText = new TextField(1600, 50, "Score:  0", "MyFontName", 24, 0xff0000);
+			this.addChild(scoreText);
+			
+			timeText = new TextField(1564, 100, "Time:    ", "MyFontName", 24, 0xff0000);
+			this.addChild(timeText);
+			
+			timeScore = new TextField(1650, 100, "   0", "MyFontName", 24, 0xff0000);
+			this.addChild(timeScore);
 
 		}
 		
@@ -103,7 +120,12 @@ package
 			// dibuja gato
 			sphynx = new Sphynx(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146); 
 			this.addChild(sphynx);
-			trace("cat");
+			
+			/*
+			// dibuja gato
+			sphynx2 = new Sphynx2(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146);
+			this.addChild(sphynx2);
+			*/
 		}
 
 		public function disposeTemporaly():void
@@ -116,6 +138,10 @@ package
 			timePrevious = timeCurrent;
 			timeCurrent = getTimer();
 			elapsed = (timeCurrent - timePrevious) * 0.001;
+			
+			
+			
+			
 		}
 		
 	}
