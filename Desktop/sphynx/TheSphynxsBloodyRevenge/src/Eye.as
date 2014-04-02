@@ -31,6 +31,8 @@ package
 		private var posX:Number;
 		private var posY:Number;
 		
+		//private var physics:PhysInjector = new PhysInjector(stage,new b2Vec2(0,10),true);
+		
 		
 		public function Eye(worldPhysics:PhysInjector, x:Number, y:Number) 
 		{
@@ -69,9 +71,11 @@ package
 			
 		}
 		
-		private function handleContact(eye:PhysicsObject, wall:PhysicsObject,contact:b2Contact):void
+		private function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
-			velocity *= -1;
+			//objectA.x = 700;
+			//physics.removePhysics(objectB.displayObject);
+			//velocity *= -1;
 			trace("contact");
 			
 		}
@@ -81,7 +85,7 @@ package
 			eyePhysics.update();
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
 			
-			ContactManager.onContactBegin("eye", "wall", handleContact,false);
+			ContactManager.onContactBegin("eye", "wall", handleContact,true);
 			
 		}
 	}

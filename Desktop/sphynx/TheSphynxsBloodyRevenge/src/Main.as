@@ -31,7 +31,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 						
-			starling = new Starling(Game,stage);
+			starling = new Starling(InGame,stage);
 			starling.start();	
 			starling.nativeStage;
 		}
