@@ -56,6 +56,7 @@ package
 			posX = x;
 			posY = y;
 			velocity = 2.8;
+			canJump = true;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -85,7 +86,7 @@ package
 		}
 		
 		
-		private function sphynxCollides(platforms:Vector.<Platform>):Boolean
+		private function sphynxCollidesGround(platforms:Vector.<Platform>):Boolean
 		{
 			for (var i:uint = 0; i < platforms.length; i++)
 			{
@@ -95,21 +96,7 @@ package
 			return false;
 		}
 		
-		
-		private function sphynxJump(platforms:Vector.<Platform>):void
-		{
-			jumpHeight = sphynxObject.physicsProperties.y;
-			canJump = false;
-			sphynxObject.body.ApplyImpulse(new b2Vec2(0, -1), sphynxObject.body.GetWorldCenter());
-			
-			
-			for (var i:uint = 0; i < platforms.length; i++)
-			{
-				if (sphynxObject.physicsProperties.y + sphynxSprites.height >= platforms[i].platformSprite.y)
-					canJump = true;
-			}	
-			
-		}
+
 		
 	
 		private function sphynxAttack():void
@@ -140,6 +127,8 @@ package
 				case Keyboard.UP:
 					if(canJump)
 						jump = true;
+						canJump = false;
+						
 					break;
 					
 				case Keyboard.X:
@@ -147,6 +136,17 @@ package
 					break;	
 			}
 				
+		}
+		
+		private function sphynxCollidesFloor(platforms:Vector.<Platform>):Boolean
+		{
+			for (var i:uint = 0; i < platforms.length; i++)
+			{
+				if (this.y + this.height >= platforms[i].y-5)
+					return true;
+			}
+			
+			return false;
 		}
 		
 		private function sphynxStops(event:KeyboardEvent):void
@@ -164,20 +164,23 @@ package
 				case Keyboard.UP:
 					jump = false;
 					break;
+				
 			}	
 		}
-		
+
 		private function update(e:Event):void 
 		{			
-			if (!sphynxCollides(platforms))
-			{
-				if (left) sphynxObject.physicsProperties.x -= velocity;
-				if (right) sphynxObject.physicsProperties.x += velocity;
-			}
+			if (left) sphynxObject.physicsProperties.x -= velocity;
+			if (right) sphynxObject.physicsProperties.x += velocity;
+
 			
-			if (jump) sphynxJump(platforms);
-				
-					
+			if (sphynxObject.body.GetLinearVelocity().y > -1)
+				if (jump) 
+						
+						sphynxObject.body.ApplyImpulse(new b2Vec2(0.0, -10), sphynxObject.body.GetWorldCenter());
+						jump = false;
+						if (sphynxCollidesFloor(platforms)) canJump = true;
+						
 			sphynxPhysics.update();	
 		}	
 		

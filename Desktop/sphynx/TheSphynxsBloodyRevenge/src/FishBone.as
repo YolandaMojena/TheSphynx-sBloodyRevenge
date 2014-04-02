@@ -15,7 +15,7 @@ package
 
 		private var posX:Number;
 		private var posY:Number;
-		private var value:uint;
+		private var _value:uint;
 		
 		public function FishBone(value:uint, x:Number, y:Number) 
 		{
@@ -39,6 +39,17 @@ package
 			fishBoneSprite.y = posY;
 			this.addChild(fishBoneSprite);
 		}
+		
+		public function get value():uint 
+		{
+			return _value;
+		}
+		
+		public function set value(value:uint):void 
+		{
+			_value = value;
+		}
+		
 		
 	}
 
