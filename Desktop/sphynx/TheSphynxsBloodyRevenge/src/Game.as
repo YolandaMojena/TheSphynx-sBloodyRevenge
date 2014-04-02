@@ -5,6 +5,10 @@ package
 	import starling.events.Event;
 	import starling.core.Starling;
 	
+	import NavigationEvent;
+	import InGame;
+	import Menu;
+	
 	/**
 	 * ...
 	 * @author Yolanda
@@ -14,25 +18,28 @@ package
 		public var screenMenu:Menu;
 		public var screenInGame:InGame;
 
-		private var main:Main;
+		private var main:Main; //
 		
 		public function Game() 
 		{
 			super();
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
+			
 		}	
 		
 		private function onAddedToStage(event:Event):void
 		{
 			trace("Juego inicializado");
 			
+			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
+			
 			screenInGame = new InGame();
-			//screenInGame.disposeTemporaly();
-			//screenMenu = new Menu();
-			//addChild(screenMenu);
-			addChild(screenInGame);
+			screenInGame.disposeTemporaly();
+			this.addChild(screenInGame);
+			
+			screenMenu = new Menu();
+			this.addChild(screenMenu);
 			screenInGame.initialize();
 			
 			
