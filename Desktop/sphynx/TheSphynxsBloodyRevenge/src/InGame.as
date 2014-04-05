@@ -37,8 +37,8 @@ package
 		public var scene:Stage;
 		private var floorPlatform:Platform;
 		private var fishBone:FishBone;
-		private var wall:Wall;
-		private var wall_2:Wall;
+		private var wall:Platform;
+		private var wall_2:Platform;
 		private var eye:Eye;
 		
 		private var worldPhysics:PhysInjector;
@@ -91,19 +91,22 @@ package
 		
 		// provisional, habrá bucles para las plataformas y las raspas
 		
+		
 		private function drawGame():void
 		{	
 			// dibuja suelo
-			floorPlatform = new Platform(worldPhysics, 0, 344);
+			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
 			this.addChild(floorPlatform);
 			platforms.push(floorPlatform);
 			
 			// dibuja paredes
-			wall = new Wall(worldPhysics, 400, floorPlatform.platformSprite.y-100);
+			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y-100,"wall");
 			this.addChild(wall);
+			wall.name = "wall";
 			//walls.push(wall);
 			
-			wall_2 = new Wall(worldPhysics, 800, floorPlatform.platformSprite.y - 100);
+			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100,"wall");
+			wall_2.name = "wall2";
 			this.addChild(wall_2);
 			
 			

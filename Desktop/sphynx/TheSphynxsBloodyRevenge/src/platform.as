@@ -23,16 +23,22 @@ package
 		public var platformSprite:Image;
 		private var platformPhysics:PhysInjector;
 		private var platformObject:PhysicsObject;
+		private var wallSprite:Image;
+		private var invisbleWallSprite:Image;
+		
 		public var platform:Boolean = true;
 		private var posX:Number;
 		private var posY:Number;
+		private var type:String;
 		
-		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number)
+		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number,spriteType:String)
 		{
 			super();
 			platformPhysics = worldPhysics;
 			posX = x;
 			posY = y;
+			type = spriteType;
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -45,11 +51,27 @@ package
 		}
 		
 		private function platformArt():void
+		
 		{
-			platformSprite = new Image(Assets.getTexture("Floor"));
-			platformSprite.x = posX;
-			platformSprite.y = posY;
-			this.addChild(platformSprite);
+			if(type == "floor"){
+				platformSprite = new Image(Assets.getTexture("Floor"));
+				platformSprite.x = posX;
+				platformSprite.y = posY;
+				this.addChild(platformSprite);
+			}
+			else if(type == "wall") {
+				wallSprite = new Image(Assets.getTexture("Wall"));
+				wallSprite.x = posX;
+				wallSprite.y = posY;
+				this.addChild(wallSprite);	
+			}
+			/*else if(tipo == "invisibleWall") {
+				invisibleWallSprite = new Image(Assets.getTexture("Wall"));
+				invisibleWallSprite.x = posX;
+				invisbleWallSprite.y = posY;
+				this.addChild(invisibleWallSprite);	
+			}*/
+			trace(tipo);
 		}
 		
 		 

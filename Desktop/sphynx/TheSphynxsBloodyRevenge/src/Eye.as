@@ -31,6 +31,7 @@ package
 		private var posX:Number;
 		private var posY:Number;
 		
+		
 		//private var physics:PhysInjector = new PhysInjector(stage,new b2Vec2(0,10),true);
 		
 		
@@ -40,7 +41,7 @@ package
 			eyePhysics = worldPhysics;
 			posX = x;
 			posY = y;
-			velocity = new Number(-1);
+			velocity = new Number(0.75);
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 			
 		}
@@ -56,6 +57,7 @@ package
 		private function eyeArt():void
 		{
 			eyeSprite = new Image(Assets.getTexture("Eye"));
+			eyeSprite.pivotX = eyeSprite.width / 2;
 			eyeSprite.x = posX;
 			eyeSprite.y = posY;
 			this.addChild(eyeSprite);
@@ -65,17 +67,18 @@ package
 		{
 			eyeObject = eyePhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
 			eyeObject.physicsProperties.x = posX;
-			eyeObject.physicsProperties.name = "eye";
+			eyeObject.name = "eye";
 			//eyeObject.physicsProperties.contactGroup = ;
 			eyeObject.body.SetFixedRotation(true);
 			
 		}
 		
-		private function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
+		public function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
 			//objectA.x = 700;
 			//physics.removePhysics(objectB.displayObject);
-			//velocity *= -1;
+			velocity *= -1;
+			eyeSprite.scaleX *= -1;
 			trace("contact");
 			
 		}
@@ -85,7 +88,8 @@ package
 			eyePhysics.update();
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
 			
-			ContactManager.onContactBegin("eye", "wall", handleContact,true);
+			ContactManager.onContactBegin("eye", "wall", handleContact);
+			ContactManager.onContactBegin("eye", "wall2", handleContact);
 			
 		}
 	}
