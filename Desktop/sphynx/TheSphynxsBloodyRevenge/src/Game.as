@@ -13,7 +13,7 @@ package
 	 * ...
 	 * @author Yolanda
 	 */
-	public class Game extends Sprite 
+	public class Game extends Sprite
 	{
 		public var screenMenu:Menu;
 		public var screenInGame:InGame;

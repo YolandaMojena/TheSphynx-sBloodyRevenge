@@ -48,7 +48,6 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			eyeArt();
 			injectPhysics();
-			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		private function eyeArt():void
@@ -63,8 +62,8 @@ package
 		{
 			eyeObject = eyePhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
 			eyeObject.physicsProperties.x = posX;
-			eyeObject.physicsProperties.name = "eye";
-			//eyeObject.physicsProperties.contactGroup = ;
+			eyeObject.name = "eye";
+			// eyeObject.physicsProperties.contactGroup = ;
 			eyeObject.body.SetFixedRotation(true);
 			
 		}
@@ -75,6 +74,7 @@ package
 			trace("contact");
 			
 		}
+		
 		
 		private function update(e:Event):void 
 		{

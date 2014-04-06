@@ -27,12 +27,18 @@ package
 		private var posX:Number;
 		private var posY:Number;
 		
-		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number)
+		private var _id:uint;
+		
+		public var sprite:String;
+		
+		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number, _id:uint, sprite:String )
 		{
 			super();
 			platformPhysics = worldPhysics;
 			posX = x;
 			posY = y;
+			this._id = id;
+			this.sprite = sprite;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -41,12 +47,11 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			platformArt();
 			injectPhysics();
-			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		private function platformArt():void
 		{
-			platformSprite = new Image(Assets.getTexture("Floor"));
+			platformSprite = new Image(Assets.getTexture(sprite));
 			platformSprite.x = posX;
 			platformSprite.y = posY;
 			this.addChild(platformSprite);
@@ -56,13 +61,20 @@ package
 		private function injectPhysics():void
 		{
 			platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
+			if (_id == 2 || _id == 3) platformObject.name = "wall";
 		}	
-		
-		
-		private function update(e:Event):void 
+				
+		public function get id():uint 
 		{
-			platformPhysics.update();
+			return _id;
 		}
+		
+		public function set id(value:uint):void 
+		{
+			_id = value;
+		}
+		
+
 		
 	}
 

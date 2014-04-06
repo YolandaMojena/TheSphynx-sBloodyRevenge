@@ -32,13 +32,12 @@ package
 		private var timeCurrent:Number;
 		private var elapsed:Number;
 		public var sphynx:Sphynx;
-		public var sphynx2:Sphynx2;
 		
 		public var scene:Stage;
 		private var floorPlatform:Platform;
 		private var fishBone:FishBone;
-		private var wall:Wall;
-		private var wall_2:Wall;
+		private var wall:Platform;
+		private var wall_2:Platform;
 		private var eye:Eye;
 		
 		private var worldPhysics:PhysInjector;
@@ -70,8 +69,9 @@ package
 			
 			drawGame();
 			
-			scoreText = new TextField(1600, 50, "Score:  0", "MyFontName", 24, 0xff0000);
+			scoreText = new TextField(1600, 50, "Score: =0", "MyFontName", 24, 0xff0000);
 			this.addChild(scoreText);
+
 			
 			timeText = new TextField(1564, 100, "Time:    ", "MyFontName", 24, 0xff0000);
 			this.addChild(timeText);
@@ -79,13 +79,13 @@ package
 			timeScore = new TextField(1650, 100, "   0", "MyFontName", 24, 0xff0000);
 			this.addChild(timeScore);
 
+			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		public function initialize():void
 		{
-			this.visible = true;
-			this.addEventListener(Event.ENTER_FRAME, checkedElapsed);
-			
+			visible = true;
+			addEventListener(Event.ENTER_FRAME, checkedElapsed);			
 			trace("jugando");
 		}
 		
@@ -93,17 +93,17 @@ package
 		
 		private function drawGame():void
 		{	
-			// dibuja suelo
-			floorPlatform = new Platform(worldPhysics, 0, 344);
+			// dibujar plataformas
+			floorPlatform = new Platform(worldPhysics, 0, 344, 1, "Floor");
 			this.addChild(floorPlatform);
 			platforms.push(floorPlatform);
 			
 			// dibuja paredes
-			wall = new Wall(worldPhysics, 400, floorPlatform.platformSprite.y-100);
+			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y - 100, 2, "Wall");
 			this.addChild(wall);
 			//walls.push(wall);
 			
-			wall_2 = new Wall(worldPhysics, 800, floorPlatform.platformSprite.y - 100);
+			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100, 3, "Wall");
 			this.addChild(wall_2);
 			
 			
@@ -118,14 +118,9 @@ package
 			
 
 			// dibuja gato
-			sphynx = new Sphynx(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146); 
+			sphynx = new Sphynx(worldPhysics, 20, floorPlatform.platformSprite.y-146, fishBones); 
 			this.addChild(sphynx);
-			
-			/*
-			// dibuja gato
-			sphynx2 = new Sphynx2(worldPhysics, platforms, 20, floorPlatform.platformSprite.y-146);
-			this.addChild(sphynx2);
-			*/
+
 		}
 
 		public function disposeTemporaly():void
@@ -138,12 +133,13 @@ package
 			timePrevious = timeCurrent;
 			timeCurrent = getTimer();
 			elapsed = (timeCurrent - timePrevious) * 0.001;
-			
-			
-			
-			
 		}
-		
+		private function update(event:Event):void 
+		{
+			
+			scoreText.text = "Score: " + sphynx.score;
+			worldPhysics.update();
+		}
 	}
 
 }
