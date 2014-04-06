@@ -141,9 +141,8 @@ package
 		{
 			for ( var i:uint = 0; i < fishBones.length; i++)
 			{
-				trace(this.bounds.intersects(fishBones[i].bounds));
 				if (this.bounds.intersects(fishBones[i].bounds))
-					this.score += fishBones[i].value;	
+					this.score += fishBones[i].value;
 			}
 		}
 		

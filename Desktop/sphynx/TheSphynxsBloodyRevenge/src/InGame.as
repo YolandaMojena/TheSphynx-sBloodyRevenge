@@ -91,20 +91,26 @@ package
 		
 		// provisional, habrá bucles para las plataformas y las raspas
 		
+		
 		private function drawGame():void
 		{	
-			// dibujar plataformas
-			floorPlatform = new Platform(worldPhysics, 0, 344, 1, "Floor");
+			// dibuja suelo
+			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
 			this.addChild(floorPlatform);
 			platforms.push(floorPlatform);
 			
+			
 			// dibuja paredes
-			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y - 100, 2, "Wall");
+			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y - 100, "wall");
+			wall.name = "wall";
 			this.addChild(wall);
+	
 			//walls.push(wall);
 			
-			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100, 3, "Wall");
+			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100,"wall");
+			wall_2.name = "wall2";
 			this.addChild(wall_2);
+			
 			
 			
 			// dibuja raspas
@@ -112,9 +118,11 @@ package
 			this.addChild(fishBone);
 			fishBones.push(fishBone);
 			
+			
 			//dibuja ojo
 			eye = new Eye(worldPhysics, 550, 344);
 			this.addChild(eye);
+			
 			
 
 			// dibuja gato

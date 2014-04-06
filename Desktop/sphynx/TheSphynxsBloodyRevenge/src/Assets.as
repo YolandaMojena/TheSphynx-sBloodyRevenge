@@ -23,6 +23,7 @@ package
 		[Embed(source = "../tempAssets/eyeRight.png")]
 		public static const Eye:Class;
 		
+		
 		[Embed(source = "../tempAssets/wall.png")]
 		public static const Wall:Class;
 		
