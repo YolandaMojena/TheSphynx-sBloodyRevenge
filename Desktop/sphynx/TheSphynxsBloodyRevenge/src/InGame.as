@@ -35,16 +35,18 @@ package
 		
 		public var scene:Stage;
 		private var floorPlatform:Platform;
-		private var fishBone:FishBone;
+		private var fishBone1:FishBone;
+		private var fishBone2:FishBone;
+		private var fishBone3:FishBone;
 		private var wall:Platform;
 		private var wall_2:Platform;
 		private var eye:Eye;
 		
 		private var worldPhysics:PhysInjector;
 		
-		private var platforms:Vector.<Platform>;
-		private var fishBones:Vector.<FishBone>;
-		//private var walls:Vector.<Wall>;
+		private var platforms:Vector.<Platform>; // <PhysicsObject>
+		public static var fishBones:Vector.<FishBone>;
+		public static var walls:Vector.<PhysicsObject>;
 	
 		
 		private var scoreText:TextField;
@@ -63,8 +65,9 @@ package
 			trace("InGame Screen");
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), false); // false y asi no se puede mover con raton 
-			platforms = new Vector.<Platform>();
+			platforms = new Vector.<Platform>(); //<PhysicsObject>
 			fishBones = new Vector.<FishBone>();
+			walls = new Vector.<PhysicsObject>();
 			
 			
 			drawGame();
@@ -102,22 +105,27 @@ package
 			
 			// dibuja paredes
 			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y - 100, "wall");
-			wall.name = "wall";
 			this.addChild(wall);
-	
-			//walls.push(wall);
 			
 			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100,"wall");
-			wall_2.name = "wall2";
 			this.addChild(wall_2);
 			
 			
 			
 			// dibuja raspas
-			fishBone = new FishBone(5, 300, 280);
-			this.addChild(fishBone);
-			fishBones.push(fishBone);
+			fishBone1 = new FishBone(5, 300, 150);
+			fishBones.push(fishBone1);
 			
+			fishBone2 = new FishBone(2, 500, 280);
+			fishBones.push(fishBone2);
+			
+			fishBone3 = new FishBone(1, 700, 75);
+			fishBones.push(fishBone3);
+			
+			for (var i:int; i < fishBones.length; i++)
+			{
+				this.addChild(fishBones[i]);
+			}
 			
 			//dibuja ojo
 			eye = new Eye(worldPhysics, 550, 344);

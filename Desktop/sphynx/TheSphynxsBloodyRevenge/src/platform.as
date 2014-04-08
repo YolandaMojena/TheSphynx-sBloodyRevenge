@@ -78,6 +78,10 @@ package
 		private function injectPhysics():void
 		{
 			platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
+			if (type == "wall"){ 
+				platformObject.name = "wall" + new String(platformObject.x);
+				InGame.walls.push(platformObject);
+			}
 		}	
 		
 		

@@ -17,8 +17,14 @@ package
 		[Embed(source = "../tempAssets/suelo.png")]
 		public static const Floor:Class;
 		
-		[Embed(source = "../tempAssets/blackFish.png")]
-		public static const FishBone:Class;
+		[Embed(source = "../tempAssets/blueFish.png")]
+		public static const FishBoneB:Class;
+		
+		[Embed(source = "../tempAssets/goldFish.png")]
+		public static const FishBoneG:Class;
+		
+		[Embed(source = "../tempAssets/redFish.png")]
+		public static const FishBoneR:Class;
 		
 		[Embed(source = "../tempAssets/eyeRight.png")]
 		public static const Eye:Class;

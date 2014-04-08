@@ -34,7 +34,11 @@ package
 		
 		private function fishboneArt():void
 		{
-			fishBoneSprite = new Image(Assets.getTexture("FishBone"));
+			
+			if (value == 5) fishBoneSprite = new Image(Assets.getTexture("FishBoneG"));
+			else if (value == 2) fishBoneSprite = new Image(Assets.getTexture("FishBoneR"));
+			else fishBoneSprite = new Image(Assets.getTexture("FishBoneB"));
+			
 			fishBoneSprite.x = posX;
 			fishBoneSprite.y = posY;
 			this.addChild(fishBoneSprite);

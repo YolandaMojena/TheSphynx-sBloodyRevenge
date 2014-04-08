@@ -142,7 +142,11 @@ package
 			for ( var i:uint = 0; i < fishBones.length; i++)
 			{
 				if (this.bounds.intersects(fishBones[i].bounds))
+				{
 					this.score += fishBones[i].value;
+					fishBones[i].removeFromParent(true);
+					fishBones.splice(i, 1);
+				}
 			}
 		}
 		

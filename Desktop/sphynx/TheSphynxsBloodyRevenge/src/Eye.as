@@ -87,9 +87,10 @@ package
 		{
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
 			
-			ContactManager.onContactBegin("eye", "wall", handleContact);
-			ContactManager.onContactBegin("eye", "wall2", handleContact);
-			
+			for (var i:int; i < InGame.walls.length; i++){
+				ContactManager.onContactBegin(eyeObject.name, InGame.walls[i].name, handleContact);
+			}
+	
 		}
 	}
 
