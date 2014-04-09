@@ -81,6 +81,7 @@ package
 			if (type == "wall"){ 
 				platformObject.name = "wall" + new String(platformObject.x);
 				InGame.walls.push(platformObject);
+				//platformObject.physicsProperties.isSensor = true;
 			}
 		}	
 		

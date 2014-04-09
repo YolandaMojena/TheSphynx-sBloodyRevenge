@@ -14,7 +14,12 @@ package
     import com.reyco1.physinjector.data.PhysicsObject;
     import com.reyco1.physinjector.data.PhysicsProperties;
 	
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import com.reyco1.physinjector.contact.ContactManager;
+	
+	
 	import Box2D.Common.Math.b2Vec2;
+	
 	
 	import flash.display.Stage;
 	
@@ -44,8 +49,8 @@ package
 		private var count:uint;
 		private var fishBones:Vector.<FishBone>;
 		public var score:Number;
-/*		private var posX:Number;
-		private var posY:Number;*/
+		private var posX:Number;
+		private var posY:Number;
 		
 		private var jumpHeight:Number;
 	
@@ -57,8 +62,8 @@ package
 		{
 			super();
 			sphynxPhysics = worldPhysics;
-	/*		posX = x;
-			posY = y;*/
+			posX = x;
+			posY = y;
 			velocity = 0.2;
 			limit = 2;
 			canJump = true;
@@ -74,6 +79,7 @@ package
 			sphynxArt();
 			injectPhysics();
 			sphynxKeyboard();
+			
 		}
 				
 
@@ -93,18 +99,35 @@ package
 	/*		sphynxObject.physicsProperties.x = posX;
 			sphynxObject.physicsProperties.y = posY;*/
 			sphynxObject.body.SetFixedRotation(true);
+			//sphynxObject.physicsProperties.allowSleep = true;
+			sphynxObject.name = "cat";
 		}
 		
 
 		
 	
-		private function sphynxAttack():void
+		/*private function sphynxAttack(eyes:Vector.<PhysicsObject>):void
+		{
+			//for (var i:int; i < InGame.eyes.length; i++)
+			{
+				ContactManager.onContactBegin("punch", InGame.eyes[i].name, handleContactAttack);
+			}
+		
+		}
+		*/
+		
+		/*private function handleContactAttack(sphynxObject:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
 			
+			for ( var i:uint = 0; i < eyes.length; i++)
+			{
+					eyes[i].removeFromParent(true);
+					eyes.splice(i, 1);
+				}
+			}
+			
 		}
-		
-		
-		
+		*/
 		private function sphynxKeyboard():void
 		{
 			this.addEventListener(KeyboardEvent.KEY_DOWN, sphynxMoves);
@@ -130,9 +153,9 @@ package
 						
 					break;
 					
-				case Keyboard.X:
+				/*case Keyboard.X:
 					sphynxAttack();
-					break;	
+					break;	*/
 			}
 				
 		}
@@ -147,6 +170,21 @@ package
 					fishBones[i].removeFromParent(true);
 					fishBones.splice(i, 1);
 				}
+			}
+		}
+		
+		private function handleContactLives(sphynxObj:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
+		{
+			//if(lives >1) lives--;
+			//else
+			sphynxSprites.visible = false; // para que el objeto no aparezca en pantalla , ve a update
+			
+			
+		}
+		private function lives(eyes:Vector.<PhysicsObject>):void
+		{
+			for (var i:int; i < InGame.eyes.length; i++){
+				ContactManager.onContactBegin(sphynxObject.name, InGame.eyes[i].name, handleContactLives);
 			}
 		}
 		
@@ -166,7 +204,14 @@ package
 		}
 
 		private function update(e:Event):void 
-		{		
+		{	
+			
+			if (!sphynxSprites.visible) // si no esta visible mandarlo al principio y visble de nuevo
+			{
+				sphynxObject.x = 20;
+				sphynxSprites.visible = true;
+			}
+
 			if (sphynxObject.body.GetLinearVelocity().y < 0) goingUp == true;
 			else goingUp == false;
 			
@@ -184,17 +229,19 @@ package
 			}
 			
 			
-			if (jump) 
+			if (jump)
+			
+			
 				sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
 				//sphynxObject.body.GetLinearVelocity().y -= 5;
 				jump = false;
 					
-				if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp)
-					canJump = true;
+				if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp) canJump = true;
+					
 			
-			scoreValue(fishBones);		
-
-						
+			scoreValue(fishBones);	
+			
+			lives(InGame.eyes);
 		}	
 		
 	}

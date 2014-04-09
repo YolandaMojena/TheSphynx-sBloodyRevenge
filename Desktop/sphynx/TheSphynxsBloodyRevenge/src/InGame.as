@@ -34,20 +34,23 @@ package
 		public var sphynx:Sphynx;
 		
 		public var scene:Stage;
-		private var floorPlatform:Platform;
+		public static var floorPlatform:Platform;
 		private var fishBone1:FishBone;
 		private var fishBone2:FishBone;
 		private var fishBone3:FishBone;
 		private var wall:Platform;
 		private var wall_2:Platform;
+		private var wall_3:Platform;
 		private var eye:Eye;
+		private var eye2:Eye;
+		
 		
 		private var worldPhysics:PhysInjector;
 		
 		private var platforms:Vector.<Platform>; // <PhysicsObject>
 		public static var fishBones:Vector.<FishBone>;
 		public static var walls:Vector.<PhysicsObject>;
-	
+		public static var eyes:Vector.<PhysicsObject>;
 		
 		private var scoreText:TextField;
 		private var timeText:TextField;
@@ -68,6 +71,7 @@ package
 			platforms = new Vector.<Platform>(); //<PhysicsObject>
 			fishBones = new Vector.<FishBone>();
 			walls = new Vector.<PhysicsObject>();
+			eyes = new Vector.<PhysicsObject>();
 			
 			
 			drawGame();
@@ -104,11 +108,14 @@ package
 			
 			
 			// dibuja paredes
-			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y - 100, "wall");
+			wall = new Platform(worldPhysics, 550, floorPlatform.platformSprite.y - 72, "wall");
 			this.addChild(wall);
 			
-			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100,"wall");
+			wall_2 = new Platform(worldPhysics, 825, floorPlatform.platformSprite.y - 72,"wall");
 			this.addChild(wall_2);
+			
+			wall_3 = new Platform(worldPhysics, 300, floorPlatform.platformSprite.y - 72,"wall");
+			this.addChild(wall_3);
 			
 			
 			
@@ -116,7 +123,7 @@ package
 			fishBone1 = new FishBone(5, 300, 150);
 			fishBones.push(fishBone1);
 			
-			fishBone2 = new FishBone(2, 500, 280);
+			fishBone2 = new FishBone(2, 500, 200);
 			fishBones.push(fishBone2);
 			
 			fishBone3 = new FishBone(1, 700, 75);
@@ -128,11 +135,18 @@ package
 			}
 			
 			//dibuja ojo
-			eye = new Eye(worldPhysics, 550, 344);
+			eye = new Eye(worldPhysics, 700, 344);
 			this.addChild(eye);
 			
 			
-
+			eye2 = new Eye(worldPhysics, 450, 344);
+			this.addChild(eye2);
+			
+			/*for (var i:int; i < eyes.length; i++)
+			{
+				this.addChild(eyes[i]);
+			}
+			*/
 			// dibuja gato
 			sphynx = new Sphynx(worldPhysics, 20, floorPlatform.platformSprite.y-146, fishBones); 
 			this.addChild(sphynx);
