@@ -24,7 +24,9 @@ package
 		private var platformPhysics:PhysInjector;
 		private var platformObject:PhysicsObject;
 		private var wallSprite:Image;
-		private var invisbleWallSprite:Image;
+		private var invisbleWallSprite:Image;		
+		private var punchSprite:Image;
+		private var punchObject:PhysicsObject;
 		
 		public var platform:Boolean = true;
 		private var posX:Number;
@@ -65,6 +67,12 @@ package
 				wallSprite.y = posY;
 				this.addChild(wallSprite);	
 			}
+			else if(type == "punch") {
+				punchSprite = new Image(Assets.getTexture("Punch"));
+				punchSprite.x = posX;
+				punchSprite.y = posY;
+				this.addChild(punchSprite);	
+			}
 			/*else if(tipo == "invisibleWall") {
 				invisibleWallSprite = new Image(Assets.getTexture("Wall"));
 				invisibleWallSprite.x = posX;
@@ -83,6 +91,7 @@ package
 				InGame.walls.push(platformObject);
 				//platformObject.physicsProperties.isSensor = true;
 			}
+			if (type == "punch") platformObject.name = "punch";
 		}	
 		
 		

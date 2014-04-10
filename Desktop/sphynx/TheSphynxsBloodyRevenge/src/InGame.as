@@ -41,6 +41,7 @@ package
 		private var wall:Platform;
 		private var wall_2:Platform;
 		private var wall_3:Platform;
+		private var punch:Platform;
 		private var eye:Eye;
 		private var eye2:Eye;
 		
@@ -117,30 +118,32 @@ package
 			wall_3 = new Platform(worldPhysics, 300, floorPlatform.platformSprite.y - 72,"wall");
 			this.addChild(wall_3);
 			
-			
+			//punch = new Platform(worldPhysics, 600, floorPlatform.platformSprite.y - 49,"punch")
+			//this.addChild(punch);
 			
 			// dibuja raspas
-			fishBone1 = new FishBone(5, 300, 150);
+			fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
 			fishBones.push(fishBone1);
 			
-			fishBone2 = new FishBone(2, 500, 200);
+			fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
 			fishBones.push(fishBone2);
 			
-			fishBone3 = new FishBone(1, 700, 75);
+			fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
 			fishBones.push(fishBone3);
+			
+			//dibuja ojo
+			eye = new Eye(worldPhysics, 700, 344,false); // true- explosion monisisima y se peta gumbau plis herp
+			this.addChild(eye);
+			
+			
+			eye2 = new Eye(worldPhysics, 450, 344,false);
+			this.addChild(eye2);			
 			
 			for (var i:int; i < fishBones.length; i++)
 			{
 				this.addChild(fishBones[i]);
+				trace(fishBones[i]);
 			}
-			
-			//dibuja ojo
-			eye = new Eye(worldPhysics, 700, 344);
-			this.addChild(eye);
-			
-			
-			eye2 = new Eye(worldPhysics, 450, 344);
-			this.addChild(eye2);
 			
 			/*for (var i:int; i < eyes.length; i++)
 			{
