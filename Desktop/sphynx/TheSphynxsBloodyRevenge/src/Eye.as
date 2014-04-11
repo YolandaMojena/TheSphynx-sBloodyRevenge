@@ -21,7 +21,7 @@ package
 	 * ...
 	 * @author Yolanda
 	 */
-	public class Eye extends Sprite 
+	public class Eye extends Sprite
 	{
 		public var eyeSprite:Image;
 		private var eyePhysics:PhysInjector;
@@ -30,9 +30,6 @@ package
 		
 		private var posX:Number;
 		private var posY:Number;
-		
-		
-		//private var physics:PhysInjector = new PhysInjector(stage,new b2Vec2(0,10),true);
 		
 		
 		public function Eye(worldPhysics:PhysInjector, x:Number, y:Number) 

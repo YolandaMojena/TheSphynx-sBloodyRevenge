@@ -9,10 +9,9 @@ package
 	 * ...
 	 * @author Yolanda
 	 */
-	public class FishBone extends Sprite 
+	public class FishBone extends Sprite
 	{
 		public var fishBoneSprite:Image;
-
 		private var posX:Number;
 		private var posY:Number;
 		private var _value:uint;

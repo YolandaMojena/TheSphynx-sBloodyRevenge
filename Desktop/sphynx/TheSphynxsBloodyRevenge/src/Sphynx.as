@@ -39,13 +39,13 @@ package
 		private var jump:Boolean;
 		private var attack:Boolean;
 		private var velocity:Number;
-		private var goingUp:Number;
+		private var goingUp:Boolean;
 		private var limit:Number;
 		private var count:uint;
 		private var fishBones:Vector.<FishBone>;
 		public var score:Number;
-/*		private var posX:Number;
-		private var posY:Number;*/
+		private var posX:Number;
+		private var posY:Number;
 		
 		private var jumpHeight:Number;
 	
@@ -57,8 +57,8 @@ package
 		{
 			super();
 			sphynxPhysics = worldPhysics;
-	/*		posX = x;
-			posY = y;*/
+			//posX = x;
+			//posY = y;
 			velocity = 0.2;
 			limit = 2;
 			canJump = true;
@@ -80,8 +80,8 @@ package
 		private function sphynxArt(/*_x:Number, _y:Number*/):void
 		{
 			sphynxSprites = new Image(Assets.getTexture("Cat"));
-	/*		sphynxSprites.x = _x;
-			sphynxSprites.y = _y;*/
+			//sphynxSprites.x = _x;
+			//sphynxSprites.y = _y;
 			this.addChild(sphynxSprites);	
 			
 
@@ -89,9 +89,7 @@ package
 		
 		private function injectPhysics():void
 		{
-			sphynxObject = sphynxPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
-	/*		sphynxObject.physicsProperties.x = posX;
-			sphynxObject.physicsProperties.y = posY;*/
+			sphynxObject = sphynxPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.35, restitution:0 } ));
 			sphynxObject.body.SetFixedRotation(true);
 		}
 		
@@ -124,10 +122,12 @@ package
 					break;
 					
 				case Keyboard.UP:
+					
 					if (canJump)
+					{
 						jump = true;
 						canJump = false;
-						
+					}
 					break;
 					
 				case Keyboard.X:
@@ -161,14 +161,13 @@ package
 				case Keyboard.RIGHT:
 					right = false;
 					break;
-				
 			}	
 		}
 
 		private function update(e:Event):void 
 		{		
-			if (sphynxObject.body.GetLinearVelocity().y < 0) goingUp == true;
-			else goingUp == false;
+			if (sphynxObject.body.GetLinearVelocity().y < 0) goingUp = true;
+			else goingUp = false;
 			
 			if (left) {
 				if(Math.abs(sphynxObject.body.GetLinearVelocity().x)<limit)
@@ -176,21 +175,24 @@ package
 				
 //				sphynxObject.body.ApplyForce(new b2Vec2(-velocity, 0), sphynxObject.body.GetWorldCenter());
 			}
+			
 			if (right) { 
-				trace(sphynxObject.body.GetLinearVelocity().x);
 				if(Math.abs(sphynxObject.body.GetLinearVelocity().x)<limit)
 					sphynxObject.body.GetLinearVelocity().x += velocity;
-//				sphynxObject.body.ApplyForce(new b2Vec2(velocity, 0), sphynxObject.body.GetWorldCenter());
 			}
 			
-			
 			if (jump) 
+			
 				sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
-				//sphynxObject.body.GetLinearVelocity().y -= 5;
 				jump = false;
-					
-				if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp)
-					canJump = true;
+				
+			if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp)
+			{
+				canJump = true;
+				sphynxObject.body.GetPosition().y -= 1;
+			}				
+			
+				
 			
 			scoreValue(fishBones);		
 

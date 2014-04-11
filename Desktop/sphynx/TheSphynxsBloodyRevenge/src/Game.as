@@ -17,6 +17,7 @@ package
 	{
 		public var screenMenu:Menu;
 		public var screenInGame:InGame;
+		public var screenDontMiss:DontMiss;
 
 		private var main:Main; //
 		
@@ -42,7 +43,9 @@ package
 			this.addChild(screenMenu);
 			screenInGame.initialize();
 			
-			
+			screenDontMiss = new DontMiss();
+			screenDontMiss.initialize();
+			this.addChild(screenDontMiss);		
 		}
 		
 		private function onChangeScreen(event:NavigationEvent):void

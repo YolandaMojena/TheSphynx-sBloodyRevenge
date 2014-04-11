@@ -15,9 +15,11 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="D:\YOLANDA\2º VIDEOJUEGOS\SEMESTRE 2\DISEÑO WEB\PRACTICA\STARLING\ARCHIVOS STARLING\PrimaryFeather-Starling-Framework-1a50854\starling\src" />
-    <class path="D:\YOLANDA\2º VIDEOJUEGOS\SEMESTRE 2\DISEÑO WEB\PRACTICA\STARLING\ARCHIVOS STARLING\PhysInjector-master\PhysInjector-master\physinjector\src" />
-    <class path="D:\YOLANDA\2º VIDEOJUEGOS\SEMESTRE 2\DISEÑO WEB\PRACTICA\STARLING\ARCHIVOS STARLING\Box2DFlashAS3 2.1a\Source" />
+    <class path="src" />
+    <class path="..\classpaths\Source" />
+    <class path="..\classpaths\PhysInjector-master\PhysInjector-master\physinjector\src" />
+    <class path="..\classpaths\starling\PrimaryFeather-Starling-Framework-1a50854\starling\src" />
+    <class path="..\classpaths\CameraFocus-master\Starling-CameraFocus" />
   </classpaths>
   <!-- Build options -->
   <build>

@@ -26,9 +26,17 @@ package
 		[Embed(source = "../tempAssets/redFish.png")]
 		public static const FishBoneR:Class;
 		
+		[Embed(source = "../tempAssets/turqFishBone.png")]
+		public static const FishBoneT:Class;
+		
+		[Embed(source = "../tempAssets/orangeFishbone.png")]
+		public static const FishBoneO:Class;
+		
+		[Embed(source = "../tempAssets/purpleFishBone.png")]
+		public static const FishBoneP:Class;
+		
 		[Embed(source = "../tempAssets/eyeRight.png")]
 		public static const Eye:Class;
-		
 		
 		[Embed(source = "../tempAssets/wall.png")]
 		public static const Wall:Class;
