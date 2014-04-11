@@ -14,7 +14,12 @@ package
     import com.reyco1.physinjector.data.PhysicsObject;
     import com.reyco1.physinjector.data.PhysicsProperties;
 	
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import com.reyco1.physinjector.contact.ContactManager;
+	
+	
 	import Box2D.Common.Math.b2Vec2;
+	
 	
 	import flash.display.Stage;
 	
@@ -74,6 +79,7 @@ package
 			sphynxArt();
 			injectPhysics();
 			sphynxKeyboard();
+			
 		}
 				
 
@@ -91,18 +97,35 @@ package
 		{
 			sphynxObject = sphynxPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.35, restitution:0 } ));
 			sphynxObject.body.SetFixedRotation(true);
+			//sphynxObject.physicsProperties.allowSleep = true;
+			sphynxObject.name = "cat";
 		}
 		
 
 		
 	
-		private function sphynxAttack():void
+		/*private function sphynxAttack(eyes:Vector.<PhysicsObject>):void
+		{
+			//for (var i:int; i < InGame.eyes.length; i++)
+			{
+				ContactManager.onContactBegin("punch", InGame.eyes[i].name, handleContactAttack);
+			}
+		
+		}
+		*/
+		
+		/*private function handleContactAttack(sphynxObject:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
 			
+			for ( var i:uint = 0; i < eyes.length; i++)
+			{
+					eyes[i].removeFromParent(true);
+					eyes.splice(i, 1);
+				}
+			}
+			
 		}
-		
-		
-		
+		*/
 		private function sphynxKeyboard():void
 		{
 			this.addEventListener(KeyboardEvent.KEY_DOWN, sphynxMoves);
@@ -130,9 +153,9 @@ package
 					}
 					break;
 					
-				case Keyboard.X:
+				/*case Keyboard.X:
 					sphynxAttack();
-					break;	
+					break;	*/
 			}
 				
 		}
@@ -147,6 +170,21 @@ package
 					fishBones[i].removeFromParent(true);
 					fishBones.splice(i, 1);
 				}
+			}
+		}
+		
+		private function handleContactLives(sphynxObj:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
+		{
+			//if(lives >1) lives--;
+			//else
+			sphynxSprites.visible = false; // para que el objeto no aparezca en pantalla , ve a update
+			
+			
+		}
+		private function lives(eyes:Vector.<PhysicsObject>):void
+		{
+			for (var i:int; i < InGame.eyes.length; i++){
+				ContactManager.onContactBegin(sphynxObject.name, InGame.eyes[i].name, handleContactLives);
 			}
 		}
 		
@@ -165,7 +203,14 @@ package
 		}
 
 		private function update(e:Event):void 
-		{		
+		{	
+			
+			if (!sphynxSprites.visible) // si no esta visible mandarlo al principio y visble de nuevo
+			{
+				sphynxObject.x = 20;
+				sphynxSprites.visible = true;
+			}
+
 			if (sphynxObject.body.GetLinearVelocity().y < 0) goingUp = true;
 			else goingUp = false;
 			
@@ -192,11 +237,9 @@ package
 				sphynxObject.body.GetPosition().y -= 1;
 			}				
 			
-				
+			scoreValue(fishBones);	
 			
-			scoreValue(fishBones);		
-
-						
+			lives(InGame.eyes);
 		}	
 		
 	}

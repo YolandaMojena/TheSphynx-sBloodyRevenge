@@ -22,13 +22,11 @@ package
 	
 	import Box2D.Common.Math.b2Vec2;
 
-	import com.joeonmars.camerafocus.events.CameraFocusEvent;
-	import com.joeonmars.camerafocus.StarlingCameraFocus;
 	/**
 	 * ...
 	 * @author Yolanda
 	 */
-	public class InGame extends Sprite
+	public class InGame extends Sprite 
 	{
 		private var timePrevious:Number;
 		private var timeCurrent:Number;
@@ -36,27 +34,28 @@ package
 		public var sphynx:Sphynx;
 		
 		public var scene:Stage;
-		private var floorPlatform:Platform;
+		public static var floorPlatform:Platform;
 		private var fishBone1:FishBone;
 		private var fishBone2:FishBone;
 		private var fishBone3:FishBone;
 		private var wall:Platform;
 		private var wall_2:Platform;
+		private var wall_3:Platform;
+		private var punch:Platform;
 		private var eye:Eye;
+		private var eye2:Eye;
+		
 		
 		private var worldPhysics:PhysInjector;
 		
 		private var platforms:Vector.<Platform>; // <PhysicsObject>
 		public static var fishBones:Vector.<FishBone>;
 		public static var walls:Vector.<PhysicsObject>;
-	
+		public static var eyes:Vector.<PhysicsObject>;
 		
 		private var scoreText:TextField;
 		private var timeText:TextField;
 		private var timeScore:TextField;
-		
-		private var stageContainer:Sprite;
-		private var cameraSt:StarlingCameraFocus;
 		
 		public function InGame() 
 		{
@@ -73,11 +72,14 @@ package
 			platforms = new Vector.<Platform>(); //<PhysicsObject>
 			fishBones = new Vector.<FishBone>();
 			walls = new Vector.<PhysicsObject>();
-				
+			eyes = new Vector.<PhysicsObject>();
+			
+			
 			drawGame();
 			
 			scoreText = new TextField(1600, 50, "Score: =0", "MyFontName", 24, 0xff0000);
 			this.addChild(scoreText);
+
 			
 			timeText = new TextField(1564, 100, "Time:    ", "MyFontName", 24, 0xff0000);
 			this.addChild(timeText);
@@ -86,8 +88,6 @@ package
 			this.addChild(timeScore);
 
 			addEventListener(Event.ENTER_FRAME, update);
-			
-			
 		}
 		
 		public function initialize():void
@@ -108,37 +108,48 @@ package
 			platforms.push(floorPlatform);
 			
 			
-			
 			// dibuja paredes
-			wall = new Platform(worldPhysics, 400, floorPlatform.platformSprite.y - 100, "wall");
+			wall = new Platform(worldPhysics, 550, floorPlatform.platformSprite.y - 72, "wall");
 			this.addChild(wall);
-
-			wall_2 = new Platform(worldPhysics, 800, floorPlatform.platformSprite.y - 100,"wall");
+			
+			wall_2 = new Platform(worldPhysics, 825, floorPlatform.platformSprite.y - 72,"wall");
 			this.addChild(wall_2);
 			
+			wall_3 = new Platform(worldPhysics, 300, floorPlatform.platformSprite.y - 72,"wall");
+			this.addChild(wall_3);
+			
+			//punch = new Platform(worldPhysics, 600, floorPlatform.platformSprite.y - 49,"punch")
+			//this.addChild(punch);
 			
 			// dibuja raspas
-			fishBone1 = new FishBone(5, 300, 150);
+			fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
 			fishBones.push(fishBone1);
-
 			
-			fishBone2 = new FishBone(2, 500, 280);
+			fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
 			fishBones.push(fishBone2);
-
 			
-			fishBone3 = new FishBone(1, 700, 75);
+			fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
 			fishBones.push(fishBone3);
-
+			
+			//dibuja ojo
+			eye = new Eye(worldPhysics, 700, 344,false); // true- explosion monisisima y se peta gumbau plis herp
+			this.addChild(eye);
+			
+			
+			eye2 = new Eye(worldPhysics, 450, 344,false);
+			this.addChild(eye2);			
 			
 			for (var i:int; i < fishBones.length; i++)
 			{
 				this.addChild(fishBones[i]);
+				trace(fishBones[i]);
 			}
 			
-			//dibuja ojo
-			eye = new Eye(worldPhysics, 550, 344);
-			this.addChild(eye);
-			
+			/*for (var i:int; i < eyes.length; i++)
+			{
+				this.addChild(eyes[i]);
+			}
+			*/
 			// dibuja gato
 			sphynx = new Sphynx(worldPhysics, 20, floorPlatform.platformSprite.y-146, fishBones); 
 			this.addChild(sphynx);
@@ -161,16 +172,7 @@ package
 			
 			scoreText.text = "Score: " + sphynx.score;
 			worldPhysics.update();
-			//camera();
 		}
-		/*
-		private function camera():void
-		{
-			this.x = Starling.current.nativeStage.width / 2 - sphynx.x;
-			
-		}
-		*/
-		
 	}
 
 }

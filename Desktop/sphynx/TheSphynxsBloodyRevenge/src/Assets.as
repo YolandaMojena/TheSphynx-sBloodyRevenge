@@ -41,6 +41,9 @@ package
 		[Embed(source = "../tempAssets/wall.png")]
 		public static const Wall:Class;
 		
+		[Embed(source = "../tempAssets/punch.png")]
+		public static const Punch:Class;
+		
 		//menu
 		
 		[Embed(source = "../tempAssets/play.png")]
