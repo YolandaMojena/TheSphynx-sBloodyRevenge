@@ -44,6 +44,7 @@ package
 		private var punch:Platform;
 		private var eye:Eye;
 		private var eye2:Eye;
+		private var bg:Image;
 		
 		
 		private var worldPhysics:PhysInjector;
@@ -52,6 +53,8 @@ package
 		public static var fishBones:Vector.<FishBone>;
 		public static var walls:Vector.<PhysicsObject>;
 		public static var eyes:Vector.<PhysicsObject>;
+		
+		
 		
 		private var scoreText:TextField;
 		private var timeText:TextField;
@@ -102,6 +105,8 @@ package
 		
 		private function drawGame():void
 		{	
+			
+			
 			// dibuja suelo
 			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
 			this.addChild(floorPlatform);
