@@ -35,7 +35,7 @@ package
 		private var fish1:FishBone;
 		private var fish2:FishBone;
 		private var fish3:FishBone;
-		
+		private var boom:Boolean;
 		
 		//private var physics:PhysInjector = new PhysInjector(stage,new b2Vec2(0,10),true);
 		
@@ -57,6 +57,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			eyeArt();
 			injectPhysics();
+			boom = false;
 			
 			addEventListener(Event.ENTER_FRAME, update);
 		}
@@ -79,6 +80,7 @@ package
 			eyeObject.body.SetFixedRotation(true);
 			InGame.eyes.push(eyeObject);
 			
+			
 		}
 		
 		public function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
@@ -95,23 +97,25 @@ package
 			removeEventListener(Event.ENTER_FRAME, update);
 			eyeObject.body.GetWorld().DestroyBody(eyeObject.body);
 			this.removeChild(eyeSprite);
-			trace("explosion");
-			
-			// random para que los value no sean siempre los mismos
-			fish1 = new FishBone(eyePhysics, 5, eyeObject.x , eyeObject.y-200, true);
-			this.addChild(fish1);
-			/*fish2 = new FishBone(eyePhysics, 2, eyeObject.x, eyeObject.y-300, true);
-			this.addChild(fish2);
-			fish3 = new FishBone(eyePhysics, 1, eyeObject.x, eyeObject.y-400, true);
-			this.addChild(fish3);*/
-			
-			
-			
+			boom = true;
+			this.addEventListener(Event.ENTER_FRAME, explosionCheck);
 		}
 		private function explosion():void 
 		{
 			ContactManager.onContactBegin(eyeObject.name, "punch", explosionContact);
 		}
+		
+		private function fishExplosion():void
+		{
+			// random para que los value no sean siempre los mismos
+			fish1 = new FishBone(eyePhysics, 5, eyeObject.x+5 , eyeObject.y, true);
+			this.addChild(fish1);
+			fish2 = new FishBone(eyePhysics, 2, eyeObject.x, eyeObject.y, true);
+			this.addChild(fish2);
+			fish3 = new FishBone(eyePhysics, 1, eyeObject.x-5, eyeObject.y, true);
+			this.addChild(fish3);
+		}
+		
 		private function update(e:Event):void 
 		{
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
@@ -120,6 +124,17 @@ package
 				ContactManager.onContactBegin(eyeObject.name, InGame.walls[i].name, handleContact);
 			}
 			if (bonus) explosion();
+			
+		}
+		
+		private function explosionCheck(e:Event):void
+		{
+			
+			if (boom) {
+				fishExplosion();
+				boom = false;
+				trace("boom");
+			}
 		}
 	}
 

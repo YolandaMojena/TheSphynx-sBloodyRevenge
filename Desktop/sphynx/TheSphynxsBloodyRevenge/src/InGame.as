@@ -123,8 +123,8 @@ package
 			wall_3 = new Platform(worldPhysics, 300, floorPlatform.platformSprite.y - 72,"wall");
 			this.addChild(wall_3);
 			
-			//punch = new Platform(worldPhysics, 600, floorPlatform.platformSprite.y - 49,"punch")
-			//this.addChild(punch);
+			punch = new Platform(worldPhysics, 620, floorPlatform.platformSprite.y - 49,"punch")
+			this.addChild(punch);
 			
 			// dibuja raspas
 			fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
@@ -137,7 +137,7 @@ package
 			fishBones.push(fishBone3);
 			
 			//dibuja ojo
-			eye = new Eye(worldPhysics, 700, 344,false); // true- explosion monisisima y se peta gumbau plis herp
+			eye = new Eye(worldPhysics, 700, 344,true); // true- explosion monisisima y se peta gumbau plis herp
 			this.addChild(eye);
 			
 			

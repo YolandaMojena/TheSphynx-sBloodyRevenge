@@ -34,6 +34,7 @@ package
 			this.value = value;
 			physicsActive = physics;
 			fishPhysics = worldPhysics;
+			trace(fishPhysics == worldPhysics);
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 		}
 		
@@ -41,10 +42,11 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			fishboneArt();
+			trace(physicsActive);
 			if (physicsActive) 
 			{
 				injectPhysics();
-				//addEventListener(Event.ENTER_FRAME, update);
+				addEventListener(Event.ENTER_FRAME, update);
 			}
 		}
 		
@@ -63,12 +65,11 @@ package
 		
 		private function injectPhysics():void
 		{
-			//fishObject = fishPhysics.injectPhysics(fishBoneSprite, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
-			/*fishObject.x = posX;
+			fishObject = fishPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
+			fishObject.x = posX;
 			fishObject.y = posY;
-			fishObject.body.SetFixedRotation(false);
 			fishObject.physicsProperties.isSensor = true;
-			fishObject.body.SetLinearVelocity(new b2Vec2(Math.random() * 3, -3)); */
+			fishObject.body.SetLinearVelocity(new b2Vec2(Math.random() * 3, -8));
 			
 			
 		}
@@ -85,11 +86,11 @@ package
 		private function update(e:Event):void 
 		{
 			
-			/*if ( fishObject.y > posY + 20)
+			if ( fishObject.y > posY)
 			{
 				removeEventListener(Event.ENTER_FRAME, update);
 				fishObject.body.GetWorld().DestroyBody(fishObject.body);
-			}*/
+			}
 		}
 	}
 

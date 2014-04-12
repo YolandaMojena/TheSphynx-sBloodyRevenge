@@ -22,7 +22,7 @@ package
 	{
 		public var platformSprite:Image;
 		private var platformPhysics:PhysInjector;
-		private var platformObject:PhysicsObject;
+		public var platformObject:PhysicsObject;
 		private var wallSprite:Image;
 		private var invisbleWallSprite:Image;		
 		private var punchSprite:Image;
