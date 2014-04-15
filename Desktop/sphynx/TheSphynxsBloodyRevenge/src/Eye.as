@@ -87,7 +87,6 @@ package
 			//physics.removePhysics(objectB.displayObject);
 			velocity *= -1;
 			eyeSprite.scaleX *= -1;
-			
 		}
 		
 		public function explosionContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
@@ -104,19 +103,18 @@ package
 			this.addChild(fish2);
 			fish3 = new FishBone(eyePhysics, 1, eyeObject.x, eyeObject.y-400, true);
 			this.addChild(fish3);*/
-			
-			
-			
 		}
+		
 		private function explosion():void 
 		{
 			ContactManager.onContactBegin(eyeObject.name, "punch", explosionContact);
 		}
+		
 		private function update(e:Event):void 
 		{
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
 			
-			for (var i:int; i < InGame.walls.length; i++){
+			for (var i:int = 0; i < InGame.walls.length; i++){
 				ContactManager.onContactBegin(eyeObject.name, InGame.walls[i].name, handleContact);
 			}
 			if (bonus) explosion();

@@ -3,6 +3,7 @@ package
 	import adobe.utils.CustomActions;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import starling.events.KeyboardEvent;
 	import starling.animation.Tween;
 	import starling.display.Button;
 	import starling.display.Image;
@@ -45,10 +46,12 @@ package
 		private var eye:Eye;
 		private var eye2:Eye;
 		
+		private var left:Boolean;
+		private var right:Boolean;
 		
 		private var worldPhysics:PhysInjector;
 		
-		private var platforms:Vector.<Platform>; // <PhysicsObject>
+		public static var platforms:Vector.<PhysicsObject>; // <PhysicsObject>
 		public static var fishBones:Vector.<FishBone>;
 		public static var walls:Vector.<PhysicsObject>;
 		public static var eyes:Vector.<PhysicsObject>;
@@ -69,7 +72,7 @@ package
 			trace("InGame Screen");
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), false); // false y asi no se puede mover con raton 
-			platforms = new Vector.<Platform>(); //<PhysicsObject>
+			platforms = new Vector.<PhysicsObject>();
 			fishBones = new Vector.<FishBone>();
 			walls = new Vector.<PhysicsObject>();
 			eyes = new Vector.<PhysicsObject>();
@@ -105,8 +108,6 @@ package
 			// dibuja suelo
 			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
 			this.addChild(floorPlatform);
-			platforms.push(floorPlatform);
-			
 			
 			// dibuja paredes
 			wall = new Platform(worldPhysics, 550, floorPlatform.platformSprite.y - 72, "wall");
@@ -153,7 +154,6 @@ package
 			// dibuja gato
 			sphynx = new Sphynx(worldPhysics, 20, floorPlatform.platformSprite.y-146, fishBones); 
 			this.addChild(sphynx);
-
 		}
 
 		public function disposeTemporaly():void
@@ -169,10 +169,17 @@ package
 		}
 		private function update(event:Event):void 
 		{
+			this.x = -sphynx.x+50;
+			worldPhysics.globalOffsetX = -sphynx.x+50;
 			
 			scoreText.text = "Score: " + sphynx.score;
+			
+
+			
 			worldPhysics.update();
 		}
+		
+
 	}
 
 }

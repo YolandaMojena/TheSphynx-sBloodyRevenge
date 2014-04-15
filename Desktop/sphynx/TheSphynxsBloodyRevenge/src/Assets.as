@@ -44,6 +44,9 @@ package
 		[Embed(source = "../tempAssets/punch.png")]
 		public static const Punch:Class;
 		
+		[Embed(source = "../tempAssets/paw.png")]
+		public static const Paw:Class;
+		
 		//menu
 		
 		[Embed(source = "../tempAssets/play.png")]

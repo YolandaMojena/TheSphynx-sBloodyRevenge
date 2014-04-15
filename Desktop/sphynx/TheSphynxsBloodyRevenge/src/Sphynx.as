@@ -51,7 +51,8 @@ package
 		public var score:Number;
 		private var posX:Number;
 		private var posY:Number;
-		
+		private var handle:Boolean;
+		private var overHeight:Number;
 		private var jumpHeight:Number;
 	
 		
@@ -68,6 +69,7 @@ package
 			limit = 2;
 			canJump = true;
 			score = 0;
+			overHeight = 0;
 			this.fishBones = fishBones;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -181,9 +183,31 @@ package
 			
 			
 		}
+		
+		private function handleContact():void
+		{
+			
+			for (var j:int =0; j < InGame.platforms.length; j++){
+				ContactManager.onContactBegin(sphynxObject.name, InGame.platforms[j].name, handleContactPlat);
+			}
+			
+			for (var k:int =0; k < InGame.walls.length; k++){
+				ContactManager.onContactBegin(sphynxObject.name, InGame.walls[k].name, handleContactPlat);
+			}
+		}
+		
+		private function handleContactPlat(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
+		{
+			
+			if (this.y + sphynxSprites.height > objectB.y)
+			trace("stuck");
+				overHeight = this.y + sphynxSprites.height - objectB.y-1;
+				handle = true;
+		}
+		
 		private function lives(eyes:Vector.<PhysicsObject>):void
 		{
-			for (var i:int; i < InGame.eyes.length; i++){
+			for (var i:int =0; i < InGame.eyes.length; i++){
 				ContactManager.onContactBegin(sphynxObject.name, InGame.eyes[i].name, handleContactLives);
 			}
 		}
@@ -204,6 +228,7 @@ package
 
 		private function update(e:Event):void 
 		{	
+			handleContact();
 			
 			if (!sphynxSprites.visible) // si no esta visible mandarlo al principio y visble de nuevo
 			{
@@ -217,8 +242,6 @@ package
 			if (left) {
 				if(Math.abs(sphynxObject.body.GetLinearVelocity().x)<limit)
 					sphynxObject.body.GetLinearVelocity().x -= velocity;
-				
-//				sphynxObject.body.ApplyForce(new b2Vec2(-velocity, 0), sphynxObject.body.GetWorldCenter());
 			}
 			
 			if (right) { 
@@ -226,16 +249,21 @@ package
 					sphynxObject.body.GetLinearVelocity().x += velocity;
 			}
 			
-			if (jump) 
-			
+			if (jump){
 				sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
 				jump = false;
+			}
 				
 			if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp)
 			{
 				canJump = true;
-				sphynxObject.body.GetPosition().y -= 1;
-			}				
+				if (handle)
+				{
+					sphynxObject.body.GetPosition().y -= overHeight;
+					handle = false;
+					overHeight = 0;
+				}	
+			}	
 			
 			scoreValue(fishBones);	
 			
