@@ -1,6 +1,7 @@
 package  
 {
 	import flash.display.Bitmap;
+	import starling.display.Image;
 	import starling.textures.Texture;
 	import flash.utils.Dictionary;
 	import starling.textures.TextureAtlas;
@@ -44,6 +45,8 @@ package
 		[Embed(source = "../tempAssets/punch.png")]
 		public static const Punch:Class;
 		
+		[Embed(source = "../tempAssets/game_background.png")]
+		public static const BackgroundG:Class;
 		[Embed(source = "../tempAssets/paw.png")]
 		public static const Paw:Class;
 		
