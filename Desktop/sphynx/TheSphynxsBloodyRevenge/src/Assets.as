@@ -47,8 +47,12 @@ package
 		
 		[Embed(source = "../tempAssets/game_background.png")]
 		public static const BackgroundG:Class;
+		
 		[Embed(source = "../tempAssets/paw.png")]
 		public static const Paw:Class;
+		
+		[Embed(source = "../tempAssets/plat.png")]
+		public static const Plat:Class;
 		
 		//menu
 		
