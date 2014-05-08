@@ -189,7 +189,7 @@ package
 		
 		private function scoreContact(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void 
 		{
-			score += objectB.body.GetUserData();
+			score += objectB.body.GetUserData() as Number;
 			removeChild(objectB.displayObject);
 			objectB.body.GetWorld().DestroyBody(objectB.body);
 			
