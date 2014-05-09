@@ -47,8 +47,12 @@ package
 		
 		[Embed(source = "../tempAssets/game_background.png")]
 		public static const BackgroundG:Class;
+		
 		[Embed(source = "../tempAssets/paw.png")]
 		public static const Paw:Class;
+		
+		[Embed(source = "../tempAssets/pause.png")]
+		public static const Pause:Class;
 		
 		//menu
 		
@@ -61,6 +65,14 @@ package
 		[Embed(source = "../tempAssets/gname.png")]
 		public static const Gname:Class;
 		
+		[Embed(source = "../tempAssets/backgroundDontMiss.jpg")]
+		public static const DontMissIt:Class;
+		
+		[Embed(source = "../tempAssets/wallDM.png")]
+		public static const WallDM:Class;
+		
+		[Embed(source = "../tempAssets/DMExit.jpg")]
+		public static const DMExit:Class;
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;

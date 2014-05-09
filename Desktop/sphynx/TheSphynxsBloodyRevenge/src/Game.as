@@ -40,11 +40,11 @@ package
 			this.addChild(screenInGame);
 			
 			screenMenu = new Menu();
-			this.addChild(screenMenu);
 			screenInGame.initialize();
+			this.addChild(screenMenu);
 			
 			screenDontMiss = new DontMiss();
-			screenDontMiss.initialize();
+			screenDontMiss.disposeTemporaly();
 			this.addChild(screenDontMiss);		
 		}
 		

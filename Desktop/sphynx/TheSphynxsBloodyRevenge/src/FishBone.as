@@ -62,17 +62,15 @@ package
 			this.addChild(fishBoneSprite);
 		}
 		
-		
 		private function injectPhysics():void
 		{
 			fishObject = fishPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
 			fishObject.x = posX;
 			fishObject.y = posY;
 			fishObject.physicsProperties.isSensor = true;
-			fishObject.body.SetLinearVelocity(new b2Vec2(Math.random() * 3, -8));
-			
-			
+			fishObject.body.SetLinearVelocity(new b2Vec2(Math.random() * 3, -8));			
 		}
+		
 		public function get value():uint 
 		{
 			return _value;
@@ -85,7 +83,6 @@ package
 		
 		private function update(e:Event):void 
 		{
-			
 			if ( fishObject.y > posY)
 			{
 				removeEventListener(Event.ENTER_FRAME, update);
@@ -93,5 +90,4 @@ package
 			}
 		}
 	}
-
 }
