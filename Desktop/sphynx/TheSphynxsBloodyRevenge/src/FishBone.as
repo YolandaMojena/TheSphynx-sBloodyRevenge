@@ -10,6 +10,10 @@ package
     import com.reyco1.physinjector.data.PhysicsObject;
     import com.reyco1.physinjector.data.PhysicsProperties;
 	
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import com.reyco1.physinjector.contact.ContactManager;
+	
+	import Box2D.Common.Math.b2Vec2;
 	
 	/**
 	 * ...
@@ -23,8 +27,9 @@ package
 
 		private var posX:Number;
 		private var posY:Number;
-		private var _value:uint;
+		private var value:uint;
 		private var physicsActive:Boolean;
+		//private var physicsOff:Boolean;
 		
 		public function FishBone(worldPhysics:PhysInjector, value:uint, x:Number, y:Number,physics:Boolean) 
 		{
@@ -34,7 +39,7 @@ package
 			this.value = value;
 			physicsActive = physics;
 			fishPhysics = worldPhysics;
-			trace(fishPhysics == worldPhysics);
+			//trace(fishPhysics == worldPhysics);
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 		}
 		
@@ -43,11 +48,12 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			fishboneArt();
 			trace(physicsActive);
-			if (physicsActive) 
-			{
+			//physicsOff = false;
+			//if (physicsActive) 
+			//{
 				injectPhysics();
 				addEventListener(Event.ENTER_FRAME, update);
-			}
+			//}
 		}
 		
 		private function fishboneArt():void
@@ -62,32 +68,65 @@ package
 			this.addChild(fishBoneSprite);
 		}
 		
+		
 		private function injectPhysics():void
 		{
-			fishObject = fishPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
+			fishObject = fishPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 			fishObject.x = posX;
 			fishObject.y = posY;
 			fishObject.physicsProperties.isSensor = true;
-			fishObject.body.SetLinearVelocity(new b2Vec2(Math.random() * 3, -8));			
+			fishObject.physicsProperties.contactGroup = "fishbones";
+			//fishObject.body.SetUserData(value);
+			
+			if (physicsActive) 
+			{
+				fishObject.physicsProperties.isDynamic = true;
+				//fishObject.physicsProperties.contactGroup = "fishbones";
+				if(value == 5) fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*1.5, -8));
+				else if (value == 2) fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*-1.5, -6));
+				else fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*3, -6));
+			
+			}
+		
 		}
 		
-		public function get value():uint 
+		
+		private function removeDynamic():void
 		{
-			return _value;
+			//for (var i:int; i < InGame.walls.length; i++)
+			//{
+				ContactManager.onContactBegin("fishbones", "floor", handleRemoveContact, true);
+				ContactManager.onContactBegin("fishbones", "walls", handleRemoveContact,true); 
+			//}
+			
+			//for (var j:int; j < InGame.platforms.length; j++)
+			//{
+				//ContactManager.onContactBegin("fishbones", InGame.platforms[j].name, handleRemoveContact,true);
+			//}
 		}
 		
-		public function set value(value:uint):void 
+		public function handleRemoveContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
-			_value = value;
+			fishObject.physicsProperties.isDynamic = false;
 		}
+		
 		
 		private function update(e:Event):void 
 		{
-			if ( fishObject.y > posY)
+			
+			//if(physicsActive) removePhysics(InGame.walls, InGame.platforms);
+			if (physicsActive) removeDynamic();
+			if(fishObject.physicsProperties.isDynamic =  false) InGame.fishBones.push(fishObject)
+			/*if (physicsOff)
 			{
 				removeEventListener(Event.ENTER_FRAME, update);
 				fishObject.body.GetWorld().DestroyBody(fishObject.body);
-			}
+				InGame.fishBones.push(this);
+				
+			}*/
+			
+			
 		}
 	}
+
 }

@@ -51,8 +51,12 @@ package
 		[Embed(source = "../tempAssets/paw.png")]
 		public static const Paw:Class;
 		
+		[Embed(source = "../tempAssets/plat.png")]
+		public static const Plat:Class;
+
 		[Embed(source = "../tempAssets/pause.png")]
 		public static const Pause:Class;
+		
 		
 		//menu
 		

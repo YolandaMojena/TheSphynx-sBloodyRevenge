@@ -26,7 +26,7 @@ package
 		public var eyeSprite:Image;
 		private var eyePhysics:PhysInjector;
 		private var eyeObject:PhysicsObject; 
-		private var velocity:Number;
+		public var velocity:Number;
 		
 		private var posX:Number;
 		private var posY:Number;
@@ -46,7 +46,7 @@ package
 			eyePhysics = worldPhysics;
 			posX = x;
 			posY = y;
-			velocity = new Number(1.5);
+			velocity = new Number(1);
 			this.bonus = bonus;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
 			
@@ -75,24 +75,19 @@ package
 		{
 			eyeObject = eyePhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
 			eyeObject.physicsProperties.x = posX;
-			eyeObject.name = "eye" + new String(eyeObject.x);
-			//eyeObject.physicsProperties.contactGroup = ;
-			eyeObject.body.SetFixedRotation(true);
+			//eyeObject.name = "eye" + new String(eyeObject.x);
+			eyeObject.physicsProperties.contactGroup = "eyes";
+			eyeObject.body.SetFixedRotation(true);			
 			InGame.eyes.push(eyeObject);
 			
+			eyeObject.data = this;
 			
 		}
 		
-		public function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
-		{
-			//objectA.x = 700;
-			//physics.removePhysics(objectB.displayObject);
-			velocity *= -1;
-			eyeSprite.scaleX *= -1;
-			
-		}
+
 		
-		public function explosionContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
+		
+		private function explosion():void 
 		{
 			removeEventListener(Event.ENTER_FRAME, update);
 			eyeObject.body.GetWorld().DestroyBody(eyeObject.body);
@@ -100,14 +95,10 @@ package
 			boom = true;
 			this.addEventListener(Event.ENTER_FRAME, explosionCheck);
 		}
-		private function explosion():void 
-		{
-			ContactManager.onContactBegin(eyeObject.name, "punch", explosionContact);
-		}
 		
 		private function fishExplosion():void
 		{
-			// random para que los value no sean siempre los mismos
+			// hacer random para que los value no sean siempre los mismos
 			fish1 = new FishBone(eyePhysics, 5, eyeObject.x+5 , eyeObject.y, true);
 			this.addChild(fish1);
 			fish2 = new FishBone(eyePhysics, 2, eyeObject.x, eyeObject.y, true);
@@ -119,12 +110,6 @@ package
 		private function update(e:Event):void 
 		{
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
-			
-			for (var i:int; i < InGame.walls.length; i++){
-				ContactManager.onContactBegin(eyeObject.name, InGame.walls[i].name, handleContact);
-			}
-			if (bonus) explosion();
-			
 		}
 		
 		private function explosionCheck(e:Event):void
@@ -133,6 +118,7 @@ package
 			if (boom) {
 				fishExplosion();
 				boom = false;
+				
 				trace("boom");
 			}
 		}

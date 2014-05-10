@@ -15,9 +15,8 @@
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
-    <class path="src" />
-    <class path="..\classpaths\Source" />
     <class path="..\classpaths\PhysInjector-master\PhysInjector-master\physinjector\src" />
+    <class path="..\classpaths\Source" />
     <class path="..\classpaths\starling\PrimaryFeather-Starling-Framework-1a50854\starling\src" />
   </classpaths>
   <!-- Build options -->
