@@ -56,8 +56,9 @@ package
 		private var handle:Boolean;
 		private var overHeight:Number;
 		private var jumpHeight:Number;
+		private var attackActive:Boolean;
 		
-		//private var massCat:b2MassData;
+	
 		
 		private var punch:Platform;
 	
@@ -87,6 +88,7 @@ package
 			sphynxArt();
 			injectPhysics();
 			sphynxKeyboard();
+			attackActive = false;
 			
 			//massCat = 0;
 		}
@@ -114,13 +116,12 @@ package
 
 		
 	
-		private function sphynxAttack(eyes:Vector.<PhysicsObject>):void
+		private function sphynxAttack():void
 		{
 			
 			punch = new Platform(sphynxPhysics, sphynxObject.x+1,sphynxObject.y -175,"punch")
 			this.addChild(punch);
-			
-			
+			attackActive = true;
 			
 			ContactManager.onContactBegin("punch", "eyes", handleContactAttack,true);
 				
@@ -166,7 +167,7 @@ package
 					break;
 					
 				case Keyboard.X:
-					if(canJump) sphynxAttack(InGame.eyes);
+					if(canJump) sphynxAttack();
 					break;	
 			}
 				
@@ -176,7 +177,7 @@ package
 		{
 			/*for ( var i:uint = 0; i < fishBones.length; i++)
 			{*/
-				ContactManager.onContactBegin("cats","fishBones", scoreContact,true); 
+				ContactManager.onContactBegin("cats","fishbones", scoreContact,true); 
 				
 				/*if (this.bounds.intersects(fishBones[i].bounds))
 				{
@@ -189,9 +190,11 @@ package
 		
 		private function scoreContact(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void 
 		{
-			score += objectB.body.GetUserData() as Number;
-			removeChild(objectB.displayObject);
+			score += objectB.data as Number;
 			objectB.body.GetWorld().DestroyBody(objectB.body);
+			sphynxPhysics.removePhysics(objectB.displayObject);
+			objectB.displayObject.parent.removeChild(objectB.displayObject); 
+		
 			
 			
 		}
@@ -229,18 +232,13 @@ package
 		private function lives():void
 		{
 			
-			ContactManager.onContactBegin("cats", "eyes", handleContactLives, true);
+			
+			if(! attackActive) ContactManager.onContactBegin("cats", "eyes", handleContactLives, true);
 			
 			
 		}
 		
-		private function fall():void
-		{
-			
-			if(sphynxObject.y > 430) sphynxSprites.visible = false;
-			
-			
-		}
+		
 		private function sphynxStops(event:KeyboardEvent):void
 		{ 
 			switch(event.keyCode)
@@ -298,7 +296,7 @@ package
 			scoreValue();	
 			
 			lives();
-			//fall();
+			
 		}	
 		
 	}

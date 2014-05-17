@@ -113,7 +113,7 @@ package
 			this.addChild(floorPlatform);
 			
 			// dibuja paredes
-			wall = new Platform(worldPhysics, 500, floorPlatform.platformSprite.y - 72, "wall");
+			wall = new Platform(worldPhysics,350, floorPlatform.platformSprite.y - 72, "wall");
 			this.addChild(wall);
 			
 			wall_2 = new Platform(worldPhysics, 825, floorPlatform.platformSprite.y - 72,"wall");
@@ -149,10 +149,10 @@ package
 			//this.addChild(eye);
 			
 			
-			eye3 = new Eye(worldPhysics,450, 344,false); 
-			this.addChild(eye3);
+			eye3 = new Eye(worldPhysics,650, 344,false); 
+			//this.addChild(eye3);
 			
-			eye2 = new Eye(worldPhysics, 700, 344,false);
+			eye2 = new Eye(worldPhysics, 700, 344,true);
 			this.addChild(eye2);				
 			
 			

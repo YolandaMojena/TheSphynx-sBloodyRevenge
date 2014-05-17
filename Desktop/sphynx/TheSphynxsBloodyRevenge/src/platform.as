@@ -105,14 +105,14 @@ package
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.name = "floor" + new String(platformObject.x);
 				platformObject.physicsProperties.contactGroup = "floor";
-				InGame.platforms.push(platformObject);
+				//InGame.platforms.push(platformObject);
 			}
 				
 			else if (type == "wall") { 
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				//platformObject.name = "wall" + new String(platformObject.x);
 				platformObject.physicsProperties.contactGroup = "walls";
-				InGame.walls.push(platformObject);
+				//InGame.walls.push(platformObject);
 				//platformObject.physicsProperties.isSensor = true;
 			}
 			else if (type == "punch") 
@@ -124,7 +124,7 @@ package
 			else if (type == "plat" || type == "platUp")
 			{
 				platformObject = platformPhysics.injectPhysics(platSprite, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
-			//	platformObject.body.SetFixedRotation(true);  // si se quita la plataforma se queda moviendose y dndo vueltas en plan guay =)
+				platformObject.body.SetFixedRotation(true);  // si se quita la plataforma se queda moviendose y dndo vueltas en plan guay =)
 				platformObject.body.SetType(1);
 				platformObject.physicsProperties.contactGroup = "floor";
 			}
