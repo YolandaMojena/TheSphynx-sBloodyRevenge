@@ -53,6 +53,10 @@ package
 			//{
 				injectPhysics();
 				addEventListener(Event.ENTER_FRAME, update);
+				
+				ContactManager.onContactBegin("fishbones", "floor", handleRemoveContact, true);
+				ContactManager.onContactBegin("fishbones", "walls", handleRemoveContact,true); 
+
 			//}
 		}
 		
@@ -76,12 +80,12 @@ package
 			fishObject.y = posY;
 			fishObject.physicsProperties.isSensor = true;
 			fishObject.physicsProperties.contactGroup = "fishbones";
-			//fishObject.body.SetUserData(value);
+			fishObject.data = value;
 			
 			if (physicsActive) 
 			{
 				fishObject.physicsProperties.isDynamic = true;
-				//fishObject.physicsProperties.contactGroup = "fishbones";
+				fishObject.body.SetAwake(true);
 				if(value == 5) fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*1.5, -8));
 				else if (value == 2) fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*-1.5, -6));
 				else fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*3, -6));
@@ -93,10 +97,9 @@ package
 		
 		private function removeDynamic():void
 		{
+			trace("y aquí?");
 			//for (var i:int; i < InGame.walls.length; i++)
 			//{
-				ContactManager.onContactBegin("fishbones", "floor", handleRemoveContact, true);
-				ContactManager.onContactBegin("fishbones", "walls", handleRemoveContact,true); 
 			//}
 			
 			//for (var j:int; j < InGame.platforms.length; j++)
@@ -107,7 +110,10 @@ package
 		
 		public function handleRemoveContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
-			fishObject.physicsProperties.isDynamic = false;
+			
+			objectA.physicsProperties.isDynamic = false;
+			objectA.physicsProperties.contactGroup = "fishbones";
+			objectA.physicsProperties.isSensor = true;
 		}
 		
 		
@@ -116,14 +122,7 @@ package
 			
 			//if(physicsActive) removePhysics(InGame.walls, InGame.platforms);
 			if (physicsActive) removeDynamic();
-			if(fishObject.physicsProperties.isDynamic =  false) InGame.fishBones.push(fishObject)
-			/*if (physicsOff)
-			{
-				removeEventListener(Event.ENTER_FRAME, update);
-				fishObject.body.GetWorld().DestroyBody(fishObject.body);
-				InGame.fishBones.push(this);
-				
-			}*/
+	
 			
 			
 		}

@@ -75,24 +75,21 @@ package
 		{
 			eyeObject = eyePhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.5, restitution:0 } ));
 			eyeObject.physicsProperties.x = posX;
-			//eyeObject.name = "eye" + new String(eyeObject.x);
+			eyeObject.name = "eye" + new String(eyeObject.x);
 			eyeObject.physicsProperties.contactGroup = "eyes";
 			eyeObject.body.SetFixedRotation(true);			
 			InGame.eyes.push(eyeObject);
-			
 			eyeObject.data = this;
 			
 		}
-		
-
-		
 		
 		private function explosion():void 
 		{
 			removeEventListener(Event.ENTER_FRAME, update);
 			eyeObject.body.GetWorld().DestroyBody(eyeObject.body);
+			//eyePhysics.removePhysics(eyeObject.displayObject);
 			this.removeChild(eyeSprite);
-			boom = true;
+			if (bonus) boom = true;
 			this.addEventListener(Event.ENTER_FRAME, explosionCheck);
 		}
 		
@@ -110,6 +107,7 @@ package
 		private function update(e:Event):void 
 		{
 			eyeObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));  // con esto no se come las paredes, poner en el gato
+			if (eyeObject.name == "dead") explosion();
 		}
 		
 		private function explosionCheck(e:Event):void
