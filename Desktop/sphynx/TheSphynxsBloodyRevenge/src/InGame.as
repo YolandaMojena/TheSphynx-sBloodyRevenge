@@ -24,6 +24,7 @@ package
 	import com.reyco1.physinjector.contact.ContactManager;
 		
 	import Box2D.Common.Math.b2Vec2;
+	
 
 	/**
 	 * ...
@@ -59,7 +60,7 @@ package
 		public static var walls:Vector.<PhysicsObject>;
 		public static var eyes:Vector.<PhysicsObject>;
 		
-		
+		private var pauseBtn:Button;
 		
 		private var scoreText:TextField;
 		private var timeText:TextField;
@@ -107,6 +108,10 @@ package
 		private function drawGame():void
 		{	
 			
+			pauseBtn = new Button(Assets.getTexture("Pause"));
+			pauseBtn.x = 0;
+			pauseBtn.y = 0;
+			this.addChild(pauseBtn);
 			
 			// dibuja suelo
 			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
@@ -172,6 +177,8 @@ package
 			// dibuja gato
 			sphynx = new Sphynx(worldPhysics, 20, floorPlatform.platformSprite.y-146, fishBones); 
 			this.addChild(sphynx);
+			
+
 		}
 
 		public function disposeTemporaly():void
@@ -185,10 +192,11 @@ package
 			timeCurrent = getTimer();
 			elapsed = (timeCurrent - timePrevious) * 0.001;
 		}
+		
 		private function update(event:Event):void 
 		{
-			this.x = -sphynx.x+50;
-			worldPhysics.globalOffsetX = -sphynx.x+50;
+			this.x = -sphynx.x+220;
+			worldPhysics.globalOffsetX = -sphynx.x+220;
 			
 			scoreText.text = "Score: " + sphynx.score;
 			

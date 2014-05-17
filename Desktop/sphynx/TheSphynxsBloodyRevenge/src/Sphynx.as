@@ -58,11 +58,16 @@ package
 		private var jumpHeight:Number;
 		private var attackActive:Boolean;
 		
+<<<<<<< HEAD
 	
 		
+=======
+		//private var massCat:b2MassData;
+		private var smallJump:Boolean;
+>>>>>>> 2179ec9f0dd0d776b89907bfe2c71cf750756de3
 		private var punch:Platform;
+		private var counter:Number;
 	
-		
 		private var canJump:Boolean = true;
 		
 
@@ -100,21 +105,16 @@ package
 			//sphynxSprites.x = _x;
 			//sphynxSprites.y = _y;
 			this.addChild(sphynxSprites);	
-			
-
 		}
 		
 		private function injectPhysics():void
 		{
-			sphynxObject = sphynxPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.35, restitution:0 } ));
+			sphynxObject = sphynxPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:true, friction:0.2, restitution:0 } ));
 			sphynxObject.body.SetFixedRotation(true);
 			sphynxObject.name = "cat";
 			sphynxObject.physicsProperties.contactGroup = "cats";
 			//sphynxObject.body.SetMassData(massCat);
 		}
-		
-
-		
 	
 		private function sphynxAttack():void
 		{
@@ -160,17 +160,21 @@ package
 				case Keyboard.UP:
 					
 					if (canJump)
-					{
+					{					
 						jump = true;
 						canJump = false;
+					}
+					
+					if (counter == 2)
+					{
+						smallJump = true;
 					}
 					break;
 					
 				case Keyboard.X:
 					if(canJump) sphynxAttack();
 					break;	
-			}
-				
+			}	
 		}
 		
 		private function scoreValue(/*fishBones:Vector.<PhysicsObject>*/):void
@@ -215,9 +219,11 @@ package
 				ContactManager.onContactBegin(sphynxObject.name, InGame.platforms[j].name, handleContactPlat);
 			}
 			
+			
 			for (var k:int =0; k < InGame.walls.length; k++){
 				ContactManager.onContactBegin(sphynxObject.name, InGame.walls[k].name, handleContactPlat);
 			}
+			
 		}
 		
 		private function handleContactPlat(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
@@ -277,13 +283,25 @@ package
 					sphynxObject.body.GetLinearVelocity().x += velocity;
 			}
 			
-			if (jump){
+			if (jump) {
+
 				sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
 				jump = false;
+				counter = 2;
 			}
 				
-			if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp)
+			if (smallJump)
 			{
+				counter = 0;
+				smallJump = false;
+				if (goingUp) sphynxObject.body.ApplyImpulse(new b2Vec2(0, -8), sphynxObject.body.GetWorldCenter());
+				else sphynxObject.body.ApplyImpulse(new b2Vec2(0, -18), sphynxObject.body.GetWorldCenter());
+				
+			}
+			
+			if (sphynxObject.body.GetLinearVelocity().y == 0 && !goingUp )
+			{
+				counter = 0;
 				canJump = true;
 				if (handle)
 				{
