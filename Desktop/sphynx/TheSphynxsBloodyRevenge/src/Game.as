@@ -33,7 +33,6 @@ package
 			timePassed = 0;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			
 		}	
 		
 		private function updateScore(e:Event):void 
@@ -43,14 +42,11 @@ package
 				score = screenInGame.sphynx.score;
 				scoreLayer.score = score;
 			}
-			
 			if (screenDontMiss!=null && pauseLayer!=null && screenDontMiss.visible == false && pauseLayer.visible == false)
 			{
 				timePassed += 1 / 60;
 				timeScore = Math.round(timePassed);
 			}
-			
-			
 		}
 		
 		private function onAddedToStage(event:Event):void
@@ -74,9 +70,7 @@ package
 			pauseLayer.disposePause();
 			this.addChild(pauseLayer);
 			
-			this.addEventListener(Event.ENTER_FRAME, updateScore);
-			
-			
+			this.addEventListener(Event.ENTER_FRAME, updateScore);	
 		}
 		
 		private function onChangeScreen(event:NavigationEvent):void
@@ -108,16 +102,10 @@ package
 				case"play2":
 					screenDontMiss.disposeTemporaly();
 					screenDontMiss.dispose();
-					screenInGame = new InGame(300,score,false,lives);
+					screenInGame = new InGame(3600,score,true,lives);
 					this.addChild(screenInGame);
 					break;		
-				
 			}
-			
 		}
-		
-
-		
-
 	}
 }

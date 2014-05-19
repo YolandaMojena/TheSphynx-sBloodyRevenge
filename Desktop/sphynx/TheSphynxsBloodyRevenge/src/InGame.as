@@ -2,6 +2,7 @@ package
 {
 	import adobe.utils.CustomActions;
 	import Box2D.Dynamics.Contacts.b2Contact;
+	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	import starling.events.KeyboardEvent;
@@ -38,29 +39,19 @@ package
 		public var sphynx:Sphynx;
 		
 		public var scene:Stage;
-		public static var floorPlatform:Platform;
-		private var fishBone1:FishBone;
-		private var fishBone2:FishBone;
-		private var fishBone3:FishBone;
+		public static var platform:Platform;
+		private var fishBone:FishBone;
 		private var wall:Platform;
-		private var wall_2:Platform;
-		private var wall_3:Platform;
 		//private var eye:Eye;
-		private var eye2:Eye;
-		private var eye3:Eye;
-		private var plat:Platform;
-		private var platUp:Platform;
+		private var eye:Eye;
 		private var left:Boolean;
 		private var right:Boolean;
 		
 		private var worldPhysics:PhysInjector;
 		
-		public static var platforms:Vector.<PhysicsObject>; // <PhysicsObject>
-		public static var fishBones:Vector.<PhysicsObject>;
-		public static var walls:Vector.<PhysicsObject>;
-		public static var eyes:Vector.<PhysicsObject>;
-		
-		public static var eyes2:Vector.<Eye>;
+		public static var platforms:Array; 
+		public static var fishBones:Array;
+		public static var eyes:Array;
 		
 		private var sphynxX:Number;
 		private var sphynxScore:Number;
@@ -86,17 +77,15 @@ package
 			trace("InGame Screen");
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), false); // false y asi no se puede mover con raton 
-			platforms = new Vector.<PhysicsObject>();
-			fishBones = new Vector.<PhysicsObject>();
-			walls = new Vector.<PhysicsObject>();
-			eyes = new Vector.<PhysicsObject>();
+			platforms = new Array();
+			fishBones = new Array();
+			eyes = new Array();
 	
 			drawGame();
 			
 			addEventListener(Event.ENTER_FRAME, update);
 		}
 		
-
 		
 		public function initialize():void
 		{
@@ -110,73 +99,77 @@ package
 		
 		private function drawGame():void
 		{	
-					
-			// dibuja suelo
-			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
-			this.addChild(floorPlatform);
+			/*
+			// dibuja raspas
+			fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
+			//fishBones.push(fishBone1);
+			addChild(fishBone1);
 			
-			// dibuja paredes
-			wall = new Platform(worldPhysics, 500, floorPlatform.platformSprite.y - 72, "wall");
-			this.addChild(wall);
+			fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
+			//fishBones.push(fishBone2);
+			addChild(fishBone2);
 			
-			wall_2 = new Platform(worldPhysics, 825, floorPlatform.platformSprite.y - 72,"wall");
-			this.addChild(wall_2);
+			fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
+			//fishBones.push(fishBone3);
+			addChild(fishBone3);
+			*/
 			
-			wall_3 = new Platform(worldPhysics, 200, floorPlatform.platformSprite.y - 72,"wall");
-			this.addChild(wall_3);
+			//plataformas
+
+			//(x, y, "type")
+	
+			platforms = [[0, 350, "floor"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
+			[898, 348, "invisibleWall"], [1300, 348, "invisibleWall"], [2550, 348, "invisibleWall"], [2998, 348, "invisibleWall"], [4498, 348, "invisibleWall"],
+			[3600, 350, "floor"], [4050, 150, "smallFloor"], [405, 305, "wall"],
+			[1045, 225,"platUp"], [2090, 187.5,"platUp"], [1860, 350,"platSides"], [2320, 350,"platSides"],
+			[3245, 350, "platSides"],  [1640, 305, "wall"], [3600, 294, "biggerWall"],  [3835, 175, "platSides"]];
 			
-			if (generate)
+			for(var i:int = 0; i<platforms.length; i++)
 			{
-			
-				// dibuja raspas
-				fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
-				//fishBones.push(fishBone1);
-				addChild(fishBone1);
-				
-				fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
-				//fishBones.push(fishBone2);
-				addChild(fishBone2);
-				
-				fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
-				//fishBones.push(fishBone3);
-				addChild(fishBone3);
+				//platform = new Platform(phyisics, x, y, type)
+				platform = new Platform(worldPhysics, platforms[i][0]-137, platforms[i][1], platforms[i][2]);
+				this.addChild(platform);
 			}
 			
-			//plataforma
+			//raspas
+	
+			//(value, x, y, generates)
+
+			fishBones = [[1,420,257,true], [2,460,257,true], [5,800,156,true],[1,1065,99,true], [2,1105,99,true]];
+			for (var j:int = 0; j<fishBones.length; j++)
+			{
+				if(fishBones[j][3])
+				{
+					fishBone = new FishBone(worldPhysics, fishBones[j][0], fishBones[j][1]-137, fishBones[j][2], false);
+					fishBone.index = j;
+					this.addChild(fishBone);
+				}
+			}
 			
-			plat = new Platform(worldPhysics, 1100, 195,"plat");
-			this.addChild(plat);
+			//enemigos
+
+			//(x, y, bonus, generates)
+	
+			eyes = [[650, 253, false, true], [1450, 253, false, true], [2700, 253, false, true], [4000, 253, false, true]];
 			
-			platUp = new Platform(worldPhysics, 1375, 195,"platUp");
-			this.addChild(platUp);
+			for (var k:int = 0; k<eyes.length; k++)
+			{
+				
+				if(eyes[k][3])
+				{
+					//eye = new Eye(physics, x, y, bonus)
+					eye = new Eye(worldPhysics, eyes[k][0], eyes[k][1], eyes[k][2]);
+					eye.index = k;
+					this.addChild(eye);
+				}
+			}
 			
-			//dibuja ojo
-			//eye = new Eye(worldPhysics,450, 344,false); 
-			//this.addChild(eye);
-			
-			eye3 = new Eye(worldPhysics,450, 344,false); 
-			this.addChild(eye3);
-			
-			eye2 = new Eye(worldPhysics, 700, 344,true);
-			this.addChild(eye2);	
-			
-			
+
+					
 			ContactManager.onContactBegin("eyes", "walls", handleContact, true);		
 			
-			
-			/*for (var i:int; i < fishBones.length; i++)
-			{
-				this.addChild(fishBones[i]);
-				trace(fishBones[i]);
-			}*/
-			
-			/*for (var i:int; i < eyes.length; i++)
-			{
-				this.addChild(eyes[i]);
-			}
-			*/
 			// dibuja gato
-			sphynx = new Sphynx(worldPhysics, sphynxX, fishBones, score, lives); 
+			sphynx = new Sphynx(worldPhysics, sphynxX, score, lives); 
 			this.addChild(sphynx);
 		}
 
@@ -194,29 +187,23 @@ package
 		
 		private function update(event:Event):void 
 		{
+			this.x = -sphynx.x+100;
+			worldPhysics.globalOffsetX = -sphynx.x+100;
 			
 			if (this.visible == true)
 			{
-				this.x = -sphynx.x+220;
-				worldPhysics.globalOffsetX = -sphynx.x+220;
-			
 				worldPhysics.update();
 			}							
 		}
 		
 		public function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{	
-			//objectA.x = 700;
-			//physics.removePhysics(objectB.displayObject);
-			
-			if (objectA.data as Eye)
+			if (objectA.data[0] as Eye)
 			{
-				(objectA.data as Eye).velocity *= -1;
-				(objectA.data as Eye).eyeSprite.scaleX *= -1; 
+				(objectA.data[0] as Eye).velocity *= -1;
+				(objectA.data[0] as Eye).eyeSprite.scaleX *= -1; 
 			}
-		}
-
-		
+		}		
 
 	}
 

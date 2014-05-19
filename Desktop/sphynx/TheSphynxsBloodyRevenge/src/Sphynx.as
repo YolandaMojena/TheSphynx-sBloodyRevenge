@@ -73,7 +73,7 @@ package
 		
 		private var passed:Number;
 
-		public function Sphynx(worldPhysics:PhysInjector, x:Number, fishBones:Vector.<PhysicsObject>,score:Number, lives:Number) 
+		public function Sphynx(worldPhysics:PhysInjector, x:Number,score:Number, lives:Number) 
 		{
 			super();
 			sphynxPhysics = worldPhysics;
@@ -85,7 +85,6 @@ package
 			this.lives = lives;
 			pause = false;
 			this.score = score;
-			this.fishBones = fishBones;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -137,6 +136,7 @@ package
 		{
 			trace("AAAAARGH");
 			eyeObject.name = "dead";
+			InGame.eyes[eyeObject.data[1]][3] = false;
 		}
 		
 		private function sphynxKeyboard():void
@@ -202,12 +202,11 @@ package
 		
 		private function scoreContact(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void 
 		{
-			score += objectB.data as Number;
+			score += objectB.data[0] as Number;
+			InGame.fishBones[objectB.data[1]][[3]] = false;
 			objectB.body.GetWorld().DestroyBody(objectB.body);
 			sphynxPhysics.removePhysics(objectB.displayObject);
-			objectB.displayObject.parent.removeChild(objectB.displayObject);
-			
-			
+			objectB.displayObject.parent.removeChild(objectB.displayObject);	
 		}
 		
 		private function handleContactLives(sphynxObj:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
@@ -226,19 +225,15 @@ package
 		
 		private function handleContactPlat(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
 		{
-			
 			counter = 0;
 			canJump = true;
-
 		}
-		
-
 		
 		private function fall():void
 		{
 			
 			if (sphynxObject.y > 430) 
-				if (sphynxObject.x > 900 && sphynxObject.x < 1000) 
+				if (sphynxObject.x > 3000 && sphynxObject.x < 3600) 
 				{
 					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"minigame" }, true));
 					
@@ -289,7 +284,7 @@ package
 				
 				if (sphynxObject.body.GetLinearVelocity().y < 4)
 				{
-					sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
+					sphynxObject.body.ApplyImpulse(new b2Vec2(0, -12), sphynxObject.body.GetWorldCenter());
 					jump = false;
 					counter = 2;
 				}
@@ -299,8 +294,8 @@ package
 			{
 				counter = 0;
 				smallJump = false;
-				if (goingUp) sphynxObject.body.ApplyImpulse(new b2Vec2(0, -8), sphynxObject.body.GetWorldCenter());
-				else sphynxObject.body.ApplyImpulse(new b2Vec2(0, -18), sphynxObject.body.GetWorldCenter());
+				if (goingUp) sphynxObject.body.ApplyImpulse(new b2Vec2(0, -6), sphynxObject.body.GetWorldCenter());
+				else sphynxObject.body.ApplyImpulse(new b2Vec2(0, -10), sphynxObject.body.GetWorldCenter());
 				
 			}
 			
@@ -320,6 +315,7 @@ package
 				overHeight = 0;
 			}	
 			*/
+			
 										
 		}	
 	}

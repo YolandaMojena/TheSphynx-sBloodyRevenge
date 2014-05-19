@@ -29,9 +29,10 @@ package
 		private var posY:Number;
 		private var value:uint;
 		private var physicsActive:Boolean;
+		private var _index:Number;
 		//private var physicsOff:Boolean;
 		
-		public function FishBone(worldPhysics:PhysInjector, value:uint, x:Number, y:Number,physics:Boolean) 
+		public function FishBone(worldPhysics:PhysInjector, value:uint, x:Number, y:Number, physics:Boolean) 
 		{
 			super();
 			posX = x;
@@ -80,7 +81,7 @@ package
 			fishObject.y = posY;
 			fishObject.physicsProperties.isSensor = true;
 			fishObject.physicsProperties.contactGroup = "fishbones";
-			fishObject.data = value;
+			fishObject.data = new Array(value, index);
 			
 			if (physicsActive) 
 			{
@@ -119,12 +120,18 @@ package
 		
 		private function update(e:Event):void 
 		{
-			
 			//if(physicsActive) removePhysics(InGame.walls, InGame.platforms);
 			if (physicsActive) removeDynamic();
-	
-			
-			
+		}
+		
+		public function get index():Number 
+		{
+			return _index;
+		}
+		
+		public function set index(value:Number):void 
+		{
+			_index = value;
 		}
 	}
 

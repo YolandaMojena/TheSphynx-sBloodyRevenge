@@ -35,7 +35,6 @@ package
 		private var posY:Number;
 		private var type:String;
 		private var velocity:Number;
-		private var k:Number = 0;
 		
 		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number,spriteType:String)
 		{
@@ -65,12 +64,28 @@ package
 				platformSprite.y = posY;
 				this.addChild(platformSprite);
 			}
+			
+			else if (type == "smallFloor") {
+				platformSprite = new Image(Assets.getTexture("FloorSmall"));
+				platformSprite.x = posX;
+				platformSprite.y = posY;
+				this.addChild(platformSprite);
+			}
+			
 			else if(type == "wall") {
 				wallSprite = new Image(Assets.getTexture("Wall"));
 				wallSprite.x = posX;
 				wallSprite.y = posY;
 				this.addChild(wallSprite);	
 			}
+			
+			else if(type == "biggerWall") {
+				wallSprite = new Image(Assets.getTexture("BiggerWall"));
+				wallSprite.x = posX;
+				wallSprite.y = posY;
+				this.addChild(wallSprite);	
+			}
+			
 			else if(type == "punch") {
 				punchSprite = new Image(Assets.getTexture("Punch"));
 				punchSprite.x = posX;
@@ -78,7 +93,7 @@ package
 				this.addChild(punchSprite);	
 			}
 			
-			else if (type == "plat" || type == "platUp")
+			else if (type == "plat" || type == "platUp" || type == "platSides")
 			{
 				platSprite = new Image(Assets.getTexture("Plat"));
 				platSprite.x = posX;
@@ -87,34 +102,35 @@ package
 			}
 			
 			
-			/*else if(tipo == "invisibleWall") {
-				invisibleWallSprite = new Image(Assets.getTexture("Wall"));
-				invisibleWallSprite.x = posX;
-				invisbleWallSprite.y = posY;
-				this.addChild(invisibleWallSprite);	
-			}*/
-
+			else if(type == "invisibleWall") {
+				wallSprite= new Image(Assets.getTexture("InvisibleWall"));
+				wallSprite.x = posX;
+				wallSprite.y = posY;
+				this.addChild(wallSprite);	
+			}
 		}
 		
 		 
 		private function injectPhysics():void
 		{
-			
-			
-			if (type == "floor")
+			if (type == "floor" ||type == "smallFloor")
 			{
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.name = "floor" + new String(platformObject.x);
 				platformObject.physicsProperties.contactGroup = "floor";
-				//InGame.platforms.push(platformObject);
 			}
-				
-			else if (type == "wall") { 
+			
+			else if (type == "wall" || type == "biggerWall") { 
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
-				//platformObject.name = "wall" + new String(platformObject.x);
 				platformObject.physicsProperties.contactGroup = "walls";
-				//InGame.walls.push(platformObject);
-				//platformObject.physicsProperties.isSensor = true;
+	
+			}
+			
+			else if (type == "invisibleWall")
+			{
+				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
+				platformObject.physicsProperties.contactGroup = "walls";
+				platformObject.physicsProperties.isSensor = true;
 			}
 			else if (type == "punch") 
 			{
@@ -122,7 +138,7 @@ package
 				platformObject.physicsProperties.contactGroup = "punch";
 				platformObject.physicsProperties.isSensor = true;
 			}
-			else if (type == "plat" || type == "platUp")
+			else if (type == "plat" || type == "platUp" || type == "platSides")
 			{
 				platformObject = platformPhysics.injectPhysics(platSprite, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.body.SetFixedRotation(true);  // si se quita la plataforma se queda moviendose y dndo vueltas en plan guay =)
@@ -132,52 +148,24 @@ package
 		
 		}
 		
+		var k:Number = 0;
+		
 		private function update(e:Event):void 
 		{
 			
-			
-			if (type == "plat")
+			if (type == "platSides")
 			{
-		//		platformObject.y = posY;
 		
 				velocity = Math.cos(k/80);
 				k++;
-		
 				platformObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));
-	/*			if (platformObject.body.GetPosition().x > 20)
-				{
-			//		trace("inv1!");
-					velocity = -1.5;
-					//platformObject.x -= 2.5;
-				}
-				else if (platformObject.body.GetPosition().x < 15)
-				{
-				//	trace("inv2!");
-					velocity = 1.5;
-					//platformObject.x += 2.5;
-				}	*/
 			}
 			if (type == "platUp")
-			{
-		//		platformObject.x= posX;
-				
+			{	
 				velocity = Math.cos(k/75);
 				k++;
 		
-				platformObject.body.SetLinearVelocity(new b2Vec2(0, velocity));
-				
-				//trace(platformObject.body.GetPosition().y);
-				/*if (platformObject.body.GetPosition().y > 5)
-				{
-					velocity = -1.5;
-				//	platformObject.y -= 4;
-				}
-				else if (platformObject.body.GetPosition().y < 0)
-				{
-					velocity = 1.5;
-				//	platformObject.y += 4;
-				}*/
-				
+				platformObject.body.SetLinearVelocity(new b2Vec2(0, velocity));		
 			}
 			
 		} 
