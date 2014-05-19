@@ -122,6 +122,7 @@ package
 			
 			//if(physicsActive) removePhysics(InGame.walls, InGame.platforms);
 			if (physicsActive) removeDynamic();
+<<<<<<< HEAD
 			//if (fishObject.physicsProperties.isDynamic == false)
 			//{
 				
@@ -134,6 +135,9 @@ package
 				InGame.fishBones.push(this);
 				
 			}*/
+=======
+	
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 			
 			
 		}

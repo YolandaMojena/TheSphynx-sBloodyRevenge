@@ -79,13 +79,9 @@ package
 			eyeObject.physicsProperties.contactGroup = "eyes";
 			eyeObject.body.SetFixedRotation(true);			
 			InGame.eyes.push(eyeObject);
-			
-			eyeObject.data = this;
+			//eyeObject.data = this;
 			
 		}
-		
-
-		
 		
 		private function explosion():void 
 		{

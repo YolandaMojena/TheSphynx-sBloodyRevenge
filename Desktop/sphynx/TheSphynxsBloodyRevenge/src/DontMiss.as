@@ -27,6 +27,10 @@ package
 	import com.reyco1.physinjector.contact.ContactManager;
 	
 	import Box2D.Common.Math.b2Vec2;
+	
+	import flash.ui.Keyboard;
+	import starling.events.KeyboardEvent;
+	
 	/**
 	 * ...
 	 * @author Yolanda
@@ -91,8 +95,8 @@ package
 			timeCurrent = 0;
 			score = 0;
 			fishTime = 0;
-			Mouse.hide();
 			valor = 0;
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 		}
@@ -100,12 +104,14 @@ package
 		public function initialize():void
 		{
 			this.visible = true;
+			trace("minigame");
 		}
 		
 		private function onAddedToStage(e:Event):void 
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			
+			Mouse.hide();
+			trace("aish");
 			fishBones = new Vector.<PhysicsObject>;
 			localPos = new Point(0, 0);
 			previousPos = new Point(0, 0);
@@ -118,6 +124,8 @@ package
 			addEventListener(TouchEvent.TOUCH, onTouch);
 			addEventListener(TouchEvent.TOUCH, onClick);
 			addEventListener(Event.ENTER_FRAME, update);
+			
+			
 		}
 		
 		private function drawPaw():void
@@ -133,7 +141,8 @@ package
 			Block2.x = 800;
 			this.addChild(Block2);
 			block2 = fishPhysics.injectPhysics(Block2, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.35, restitution:0.8, contactGroup:"walls" } ));
-
+			
+			
 			catPaw = new Image(Assets.getTexture("Paw"));
 			this.addChild(catPaw);
 			
@@ -198,6 +207,7 @@ package
 
 		private function createFishBones():void 
 		{
+		
 			random = Math.random() * 10;
 			
 			posX = Math.random() * 900;
@@ -237,16 +247,17 @@ package
 
 		private function update(e:Event):void 
 		{	
+
 			for (var i:uint = 0; i < fishBones.length; i++)
 			{
 				if (fishBones[i].body.GetAngularVelocity() > 0.8) fishBones[i].body.SetAngularVelocity(0.8);
 				else if (fishBones[i].body.GetAngularVelocity() < -0.8) fishBones[i].body.SetAngularVelocity( -0.8);
 				
-				if (fishBones[i].body.GetLinearVelocity().x > 6) fishBones[i].body.GetLinearVelocity().x = 6;
-				else if (fishBones[i].body.GetLinearVelocity().x < -6) fishBones[i].body.GetLinearVelocity().x = -6;
+				if (fishBones[i].body.GetLinearVelocity().x > 5) fishBones[i].body.GetLinearVelocity().x = 5;
+				else if (fishBones[i].body.GetLinearVelocity().x < -5) fishBones[i].body.GetLinearVelocity().x = -5;
 				
-				if (fishBones[i].body.GetLinearVelocity().y > 6) fishBones[i].body.GetLinearVelocity().y = 6;
-				else if (fishBones[i].body.GetLinearVelocity().y < -6) fishBones[i].body.GetLinearVelocity().y = -6;
+				if (fishBones[i].body.GetLinearVelocity().y > 5) fishBones[i].body.GetLinearVelocity().y = 4;
+				else if (fishBones[i].body.GetLinearVelocity().y < -5) fishBones[i].body.GetLinearVelocity().y = -5;
 				
 				if (fishBones[i].y > gameArea.y + gameArea.height)
 				{
@@ -262,7 +273,8 @@ package
 						lose.visible = true;
 						scoreText.visible = true;
 						Mouse.show();
-						removeEventListener(Event.ENTER_FRAME, update);		
+						removeEventListener(Event.ENTER_FRAME, update);	
+						addEventListener(KeyboardEvent.KEY_DOWN, disposeDM);
 					}	
 				}
 				
@@ -291,6 +303,15 @@ package
 			ContactManager.onContactEnd("fishBones", "walls", wallNotCollides, true);
 			
 			fishPhysics.update();
+			
+		}
+		
+		private function disposeDM(e:KeyboardEvent):void 
+		{
+			if (e.keyCode == Keyboard.R)
+			{	
+				this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"play2" }, true));
+			}
 		}
 		
 		

@@ -35,6 +35,7 @@ package
 		private var posY:Number;
 		private var type:String;
 		private var velocity:Number;
+		private var k:Number = 0;
 		
 		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number,spriteType:String)
 		{
@@ -131,10 +132,9 @@ package
 		
 		}
 		
-		var k:Number = 0;
-		
 		private function update(e:Event):void 
 		{
+			
 			
 			if (type == "plat")
 			{

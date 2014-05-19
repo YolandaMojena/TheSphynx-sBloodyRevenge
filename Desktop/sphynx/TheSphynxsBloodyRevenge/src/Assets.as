@@ -53,12 +53,12 @@ package
 		
 		[Embed(source = "../tempAssets/plat.png")]
 		public static const Plat:Class;
+		
+		[Embed(source = "../tempAssets/montoncito.png")]
+		public static const Bones:Class;
 
-		[Embed(source = "../tempAssets/pause.png")]
+		[Embed(source = "../tempAssets/pauseLayer.jpg")]
 		public static const Pause:Class;
-		
-		
-		//menu
 		
 		[Embed(source = "../tempAssets/play.png")]
 		public static const Play:Class;

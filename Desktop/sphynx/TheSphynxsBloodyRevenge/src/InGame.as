@@ -60,16 +60,24 @@ package
 		public static var walls:Vector.<PhysicsObject>;
 		public static var eyes:Vector.<PhysicsObject>;
 		
-		private var pauseBtn:Button;
+		public static var eyes2:Vector.<Eye>;
 		
-		private var scoreText:TextField;
-		private var timeText:TextField;
-		private var timeScore:TextField;
+		private var sphynxX:Number;
+		private var sphynxScore:Number;
 		
-		public function InGame() 
+		private var score:Number;
+		private var generate:Boolean;
+		
+		public var lives:Number;
+		
+		
+		public function InGame(sphynxX:Number,score:Number, generate:Boolean,lives:Number) 
 		{
 			super();
-		
+			this.sphynxX = sphynxX;
+			this.score = score;
+			this.lives = lives;
+			this.generate = generate;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -82,23 +90,18 @@ package
 			fishBones = new Vector.<PhysicsObject>();
 			walls = new Vector.<PhysicsObject>();
 			eyes = new Vector.<PhysicsObject>();
-			
-			
+	
 			drawGame();
 			
-			scoreText = new TextField(1600, 50, "Score: =0", "MyFontName", 24, 0xff0000);
-			this.addChild(scoreText);
-
-			
-
-
 			addEventListener(Event.ENTER_FRAME, update);
 		}
+		
+
 		
 		public function initialize():void
 		{
 			visible = true;
-			addEventListener(Event.ENTER_FRAME, checkedElapsed);			
+			addEventListener(Event.ENTER_FRAME, checkedElapsed);	
 			trace("jugando");
 		}
 		
@@ -107,12 +110,7 @@ package
 		
 		private function drawGame():void
 		{	
-			
-			pauseBtn = new Button(Assets.getTexture("Pause"));
-			pauseBtn.x = 0;
-			pauseBtn.y = 0;
-			this.addChild(pauseBtn);
-			
+					
 			// dibuja suelo
 			floorPlatform = new Platform(worldPhysics, 0, 344,"floor");
 			this.addChild(floorPlatform);
@@ -127,19 +125,22 @@ package
 			wall_3 = new Platform(worldPhysics, 200, floorPlatform.platformSprite.y - 72,"wall");
 			this.addChild(wall_3);
 			
+			if (generate)
+			{
 			
-			// dibuja raspas
-			fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
-			//fishBones.push(fishBone1);
-			addChild(fishBone1);
-			
-			fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
-			//fishBones.push(fishBone2);
-			addChild(fishBone2);
-			
-			fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
-			//fishBones.push(fishBone3);
-			addChild(fishBone3);
+				// dibuja raspas
+				fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
+				//fishBones.push(fishBone1);
+				addChild(fishBone1);
+				
+				fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
+				//fishBones.push(fishBone2);
+				addChild(fishBone2);
+				
+				fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
+				//fishBones.push(fishBone3);
+				addChild(fishBone3);
+			}
 			
 			//plataforma
 			
@@ -153,15 +154,24 @@ package
 			//eye = new Eye(worldPhysics,450, 344,false); 
 			//this.addChild(eye);
 			
+//<<<<<<< HEAD
 			
 			eye3 = new Eye(worldPhysics,650, 344,false); 
 			//this.addChild(eye3);
 			
 			eye2 = new Eye(worldPhysics, 700, 344,true);
 			this.addChild(eye2);				
+//=======
+			eye3 = new Eye(worldPhysics,450, 344,false); 
+			this.addChild(eye3);
+			
+			eye2 = new Eye(worldPhysics, 700, 344,true);
+			this.addChild(eye2);	
+//>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 			
 			
-			ContactManager.onContactBegin("eyes","walls", handleContact,true);			
+			ContactManager.onContactBegin("eyes", "walls", handleContact, true);		
+			
 			
 			/*for (var i:int; i < fishBones.length; i++)
 			{
@@ -175,10 +185,8 @@ package
 			}
 			*/
 			// dibuja gato
-			sphynx = new Sphynx(worldPhysics, 20, floorPlatform.platformSprite.y-146, fishBones); 
+			sphynx = new Sphynx(worldPhysics, sphynxX, fishBones, score, lives); 
 			this.addChild(sphynx);
-			
-
 		}
 
 		public function disposeTemporaly():void
@@ -195,22 +203,18 @@ package
 		
 		private function update(event:Event):void 
 		{
-			this.x = -sphynx.x+220;
-			worldPhysics.globalOffsetX = -sphynx.x+220;
 			
-			scoreText.text = "Score: " + sphynx.score;
+			if (this.visible == true)
+			{
+				this.x = -sphynx.x+220;
+				worldPhysics.globalOffsetX = -sphynx.x+220;
 			
-
-			
-			worldPhysics.update();
+				worldPhysics.update();
+			}							
 		}
 		
 		public function handleContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
-		{
-			trace("handlecontact!");
-			trace("o1:" + objectA.data);
-			trace("o2:" + objectB.data);
-			
+		{	
 			//objectA.x = 700;
 			//physics.removePhysics(objectB.displayObject);
 			
@@ -219,7 +223,8 @@ package
 				(objectA.data as Eye).velocity *= -1;
 				(objectA.data as Eye).eyeSprite.scaleX *= -1; 
 			}
-		}		
+		}
+
 		
 
 	}

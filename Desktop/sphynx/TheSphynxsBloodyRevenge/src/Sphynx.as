@@ -19,7 +19,6 @@ package
 	import com.reyco1.physinjector.contact.ContactManager;
 	
 	
-	
 	import Box2D.Common.Math.b2Vec2;
 	
 	
@@ -27,7 +26,6 @@ package
 	
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
-
 	
 	/**
 	 * ...
@@ -36,9 +34,9 @@ package
 	public class Sphynx extends Sprite 
 	{
 		
-		public var sphynxSprites:Image;
+		private var sphynxSprites:Image;
 		private var sphynxPhysics:PhysInjector;
-		private var sphynxObject:PhysicsObject;
+		public var sphynxObject:PhysicsObject;
 		private var centerPoint:Point;
 		private var center:b2Vec2;
 		private var left:Boolean;
@@ -59,29 +57,45 @@ package
 		private var attackActive:Boolean;
 		
 <<<<<<< HEAD
+<<<<<<< HEAD
 	
 		
 =======
 		//private var massCat:b2MassData;
 		private var smallJump:Boolean;
 >>>>>>> 2179ec9f0dd0d776b89907bfe2c71cf750756de3
-		private var punch:Platform;
-		private var counter:Number;
-	
-		private var canJump:Boolean = true;
+=======
 		
+		
+		private var attackActive:Boolean;
+		
+		public var lives:Number;
 
-		public function Sphynx(worldPhysics:PhysInjector, x:Number, y:Number, fishBones:Vector.<PhysicsObject>) 
+		private var smallJump:Boolean;
+		
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
+		private var punch:Platform;
+		
+		private var counter:Number;
+		
+		private var pause:Boolean;
+	
+		private var canJump:Boolean = true;	
+		
+		private var passed:Number;
+
+		public function Sphynx(worldPhysics:PhysInjector, x:Number, fishBones:Vector.<PhysicsObject>,score:Number, lives:Number) 
 		{
 			super();
 			sphynxPhysics = worldPhysics;
-			//posX = x;
-			//posY = y;
+			posX = x;
 			velocity = 0.2;
 			limit = 2;
 			canJump = true;
-			score = 0;
 			overHeight = 0;
+			this.lives = lives;
+			pause = false;
+			this.score = score;
 			this.fishBones = fishBones;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -89,21 +103,26 @@ package
 		private function onAddedToStage(event:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		
 			addEventListener(Event.ENTER_FRAME, update);
+
 			sphynxArt();
 			injectPhysics();
 			sphynxKeyboard();
+<<<<<<< HEAD
 			attackActive = false;
 			
 			//massCat = 0;
+=======
+			attackActive = false;			
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		}
 				
 
-		private function sphynxArt(/*_x:Number, _y:Number*/):void
+		private function sphynxArt():void
 		{
 			sphynxSprites = new Image(Assets.getTexture("Cat"));
-			//sphynxSprites.x = _x;
-			//sphynxSprites.y = _y;
+			sphynxSprites.x = posX;
 			this.addChild(sphynxSprites);	
 		}
 		
@@ -113,14 +132,24 @@ package
 			sphynxObject.body.SetFixedRotation(true);
 			sphynxObject.name = "cat";
 			sphynxObject.physicsProperties.contactGroup = "cats";
-			//sphynxObject.body.SetMassData(massCat);
+			sphynxObject.x = posX;
+			
+			//ContactManager.onContactBegin("cats", "walls", handleContactPlat,true);
+			ContactManager.onContactBegin("cats", "floor", handleContactPlat, true);
+			
+			ContactManager.onContactBegin("cats", "fishbones", scoreContact, true); 
+			ContactManager.onContactBegin("cats", "eyes", handleContactLives, true);
 		}
+<<<<<<< HEAD
 	
+=======
+	 
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		private function sphynxAttack():void
 		{
-			
-			punch = new Platform(sphynxPhysics, sphynxObject.x+1,sphynxObject.y -175,"punch")
+			punch = new Platform(sphynxPhysics, sphynxObject.x+1, sphynxObject.y -175, "punch");
 			this.addChild(punch);
+<<<<<<< HEAD
 			attackActive = true;
 			
 			ContactManager.onContactBegin("punch", "eyes", handleContactAttack,true);
@@ -128,15 +157,17 @@ package
 			
 			
 			
+=======
+			attackActive = true; 
+			ContactManager.onContactBegin("punch", "eyes", handleContactAttack, true); //NO ENTRA
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		}
 		
 		
 		private function handleContactAttack(punchObject:PhysicsObject, eyeObject:PhysicsObject,contact:b2Contact):void
 		{
-		
+			trace("AAAAARGH");
 			eyeObject.name = "dead";
-			
-			
 		}
 		
 		private function sphynxKeyboard():void
@@ -147,8 +178,10 @@ package
 		
 		private function sphynxMoves(event:KeyboardEvent):void
 		{ 
-			switch(event.keyCode)
+			if (!pause)
 			{
+				switch(event.keyCode)
+				{
 				case Keyboard.LEFT:
 					left = true;
 					break;
@@ -172,6 +205,7 @@ package
 					break;
 					
 				case Keyboard.X:
+<<<<<<< HEAD
 					if(canJump) sphynxAttack();
 					break;	
 			}	
@@ -184,63 +218,92 @@ package
 				ContactManager.onContactBegin("cats","fishbones", scoreContact,true); 
 				
 				/*if (this.bounds.intersects(fishBones[i].bounds))
+=======
+					if (canJump) 
+					{
+						sphynxAttack();
+					}
+			
+					break;	
+					
+				case Keyboard.ESCAPE:
+					pause = true;
+					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"pause" }, true));
+					break;				
+				}	
+			}
+			
+			else
+			{
+				if (event.keyCode == Keyboard.R)
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 				{
-					this.score += fishBones[i].value;
-					fishBones[i].removeFromParent(true);
-					fishBones.splice(i, 1);
-				}*/
-			//}
+					pause = false;
+					sphynxObject.y -= 1
+				}
+			}		
 		}
+		
+
 		
 		private function scoreContact(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void 
 		{
 			score += objectB.data as Number;
 			objectB.body.GetWorld().DestroyBody(objectB.body);
 			sphynxPhysics.removePhysics(objectB.displayObject);
+<<<<<<< HEAD
 			objectB.displayObject.parent.removeChild(objectB.displayObject); 
 		
+=======
+			objectB.displayObject.parent.removeChild(objectB.displayObject);
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 			
 			
 		}
 		
 		private function handleContactLives(sphynxObj:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
-			//if(lives >1) lives--;
-			//else
-			sphynxSprites.visible = false; // para que el objeto no aparezca en pantalla , ve a update
-			
-			
-		}
-		
-		private function handleContact():void
-		{
-			
-			for (var j:int =0; j < InGame.platforms.length; j++){
-				ContactManager.onContactBegin(sphynxObject.name, InGame.platforms[j].name, handleContactPlat);
+			/*if (!attackActive) {
+				
 			}
+			*/
 			
+			objectB.name = "dead";
+			//sphynxSprites.visible = false; // para que el objeto no aparezca en pantalla , ve a update
 			
-			for (var k:int =0; k < InGame.walls.length; k++){
-				ContactManager.onContactBegin(sphynxObject.name, InGame.walls[k].name, handleContactPlat);
-			}
-			
+			if(lives >1) lives--;
 		}
+
 		
 		private function handleContactPlat(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
 		{
 			
-			if (this.y + sphynxSprites.height > objectB.y)
-			trace("stuck");
-				overHeight = this.y + sphynxSprites.height - objectB.y-1;
-				handle = true;
+			counter = 0;
+			canJump = true;
+
 		}
 		
+<<<<<<< HEAD
 		private function lives():void
 		{
 			
 			
 			if(! attackActive) ContactManager.onContactBegin("cats", "eyes", handleContactLives, true);
 			
+=======
+
+		
+		private function fall():void
+		{
+			
+			if (sphynxObject.y > 430) 
+				if (sphynxObject.x > 900 && sphynxObject.x < 1000) 
+				{
+					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"minigame" }, true));
+					
+				}
+				else sphynxSprites.visible = false;	
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 			
 		}
 		
@@ -260,15 +323,16 @@ package
 		}
 
 		private function update(e:Event):void 
-		{	
-			handleContact();
-			
-			
+		{			
+					
 			if (!sphynxSprites.visible) // si no esta visible mandarlo al principio y visble de nuevo
 			{
-				sphynxObject.x = 20;
+				sphynxObject.x = posX;
+				sphynxObject.y = 0;
+				sphynxObject.body.GetLinearVelocity().x = 0;
 				sphynxSprites.visible = true;
 			}
+		
 
 			if (sphynxObject.body.GetLinearVelocity().y < 0) goingUp = true;
 			else goingUp = false;
@@ -284,10 +348,13 @@ package
 			}
 			
 			if (jump) {
-
-				sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
-				jump = false;
-				counter = 2;
+				
+				if (sphynxObject.body.GetLinearVelocity().y < 4)
+				{
+					sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
+					jump = false;
+					counter = 2;
+				}
 			}
 				
 			if (smallJump)
@@ -303,19 +370,24 @@ package
 			{
 				counter = 0;
 				canJump = true;
-				if (handle)
-				{
-					sphynxObject.body.GetPosition().y -= overHeight;
-					handle = false;
-					overHeight = 0;
-				}	
-			}	
+			}
 			
-			scoreValue();	
+			fall();	
 			
+<<<<<<< HEAD
 			lives();
 			
+=======
+			/*
+			if(handle)
+			{
+				sphynxObject.y -= 1; //temporal
+				handle = false;
+				overHeight = 0;
+			}	
+			*/
+										
+>>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		}	
-		
 	}
 }
