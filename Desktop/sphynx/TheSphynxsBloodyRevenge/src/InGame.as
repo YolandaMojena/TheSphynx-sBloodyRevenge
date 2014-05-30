@@ -33,10 +33,14 @@ package
 	 */
 	public class InGame extends Sprite 
 	{
+		public static const CAM_OFFSET:Number = 450 - 37;
+		public static const CAM_OFFSET_Y:Number = 50;
+		public static const CAPTURE_POS:Number = 4011;
 		private var timePrevious:Number;
 		private var timeCurrent:Number;
 		private var elapsed:Number;
 		public var sphynx:Sphynx;
+		private var start:Boolean = true;
 		
 		public var scene:Stage;
 		public static var platform:Platform;
@@ -49,9 +53,12 @@ package
 		
 		private var worldPhysics:PhysInjector;
 		
-		public static var platforms:Array; 
-		public static var fishBones:Array;
-		public static var eyes:Array;
+		private var camera:Number;
+		
+		
+		
+		private var left_limit:Number;
+		private var right_limit:Number;
 		
 		private var sphynxX:Number;
 		private var sphynxScore:Number;
@@ -59,15 +66,19 @@ package
 		private var score:Number;
 		private var generate:Boolean;
 		
-		public var lives:Number;
+		
+		private var background1:Image;
+		private var background2:Image;
+		private var background3:Image;
+		private var background4:Image;
+		private var background5:Image;
 		
 		
-		public function InGame(sphynxX:Number,score:Number, generate:Boolean,lives:Number) 
+		public function InGame(sphynxX:Number,score:Number, generate:Boolean) 
 		{
 			super();
 			this.sphynxX = sphynxX;
 			this.score = score;
-			this.lives = lives;
 			this.generate = generate;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
@@ -77,9 +88,7 @@ package
 			trace("InGame Screen");
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			worldPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 9.8), false); // false y asi no se puede mover con raton 
-			platforms = new Array();
-			fishBones = new Array();
-			eyes = new Array();
+
 	
 			drawGame();
 			
@@ -90,7 +99,7 @@ package
 		public function initialize():void
 		{
 			visible = true;
-			addEventListener(Event.ENTER_FRAME, checkedElapsed);	
+			//addEventListener(Event.ENTER_FRAME, checkedElapsed);	
 			trace("jugando");
 		}
 		
@@ -99,96 +108,112 @@ package
 		
 		private function drawGame():void
 		{	
-			/*
-			// dibuja raspas
-			fishBone1 = new FishBone(worldPhysics,5, 300, 150,false);
-			//fishBones.push(fishBone1);
-			addChild(fishBone1);
 			
-			fishBone2 = new FishBone(worldPhysics,2, 500, 200,false);
-			//fishBones.push(fishBone2);
-			addChild(fishBone2);
 			
-			fishBone3 = new FishBone(worldPhysics,1, 700, 75,false);
-			//fishBones.push(fishBone3);
-			addChild(fishBone3);
-			*/
+			background1 = new Image(Assets.getTexture("Background1"));
+			background1.x = 0;
+			background1.y = -400;
+			this.addChild(background1);
+			
+			background2 = new Image(Assets.getTexture("Background2"));
+			background2.x = 900;
+			background2.y = -400;
+			this.addChild(background2);
+			
+			background3 = new Image(Assets.getTexture("Background3"));
+			background3.x = 1800;
+			background3.y = -400;
+			this.addChild(background3);
+			
+			background4 = new Image(Assets.getTexture("Background4"));
+			background4.x = 2700;
+			background4.y = -400;
+			this.addChild(background4);
+			
+						
+			background5 = new Image(Assets.getTexture("Background5"));
+			background5.x = 3600;
+			background5.y = -400;
+			this.addChild(background5);
 			
 			//plataformas
 
-			//(x, y, "type")
-	
-			platforms = [[0, 350, "floor"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
-			[898, 348, "invisibleWall"], [1300, 348, "invisibleWall"], [2550, 348, "invisibleWall"], [2998, 348, "invisibleWall"], [4498, 348, "invisibleWall"],
-			[3600, 350, "floor"], [4050, 150, "smallFloor"], [405, 305, "wall"],
-			[1045, 225,"platUp"], [2090, 187.5,"platUp"], [1860, 350,"platSides"], [2320, 350,"platSides"],
-			[3245, 350, "platSides"],  [1640, 305, "wall"], [3600, 294, "biggerWall"],  [3835, 175, "platSides"]];
-			
-			for(var i:int = 0; i<platforms.length; i++)
+			for(var i:int = 0; i<Game.platforms.length; i++)
 			{
 				//platform = new Platform(phyisics, x, y, type)
-				platform = new Platform(worldPhysics, platforms[i][0]-137, platforms[i][1], platforms[i][2]);
+				platform = new Platform(worldPhysics, Game.platforms[i][0], Game.platforms[i][1], Game.platforms[i][2]);
 				this.addChild(platform);
 			}
 			
 			//raspas
-	
-			//(value, x, y, generates)
-
-			fishBones = [[1,420,257,true], [2,460,257,true], [5,800,156,true],[1,1065,99,true], [2,1105,99,true]];
-			for (var j:int = 0; j<fishBones.length; j++)
+			
+			for (var j:int = 0; j<Game.fishBones.length; j++)
 			{
-				if(fishBones[j][3])
+				if(Game.fishBones[j][3])
 				{
-					fishBone = new FishBone(worldPhysics, fishBones[j][0], fishBones[j][1]-137, fishBones[j][2], false);
+					fishBone = new FishBone(worldPhysics, Game.fishBones[j][0], Game.fishBones[j][1], Game.fishBones[j][2], false);
 					fishBone.index = j;
 					this.addChild(fishBone);
 				}
 			}
 			
 			//enemigos
-
-			//(x, y, bonus, generates)
-	
-			eyes = [[650, 253, false, true], [1450, 253, false, true], [2700, 253, false, true], [4000, 253, false, true]];
 			
-			for (var k:int = 0; k<eyes.length; k++)
-			{
-				
-				if(eyes[k][3])
+			for (var k:int = 0; k<Game.eyes.length; k++)
+			{	
+				if(Game.eyes[k][3])
 				{
 					//eye = new Eye(physics, x, y, bonus)
-					eye = new Eye(worldPhysics, eyes[k][0], eyes[k][1], eyes[k][2]);
+					eye = new Eye(worldPhysics, Game.eyes[k][0], Game.eyes[k][1], Game.eyes[k][2]);
 					eye.index = k;
 					this.addChild(eye);
 				}
 			}
+					
+			ContactManager.onContactBegin("eyes", "walls", handleContact, true);
 			
 
-					
-			ContactManager.onContactBegin("eyes", "walls", handleContact, true);		
+			
 			
 			// dibuja gato
-			sphynx = new Sphynx(worldPhysics, sphynxX, score, lives); 
+			sphynx = new Sphynx(worldPhysics, sphynxX, score, generate); 
 			this.addChild(sphynx);
 		}
+		
+
 
 		public function disposeTemporaly():void
 		{
 			this.visible = false;
 		}							
 		
-		private function checkedElapsed(event:Event):void 
-		{
-			timePrevious = timeCurrent;
-			timeCurrent = getTimer();
-			elapsed = (timeCurrent - timePrevious) * 0.001;
-		}
-		
 		private function update(event:Event):void 
 		{
-			this.x = -sphynx.x+100;
-			worldPhysics.globalOffsetX = -sphynx.x+100;
+			
+			if (sphynx.x >= CAM_OFFSET && sphynx.x <=CAPTURE_POS)
+			{
+				this.x = -sphynx.x+CAM_OFFSET;
+				worldPhysics.globalOffsetX = -sphynx.x + CAM_OFFSET;
+			}
+			
+			if (sphynx.x == 37)
+			{	
+				this.x = 0
+				worldPhysics.globalOffsetX = 0
+			}
+			/*
+			if (sphynx.x == 3600 + CAM_OFFSET)
+			{
+				this.x = -3600 + CAM_OFFSET; //calcular número
+				worldPhysics.globalOffsetX = -3600 + CAM_OFFSET;
+			}
+			*/
+			
+			if (sphynx.cameraY && sphynx.y <= CAM_OFFSET_Y)
+			{
+				this.y = -sphynx.y+CAM_OFFSET_Y;
+				worldPhysics.globalOffsetY = -sphynx.y+CAM_OFFSET_Y;
+			}
 			
 			if (this.visible == true)
 			{

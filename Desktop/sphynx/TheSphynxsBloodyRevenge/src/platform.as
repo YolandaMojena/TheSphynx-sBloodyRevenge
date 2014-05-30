@@ -9,6 +9,9 @@ package
     import com.reyco1.physinjector.data.PhysicsObject;
     import com.reyco1.physinjector.data.PhysicsProperties;
 	
+	import Box2D.Dynamics.Contacts.b2Contact;
+	import com.reyco1.physinjector.contact.ContactManager;
+	
 	import Box2D.Common.Math.b2Vec2;
 	
 	import flash.display.Stage;
@@ -137,7 +140,9 @@ package
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.physicsProperties.contactGroup = "punch";
 				platformObject.physicsProperties.isSensor = true;
+				
 			}
+			
 			else if (type == "plat" || type == "platUp" || type == "platSides")
 			{
 				platformObject = platformPhysics.injectPhysics(platSprite, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
@@ -169,6 +174,8 @@ package
 			}
 			
 		} 
+		
+
 		
 	}
 

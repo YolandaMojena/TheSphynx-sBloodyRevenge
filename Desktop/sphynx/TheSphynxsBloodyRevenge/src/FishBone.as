@@ -21,7 +21,7 @@ package
 	 */
 	public class FishBone extends Sprite 
 	{
-		public var fishBoneSprite:Image;
+		private var fishBoneSprite:Image;
 		private var fishObject:PhysicsObject;
 		private var fishPhysics:PhysInjector;
 
@@ -53,7 +53,6 @@ package
 			//if (physicsActive) 
 			//{
 				injectPhysics();
-				addEventListener(Event.ENTER_FRAME, update);
 				
 				ContactManager.onContactBegin("fishbones", "floor", handleRemoveContact, true);
 				ContactManager.onContactBegin("fishbones", "walls", handleRemoveContact,true); 
@@ -90,24 +89,10 @@ package
 				if(value == 5) fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*1.5, -8));
 				else if (value == 2) fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*-1.5, -6));
 				else fishObject.body.SetLinearVelocity(new b2Vec2(Math.random()*3, -6));
-			
 			}
 		
 		}
 		
-		
-		private function removeDynamic():void
-		{
-			trace("y aquí?");
-			//for (var i:int; i < InGame.walls.length; i++)
-			//{
-			//}
-			
-			//for (var j:int; j < InGame.platforms.length; j++)
-			//{
-				//ContactManager.onContactBegin("fishbones", InGame.platforms[j].name, handleRemoveContact,true);
-			//}
-		}
 		
 		public function handleRemoveContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
@@ -115,13 +100,6 @@ package
 			objectA.physicsProperties.isDynamic = false;
 			objectA.physicsProperties.contactGroup = "fishbones";
 			objectA.physicsProperties.isSensor = true;
-		}
-		
-		
-		private function update(e:Event):void 
-		{
-			//if(physicsActive) removePhysics(InGame.walls, InGame.platforms);
-			if (physicsActive) removeDynamic();
 		}
 		
 		public function get index():Number 

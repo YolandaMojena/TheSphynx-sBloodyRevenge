@@ -1,6 +1,7 @@
 package  
 {
 	import flash.display.Bitmap;
+	import flash.media.Sound;
 	import starling.display.Image;
 	import starling.textures.Texture;
 	import flash.utils.Dictionary;
@@ -63,8 +64,27 @@ package
 		[Embed(source = "../tempAssets/background.png")]
 		public static const Background:Class;
 		
+		[Embed(source = "../tempAssets/hb1.jpg")]
+		public static const Background1:Class;
+		
+		[Embed(source = "../tempAssets/hb2.jpg")]
+		public static const Background2:Class;
+		
+		[Embed(source = "../tempAssets/hb3.jpg")]
+		public static const Background3:Class;
+		
+		[Embed(source = "../tempAssets/hb4.jpg")]
+		public static const Background4:Class;
+		
+				
+		[Embed(source = "../tempAssets/hb5.jpg")]
+		public static const Background5:Class;
+		
 		[Embed(source = "../tempAssets/gname.png")]
 		public static const Gname:Class;
+		
+		[Embed(source = "../fonts/myFont.TTF", fontFamily ="MyFontName", embedAsCFF = false)]
+		public static const MyFontName:Class;
 		
 		[Embed(source = "../spriteSheets/minigameSpriteSheet.png")]
 		public static const MinigameSheet:Class;
@@ -74,6 +94,14 @@ package
 		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
+		
+		private static var gameSounds:Dictionary = new Dictionary();
+		
+		[Embed(source = "../tempAssets/otro.mp3")]
+		public static const Music:Class;
+		
+		[Embed(source = "../tempAssets/gameOver.jpg")]
+		public static const GameOverPic:Class;
 
 		
 		public static function getTexture(name:String):Texture
@@ -87,7 +115,6 @@ package
 			
 		}
 		
-		
 		public static function getAtlasMini():TextureAtlas
 		{	
 			if (gameTextureAtlas == null) {
@@ -96,10 +123,19 @@ package
 				var xml:XML= XML(new AtlasMinigame());
 				gameTextureAtlas = new TextureAtlas(texture, xml);
 			}
-			return gameTextureAtlas;
-			
+			return gameTextureAtlas;	
 		}
 		
+		public static function getSound(name:String):Sound
+		{
+			if (gameSounds[name] == undefined)
+			{
+				var sound:Sound = new Assets[name]();
+				gameSounds[name] = sound;			
+			}
+			return gameSounds[name];
+			
+		}
 		
 	}
 
