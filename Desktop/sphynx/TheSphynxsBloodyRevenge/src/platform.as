@@ -61,49 +61,68 @@ package
 		private function platformArt():void
 		
 		{
-			if(type == "floor"){
-				platformSprite = new Image(Assets.getTexture("Floor"));
+			if(type == "floor1"){
+				platformSprite = new Image(Assets.getAtlas().getTexture("floor_right"));
+				platformSprite.x = posX;
+				platformSprite.y = posY;
+				this.addChild(platformSprite);
+			}
+			if(type == "floor2"){
+				platformSprite = new Image(Assets.getAtlas().getTexture("floor_left"));
 				platformSprite.x = posX;
 				platformSprite.y = posY;
 				this.addChild(platformSprite);
 			}
 			
 			else if (type == "smallFloor") {
-				platformSprite = new Image(Assets.getTexture("FloorSmall"));
+				platformSprite = new Image(Assets.getAtlas().getTexture("floor"));
 				platformSprite.x = posX;
 				platformSprite.y = posY;
 				this.addChild(platformSprite);
 			}
 			
 			else if(type == "wall") {
-				wallSprite = new Image(Assets.getTexture("Wall"));
+				wallSprite = new Image(Assets.getAtlas().getTexture("small_wall"));
 				wallSprite.x = posX;
 				wallSprite.y = posY;
 				this.addChild(wallSprite);	
 			}
 			
 			else if(type == "biggerWall") {
-				wallSprite = new Image(Assets.getTexture("BiggerWall"));
+				wallSprite = new Image(Assets.getAtlas().getTexture("big_wall"));
 				wallSprite.x = posX;
 				wallSprite.y = posY;
 				this.addChild(wallSprite);	
 			}
 			
 			else if(type == "punch") {
-				punchSprite = new Image(Assets.getTexture("Punch"));
+				punchSprite = new Image(Assets.getTexture("InvisibleWall"));
 				punchSprite.x = posX;
 				punchSprite.y = posY;
 				this.addChild(punchSprite);	
 			}
 			
-			else if (type == "plat" || type == "platUp" || type == "platSides")
+			else if (type == "platSides")
 			{
-				platSprite = new Image(Assets.getTexture("Plat"));
+				platSprite = new Image(Assets.getAtlas().getTexture("plat 2"));
 				platSprite.x = posX;
 				platSprite.y = posY;
 				this.addChild(platSprite);	
 			}
-			
+			else if (type == "platUp")
+			{
+				platSprite = new Image(Assets.getAtlas().getTexture("plat 3"));
+				platSprite.x = posX;
+				platSprite.y = posY;
+				this.addChild(platSprite);	
+			}
+			else if (type == "plat")
+			{
+				platSprite = new Image(Assets.getAtlas().getTexture("plat 1"));
+				platSprite.x = posX;
+				platSprite.y = posY;
+				this.addChild(platSprite);	
+			}
 			
 			else if(type == "invisibleWall") {
 				wallSprite= new Image(Assets.getTexture("InvisibleWall"));
@@ -116,7 +135,7 @@ package
 		 
 		private function injectPhysics():void
 		{
-			if (type == "floor" ||type == "smallFloor")
+			if (type == "floor1" ||type == "smallFloor" || type == "floor2" )
 			{
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.name = "floor" + new String(platformObject.x);
