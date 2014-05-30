@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:126177c062d9fc5dc19086561adb159b:46b59d5bb5ace1d9e67bcb3337442db8:a70759d77d0c9718b4cde181d25d5f2d$ -->
+<TextureAtlas imagePath="sprite_sheet_1.png">
+    <SubTexture name="big_wall" x="501" y="2" width="115" height="56"/>
+    <SubTexture name="dieEye1" x="618" y="2" width="120" height="85"/>
+    <SubTexture name="dieEye2" x="740" y="2" width="120" height="85"/>
+    <SubTexture name="eye1" x="862" y="2" width="120" height="85"/>
+    <SubTexture name="eye2" x="984" y="2" width="120" height="85"/>
+    <SubTexture name="eye3" x="1228" y="2" width="120" height="85"/>
+    <SubTexture name="eye4" x="1106" y="2" width="120" height="85"/>
+    <SubTexture name="eye5" x="1228" y="2" width="120" height="85"/>
+    <SubTexture name="eye6" x="984" y="2" width="120" height="85"/>
+    <SubTexture name="floor" x="1350" y="2" width="450" height="50"/>
+    <SubTexture name="floor_left" x="904" y="89" width="900" height="50"/>
+    <SubTexture name="floor_right" x="2" y="89" width="900" height="50"/>
+    <SubTexture name="gameOver" x="2" y="141" width="900" height="400"/>
+    <SubTexture name="pauseLayer" x="904" y="141" width="900" height="400"/>
+    <SubTexture name="plat 1" x="128" y="2" width="126" height="28"/>
+    <SubTexture name="plat 2" x="2" y="2" width="124" height="28"/>
+    <SubTexture name="plat 3" x="256" y="2" width="131" height="31"/>
+    <SubTexture name="small_wall" x="389" y="2" width="110" height="45"/>
+</TextureAtlas>

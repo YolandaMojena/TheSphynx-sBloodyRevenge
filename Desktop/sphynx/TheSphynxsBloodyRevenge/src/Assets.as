@@ -95,8 +95,15 @@ package
 		[Embed(source = "../spriteSheets/minigameSpriteSheet.xml", mimeType ="application/octet-stream")]
 		public static const AtlasMinigame:Class;
 		
+		[Embed(source = "../spriteSheets/sprite_sheet_1.png")]
+		public static const GameSheet:Class;
+		
+		[Embed(source = "../spriteSheets/sprite_sheet_1.xml", mimeType ="application/octet-stream")]
+		public static const AtlasGame:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
-		private static var gameTextureAtlas:TextureAtlas;
+		private static var gameTextureAtlas2:TextureAtlas;
+		private static var gameTextureAtlas:TextureAtlas; //para el minijuego
 		
 		private static var gameSounds:Dictionary = new Dictionary();
 		
@@ -127,6 +134,17 @@ package
 				gameTextureAtlas = new TextureAtlas(texture, xml);
 			}
 			return gameTextureAtlas;	
+		}
+		
+		public static function getAtlas():TextureAtlas
+		{	
+			if (gameTextureAtlas2 == null) {
+				
+				var texture:Texture = getTexture("GameSheet");
+				var xml:XML= XML(new AtlasGame());
+				gameTextureAtlas2 = new TextureAtlas(texture, xml);
+			}
+			return gameTextureAtlas2;	
 		}
 		
 		public static function getSound(name:String):Sound

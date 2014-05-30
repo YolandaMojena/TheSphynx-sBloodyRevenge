@@ -85,9 +85,9 @@ package
 
 			//(x, y, "type")
 			
-			platforms = [[0, 350, "floor"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
+			platforms = [[0, 350, "floor1"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
 			[898, 348, "invisibleWall"], [1300, 348, "invisibleWall"], [2550, 348, "invisibleWall"], [2998, 348, "invisibleWall"], [4498, 348, "invisibleWall"],
-			[3600, 350, "floor"], [4050, 150, "smallFloor"], [405, 305, "wall"],
+			[3600, 350, "floor2"], [4050, 150, "smallFloor"], [405, 305, "wall"],
 			[1045, 225,"platUp"], [2090, 187.5,"platUp"], [1860, 350,"platSides"], [2320, 350,"platSides"],
 			[3245, 350, "platSides"],  [1640, 305, "wall"], [3600, 294, "biggerWall"],  [3835, 175, "platSides"]];
 			
