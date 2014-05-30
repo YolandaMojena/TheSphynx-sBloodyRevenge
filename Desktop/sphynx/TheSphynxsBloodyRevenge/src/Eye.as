@@ -23,15 +23,13 @@ package
 	 */
 	public class Eye extends Sprite 
 	{
-		public var eyeSprite:Image;
+		private var _eyeSprite:Image;
 		private var eyePhysics:PhysInjector;
 		private var eyeObject:PhysicsObject; 
-		public var velocity:Number;
-		
+		private var _velocity:Number;
 		private var posX:Number;
 		private var posY:Number;
 		private var bonus:Boolean;
-		
 		private var fish1:FishBone;
 		private var fish2:FishBone;
 		private var fish3:FishBone;
@@ -96,11 +94,17 @@ package
 		private function fishExplosion():void
 		{
 			// hacer random para que los value no sean siempre los mismos
-			fish1 = new FishBone(eyePhysics, 5, eyeObject.x+5 , eyeObject.y, true);
+			fish1 = new FishBone(eyePhysics, 5, eyeObject.x + 5 , eyeObject.y, true);
+			fish1.index = Game.fishBones.length;
+			Game.fishBones.push([5,eyeObject.x + 5,eyeObject.y,true]);
 			this.addChild(fish1);
 			fish2 = new FishBone(eyePhysics, 2, eyeObject.x, eyeObject.y, true);
+			fish2.index = Game.fishBones.length;
+			Game.fishBones.push([2,eyeObject.x,eyeObject.y,true]);
 			this.addChild(fish2);
-			fish3 = new FishBone(eyePhysics, 1, eyeObject.x-5, eyeObject.y, true);
+			fish3 = new FishBone(eyePhysics, 1, eyeObject.x - 5, eyeObject.y, true);
+			fish3.index = Game.fishBones.length;
+			Game.fishBones.push([1,eyeObject.x -5,eyeObject.y,true]);
 			this.addChild(fish3);
 		}
 		
@@ -129,6 +133,26 @@ package
 		public function set index(value:Number):void 
 		{
 			_index = value;
+		}
+		
+		public function get velocity():Number 
+		{
+			return _velocity;
+		}
+		
+		public function set velocity(value:Number):void 
+		{
+			_velocity = value;
+		}
+		
+		public function get eyeSprite():Image 
+		{
+			return _eyeSprite;
+		}
+		
+		public function set eyeSprite(value:Image):void 
+		{
+			_eyeSprite = value;
 		}
 	}
 

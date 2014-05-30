@@ -66,8 +66,9 @@ package
 		private var gameArea:Rectangle;
 		
 		private var background:Image;
-		private var background2:Image;
-		private var background1:Image;
+		private var lives2:Image;
+		private var lives1:Image;
+		private var lives3:Image;
 		
 		private var timeCurrent:Number;
 		
@@ -134,13 +135,17 @@ package
 			background = new Image(Assets.getAtlasMini().getTexture("asset7"));
 			this.addChild(background);
 			
-			background2 = new Image(Assets.getAtlasMini().getTexture("asset8"));
-			this.addChild(background2);
-			background2.visible = false;
+			lives3 = new Image(Assets.getAtlasMini().getTexture("asset8"));
+			this.addChild(lives3);
+			lives3.visible = true;
 			
-			background1 = new Image(Assets.getAtlasMini().getTexture("asset9"));
-			this.addChild(background1);
-			background1.visible = false;
+			lives2 = new Image(Assets.getAtlasMini().getTexture("asset9"));
+			this.addChild(lives2);
+			lives2.visible = true;
+			
+			lives1 = new Image(Assets.getAtlasMini().getTexture("asset10"));
+			this.addChild(lives1);
+			lives1.visible = true;
 			
 
 			
@@ -156,6 +161,7 @@ package
 			
 			catPaw = new Image(Assets.getAtlasMini().getTexture("asset1"));
 			this.addChild(catPaw);
+			catPaw.visible = false;
 			
 			
 			lose = new Image(Assets.getAtlasMini().getTexture("asset2"));
@@ -177,6 +183,7 @@ package
 
 			if (touchPaw != null)	
 			{			
+				catPaw.visible = true;
 				touchX = touchPaw.globalX;
 				touchY = touchPaw.globalY;
 				
@@ -286,12 +293,12 @@ package
 					
 					if (lives == 2) 
 					{
-						background2.visible = true;
+						lives3.visible = false;
 
 					}
 					else if (lives == 1)
 					{
-						background1.visible = true;
+						lives2.visible = false;
 					}
 					else if( lives == 0)
 					{
