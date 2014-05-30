@@ -86,6 +86,9 @@ package
 		[Embed(source = "../fonts/myFont.TTF", fontFamily ="MyFontName", embedAsCFF = false)]
 		public static const MyFontName:Class;
 		
+		[Embed(source = "../fonts/AYearWithoutRain.ttf", fontFamily ="WithoutRain", embedAsCFF = false)]
+		public static const WithoutRain:Class;
+		
 		[Embed(source = "../spriteSheets/minigameSpriteSheet.png")]
 		public static const MinigameSheet:Class;
 		

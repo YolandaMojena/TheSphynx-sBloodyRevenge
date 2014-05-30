@@ -145,7 +145,7 @@ package
 					screenMenu.disposeTemporaly();
 					pauseLayer.disposePause();
 					music = Assets.getSound("Music");
-					var sc:SoundChannel = music.play(0, 0);
+					//var sc:SoundChannel = music.play(0, 0);
 					screenInGame.initialize();
 					break;
 				

@@ -62,6 +62,7 @@ package
 		private var minigame:Boolean;
 		private var _cameraY:Boolean;
 		private var attackTime:Number;
+		private var jumpTime:Number;
 		
 
 		public function Sphynx(worldPhysics:PhysInjector, posX:Number,score:Number, minigame:Boolean) 

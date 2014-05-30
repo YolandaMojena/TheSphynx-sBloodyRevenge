@@ -60,10 +60,10 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage); 
 			
 			
-			scoreText = new TextField(1725, 80, "0", "Verdana", 24, 0xff0000);
+			scoreText = new TextField(1725, 80, "0", "WithoutRain", 24, 0xff0000);
 			this.addChild(scoreText);
 			
-			timeText = new TextField(150, 80, "1:30", "Verdana", 24, 0xff0000);
+			timeText = new TextField(150, 80, "1:30", "WithoutRain", 24, 0xff0000);
 			this.addChild(timeText);
 			
 			bones = new Image(Assets.getTexture("Bones"));
