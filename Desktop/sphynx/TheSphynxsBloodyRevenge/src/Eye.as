@@ -36,6 +36,7 @@ package
 		private var fish2:FishBone;
 		private var fish3:FishBone;
 		private var boom:Boolean;
+		private var _index:Number;
 		
 		//private var physics:PhysInjector = new PhysInjector(stage,new b2Vec2(0,10),true);
 		
@@ -48,7 +49,7 @@ package
 			posY = y;
 			velocity = new Number(1);
 			this.bonus = bonus;
-			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);	
+			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 		}
 		
@@ -78,8 +79,7 @@ package
 			eyeObject.name = "eye" + new String(eyeObject.x);
 			eyeObject.physicsProperties.contactGroup = "eyes";
 			eyeObject.body.SetFixedRotation(true);			
-			InGame.eyes.push(eyeObject);
-			//eyeObject.data = this;
+			eyeObject.data = new Array(this,_index);
 			
 		}
 		
@@ -119,6 +119,16 @@ package
 				
 				trace("boom");
 			}
+		}
+		
+		public function get index():Number 
+		{
+			return _index;
+		}
+		
+		public function set index(value:Number):void 
+		{
+			_index = value;
 		}
 	}
 

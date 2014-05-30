@@ -61,12 +61,13 @@ package
 		private var random:Number;
 		private var localPos:Point;
 		private var catPaw:Image;
-		//private var tempBackground:Quad;
 		private var Block1:Image;
 		private var Block2:Image;
 		private var gameArea:Rectangle;
 		
 		private var background:Image;
+		private var background2:Image;
+		private var background1:Image;
 		
 		private var timeCurrent:Number;
 		
@@ -130,30 +131,43 @@ package
 		
 		private function drawPaw():void
 		{
-			background = new Image(Assets.getTexture("DontMissIt"));
+			background = new Image(Assets.getAtlasMini().getTexture("asset7"));
 			this.addChild(background);
 			
-			Block1 =  new Image(Assets.getTexture("WallDM"));
+			background2 = new Image(Assets.getAtlasMini().getTexture("asset8"));
+			this.addChild(background2);
+			background2.visible = false;
+			
+			background1 = new Image(Assets.getAtlasMini().getTexture("asset9"));
+			this.addChild(background1);
+			background1.visible = false;
+			
+
+			
+			Block1 =  new Image(Assets.getAtlasMini().getTexture("asset6"));
 			this.addChild(Block1);
 			block1 = fishPhysics.injectPhysics(Block1, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.35, restitution:0.8, contactGroup:"walls" } ));
 			
-			Block2 =  new Image(Assets.getTexture("WallDM"));
+			Block2 =  new Image(Assets.getAtlasMini().getTexture("asset6"));
 			Block2.x = 800;
 			this.addChild(Block2);
 			block2 = fishPhysics.injectPhysics(Block2, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.35, restitution:0.8, contactGroup:"walls" } ));
 			
 			
-			catPaw = new Image(Assets.getTexture("Paw"));
+			catPaw = new Image(Assets.getAtlasMini().getTexture("asset1"));
 			this.addChild(catPaw);
 			
 			
-			lose = new Image(Assets.getTexture("DMExit"));
+			lose = new Image(Assets.getAtlasMini().getTexture("asset2"));
 			this.addChild(lose);
 			lose.visible = false;
 			
-			scoreText = new TextField(1000, 400, "Score:", "MyFontName", 48, 0xff0000);
+			scoreText = new TextField(925, 400, "Score:", "MyFontName", 48, 0x670f10);
 			this.addChild(scoreText);
 			scoreText.visible = false;
+			
+			ContactManager.onContactBegin("fishBones", "walls", wallCollides, true);
+			ContactManager.onContactEnd("fishBones", "walls", wallNotCollides, true);
 
 		}
 		
@@ -221,17 +235,17 @@ package
 			switch (value)
 			{
 				case 5:
-					fishBoneSprite = new Image(Assets.getTexture("FishBoneO"));
+					fishBoneSprite = new Image(Assets.getAtlasMini().getTexture("asset3"));
 					fishBoneSprite.x = posX;
 					break;
 				
 				case 2:
-					fishBoneSprite = new Image(Assets.getTexture("FishBoneT"));
+					fishBoneSprite = new Image(Assets.getAtlasMini().getTexture("asset4"));
 					fishBoneSprite.x = posX;
 					break;
 					
 				case 3:
-					fishBoneSprite = new Image(Assets.getTexture("FishBoneP"));
+					fishBoneSprite = new Image(Assets.getAtlasMini().getTexture("asset5"));
 					fishBoneSprite.x = posX;
 					break;
 			}
@@ -243,6 +257,8 @@ package
 			
 			fishObject.body.SetFixedRotation(false);
 			fishBones.push(fishObject);
+			
+
 		}
 
 		private function update(e:Event):void 
@@ -268,7 +284,16 @@ package
 					removeChild(trash.displayObject);
 					lives --;
 					
-					if (lives == 0)
+					if (lives == 2) 
+					{
+						background2.visible = true;
+
+					}
+					else if (lives == 1)
+					{
+						background1.visible = true;
+					}
+					else if( lives == 0)
 					{
 						lose.visible = true;
 						scoreText.visible = true;
@@ -298,9 +323,6 @@ package
 			_score = Math.round(fishTime);
 			
 			scoreText.text = "Score: " + _score;
-			
-			ContactManager.onContactBegin("fishBones", "walls", wallCollides, true);
-			ContactManager.onContactEnd("fishBones", "walls", wallNotCollides, true);
 			
 			fishPhysics.update();
 			

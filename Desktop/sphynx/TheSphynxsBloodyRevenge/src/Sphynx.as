@@ -54,17 +54,7 @@ package
 		private var handle:Boolean;
 		private var overHeight:Number;
 		private var jumpHeight:Number;
-		private var attackActive:Boolean;
 		
-<<<<<<< HEAD
-<<<<<<< HEAD
-	
-		
-=======
-		//private var massCat:b2MassData;
-		private var smallJump:Boolean;
->>>>>>> 2179ec9f0dd0d776b89907bfe2c71cf750756de3
-=======
 		
 		
 		private var attackActive:Boolean;
@@ -73,7 +63,6 @@ package
 
 		private var smallJump:Boolean;
 		
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		private var punch:Platform;
 		
 		private var counter:Number;
@@ -84,7 +73,7 @@ package
 		
 		private var passed:Number;
 
-		public function Sphynx(worldPhysics:PhysInjector, x:Number, fishBones:Vector.<PhysicsObject>,score:Number, lives:Number) 
+		public function Sphynx(worldPhysics:PhysInjector, x:Number,score:Number, lives:Number) 
 		{
 			super();
 			sphynxPhysics = worldPhysics;
@@ -96,7 +85,6 @@ package
 			this.lives = lives;
 			pause = false;
 			this.score = score;
-			this.fishBones = fishBones;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -109,13 +97,7 @@ package
 			sphynxArt();
 			injectPhysics();
 			sphynxKeyboard();
-<<<<<<< HEAD
-			attackActive = false;
-			
-			//massCat = 0;
-=======
 			attackActive = false;			
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		}
 				
 
@@ -140,27 +122,13 @@ package
 			ContactManager.onContactBegin("cats", "fishbones", scoreContact, true); 
 			ContactManager.onContactBegin("cats", "eyes", handleContactLives, true);
 		}
-<<<<<<< HEAD
-	
-=======
 	 
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		private function sphynxAttack():void
 		{
 			punch = new Platform(sphynxPhysics, sphynxObject.x+1, sphynxObject.y -175, "punch");
 			this.addChild(punch);
-<<<<<<< HEAD
-			attackActive = true;
-			
-			ContactManager.onContactBegin("punch", "eyes", handleContactAttack,true);
-				
-			
-			
-			
-=======
 			attackActive = true; 
 			ContactManager.onContactBegin("punch", "eyes", handleContactAttack, true); //NO ENTRA
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		}
 		
 		
@@ -168,6 +136,7 @@ package
 		{
 			trace("AAAAARGH");
 			eyeObject.name = "dead";
+			InGame.eyes[eyeObject.data[1]][3] = false;
 		}
 		
 		private function sphynxKeyboard():void
@@ -205,20 +174,6 @@ package
 					break;
 					
 				case Keyboard.X:
-<<<<<<< HEAD
-					if(canJump) sphynxAttack();
-					break;	
-			}	
-		}
-		
-		private function scoreValue(/*fishBones:Vector.<PhysicsObject>*/):void
-		{
-			/*for ( var i:uint = 0; i < fishBones.length; i++)
-			{*/
-				ContactManager.onContactBegin("cats","fishbones", scoreContact,true); 
-				
-				/*if (this.bounds.intersects(fishBones[i].bounds))
-=======
 					if (canJump) 
 					{
 						sphynxAttack();
@@ -236,7 +191,6 @@ package
 			else
 			{
 				if (event.keyCode == Keyboard.R)
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 				{
 					pause = false;
 					sphynxObject.y -= 1
@@ -248,17 +202,11 @@ package
 		
 		private function scoreContact(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void 
 		{
-			score += objectB.data as Number;
+			score += objectB.data[0] as Number;
+			InGame.fishBones[objectB.data[1]][[3]] = false;
 			objectB.body.GetWorld().DestroyBody(objectB.body);
 			sphynxPhysics.removePhysics(objectB.displayObject);
-<<<<<<< HEAD
-			objectB.displayObject.parent.removeChild(objectB.displayObject); 
-		
-=======
-			objectB.displayObject.parent.removeChild(objectB.displayObject);
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
-			
-			
+			objectB.displayObject.parent.removeChild(objectB.displayObject);	
 		}
 		
 		private function handleContactLives(sphynxObj:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
@@ -277,37 +225,22 @@ package
 		
 		private function handleContactPlat(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
 		{
-			
 			counter = 0;
 			canJump = true;
-
 		}
-		
-<<<<<<< HEAD
-		private function lives():void
-		{
-			
-			
-			if(! attackActive) ContactManager.onContactBegin("cats", "eyes", handleContactLives, true);
-			
-=======
-
 		
 		private function fall():void
 		{
 			
 			if (sphynxObject.y > 430) 
-				if (sphynxObject.x > 900 && sphynxObject.x < 1000) 
+				if (sphynxObject.x > 3000 && sphynxObject.x < 3600) 
 				{
 					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"minigame" }, true));
 					
 				}
 				else sphynxSprites.visible = false;	
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 			
 		}
-		
-		
 		private function sphynxStops(event:KeyboardEvent):void
 		{ 
 			switch(event.keyCode)
@@ -351,7 +284,7 @@ package
 				
 				if (sphynxObject.body.GetLinearVelocity().y < 4)
 				{
-					sphynxObject.body.ApplyImpulse(new b2Vec2(0, -13), sphynxObject.body.GetWorldCenter());
+					sphynxObject.body.ApplyImpulse(new b2Vec2(0, -12), sphynxObject.body.GetWorldCenter());
 					jump = false;
 					counter = 2;
 				}
@@ -361,8 +294,8 @@ package
 			{
 				counter = 0;
 				smallJump = false;
-				if (goingUp) sphynxObject.body.ApplyImpulse(new b2Vec2(0, -8), sphynxObject.body.GetWorldCenter());
-				else sphynxObject.body.ApplyImpulse(new b2Vec2(0, -18), sphynxObject.body.GetWorldCenter());
+				if (goingUp) sphynxObject.body.ApplyImpulse(new b2Vec2(0, -6), sphynxObject.body.GetWorldCenter());
+				else sphynxObject.body.ApplyImpulse(new b2Vec2(0, -10), sphynxObject.body.GetWorldCenter());
 				
 			}
 			
@@ -374,10 +307,6 @@ package
 			
 			fall();	
 			
-<<<<<<< HEAD
-			lives();
-			
-=======
 			/*
 			if(handle)
 			{
@@ -386,8 +315,8 @@ package
 				overHeight = 0;
 			}	
 			*/
+			
 										
->>>>>>> 15130834a9a0b1a8360c294a15740b7a26eabc2d
 		}	
 	}
 }

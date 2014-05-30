@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:0413e7807d648e7730d9906578d2b148:06656fc764ad882e018dc297217764df:a70759d77d0c9718b4cde181d25d5f2d$ -->
+<TextureAtlas imagePath="sprite_sheet_1.png">
+    <SubTexture name="big_wall" x="114" y="2" width="115" height="56"/>
+    <SubTexture name="eye1" x="475" y="2" width="120" height="85"/>
+    <SubTexture name="eye2" x="597" y="2" width="120" height="85"/>
+    <SubTexture name="eye3" x="841" y="2" width="120" height="85"/>
+    <SubTexture name="eye4" x="719" y="2" width="120" height="85"/>
+    <SubTexture name="eye5" x="841" y="2" width="120" height="85"/>
+    <SubTexture name="eye6" x="597" y="2" width="120" height="85"/>
+    <SubTexture name="eyeDie1" x="353" y="2" width="120" height="85"/>
+    <SubTexture name="eyeDie2" x="231" y="2" width="120" height="85"/>
+    <SubTexture name="floor" x="389" y="89" width="450" height="50"/>
+    <SubTexture name="floor_left" x="2" y="193" width="900" height="50"/>
+    <SubTexture name="floor_right" x="2" y="141" width="900" height="50"/>
+    <SubTexture name="plat 1" x="128" y="89" width="126" height="28"/>
+    <SubTexture name="plat 2" x="2" y="89" width="124" height="28"/>
+    <SubTexture name="plat 3" x="256" y="89" width="131" height="31"/>
+    <SubTexture name="small_wall" x="2" y="2" width="110" height="45"/>
+</TextureAtlas>
