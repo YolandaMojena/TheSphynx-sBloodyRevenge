@@ -22,7 +22,7 @@ package
 		{
 			super();	
 			score = 0;
-			time = 90;
+			time = 150;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			this.addEventListener(Event.ENTER_FRAME, updateScore);
 			
@@ -32,14 +32,30 @@ package
 		{
 			scoreText.text = score + "";
 			
-			if (time >= 60)
+			if (time <= 150 && time >=120)
 			{
-				var thisTime:Number = time-60;
+				trace("waat");
+				var thisTime:Number = time-120;
+				
 				if (thisTime < 10)
 				{
-					timeText.text = "1:0" + thisTime;
+					timeText.text = "2:0" + thisTime;
 				}
-				else timeText.text = "1:" + thisTime;
+				else
+				{
+					trace("es broma no?");
+					timeText.text = "2:" + thisTime;
+				}
+			}
+			
+			else if (time <120 && time >= 60)
+			{
+				var thisTime2:Number = time-60;
+				if (thisTime2 < 10)
+				{
+					timeText.text = "1:0" + thisTime2;
+				}
+				else timeText.text = "1:" + thisTime2;
 			}
 			else
 			{
@@ -60,10 +76,10 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage); 
 			
 			
-			scoreText = new TextField(1725, 80, "0", "WithoutRain", 24, 0xff0000);
+			scoreText = new TextField(1725, 80, "0", "WithoutRain", 28, 0xba1a1a);
 			this.addChild(scoreText);
 			
-			timeText = new TextField(150, 80, "1:30", "WithoutRain", 24, 0xff0000);
+			timeText = new TextField(110, 80, "2:30", "WithoutRain", 28, 0xba1a1a);
 			this.addChild(timeText);
 			
 			bones = new Image(Assets.getTexture("Bones"));

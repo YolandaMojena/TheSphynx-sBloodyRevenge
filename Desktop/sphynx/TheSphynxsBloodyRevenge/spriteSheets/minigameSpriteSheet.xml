@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:ba1b169b1216cb1d6690c93ab012eff6:5d7968cf086aa492976f8be6cebe4893:cd9b031dd97970d40f768c5997426e7f$ -->
+<!-- $TexturePacker:SmartUpdate:b52f7311045d43ef393eb9c0fcb0d9ef:d1795b6202891f34ea41a6c21c440077:cd9b031dd97970d40f768c5997426e7f$ -->
 <TextureAtlas imagePath="minigameSpriteSheet.png">
     <SubTexture name="asset1" x="470" y="2" width="82" height="106"/>
     <SubTexture name="asset10" x="554" y="2" width="99" height="106"/>

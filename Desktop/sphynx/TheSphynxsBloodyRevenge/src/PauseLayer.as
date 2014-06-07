@@ -32,15 +32,12 @@ package
 				{
 					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"play" }, true));			
 				}
-			}
-
-			
-			
+			}	
 		}
 		
 		private function draw():void
 		{
-			pauseLayer = new Image(Assets.getTexture("Pause"));
+			pauseLayer = new Image(Assets.getAtlas().getTexture("pauseLayer"));
 			this.addChild(pauseLayer);
 		}
 		

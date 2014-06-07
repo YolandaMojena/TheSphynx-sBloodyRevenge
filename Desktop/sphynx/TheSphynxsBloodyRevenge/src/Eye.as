@@ -1,6 +1,7 @@
 package  
 {
 	import Box2D.Collision.b2Collision;
+	import flash.geom.Point;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.core.Starling;
@@ -17,6 +18,8 @@ package
 	import Box2D.Common.Math.b2Vec2;
 	
 	import flash.display.Stage;
+	import flash.media.Sound;
+	import flash.media.SoundChannel;
 	
 	/**
 	 * ...
@@ -41,6 +44,8 @@ package
 		private var first:Boolean = true;
 		private var tempX:Number;
 		private var tempY:Number;
+		private var sc:SoundChannel;
+		private var smudge:Sound;
 
 		
 		//private var physics:PhysInjector = new PhysInjector(stage,new b2Vec2(0,10),true);
@@ -77,6 +82,8 @@ package
 			eyeSprite.y = posY;
 			starling.core.Starling.juggler.add(eyeSprite);
 			this.addChild(eyeSprite);
+			
+			smudge = Assets.getSound("SmudgeSound");
 			
 			
 		}
@@ -130,8 +137,9 @@ package
 				trace(eyeObject.x);
 				trace(_eyeSprite.x);
 				trace(this.x);
-				tempX = eyeObject.x;
-				tempY = eyeObject.y;
+				
+				tempX = _eyeSprite.x;
+				tempY = 253;
 				explosion();
 			}
 		}
@@ -151,18 +159,25 @@ package
 		{
 			if (first)
 			{
-				deadSprite = new MovieClip(Assets.getAtlas().getTextures("die"), 2);
+				sc = smudge.play(0, 1);
+				deadSprite = new MovieClip(Assets.getAtlas().getTextures("die"), 6);
 				starling.core.Starling.juggler.add(deadSprite);
+				
 				deadSprite.x = tempX;
-				deadSprite.x = tempY;
-				this.addChild(deadSprite);
+				
+				deadSprite.y = tempY;
+				deadSprite.scaleX =- _eyeSprite.scaleX;
+				
+				
+			this.addChild(deadSprite);
+
 
 				first = false;
 			}
 			
 			animationTime += 1/60;
 			
-			if (animationTime >= 1)
+			if (animationTime >= 0.3)
 			{
 				deadSprite.visible = false;
 				deadSprite.dispose();

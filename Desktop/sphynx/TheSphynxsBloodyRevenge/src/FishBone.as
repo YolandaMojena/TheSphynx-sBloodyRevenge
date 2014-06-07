@@ -97,9 +97,13 @@ package
 		public function handleRemoveContact(objectA:PhysicsObject, objectB:PhysicsObject,contact:b2Contact):void
 		{
 			
-			objectA.physicsProperties.isDynamic = false;
-			objectA.physicsProperties.contactGroup = "fishbones";
-			objectA.physicsProperties.isSensor = true;
+			if (objectB.data == "fishBones")
+			{
+				objectA.physicsProperties.isDynamic = false;
+				objectA.physicsProperties.contactGroup = "fishbones";
+				objectA.physicsProperties.isSensor = true;
+			}
+
 		}
 		
 		public function get index():Number 

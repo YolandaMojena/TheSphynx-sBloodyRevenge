@@ -3,9 +3,14 @@ package
 	import flash.display.Stage;
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundMixer;
+	import flash.media.SoundTransform;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.core.Starling;
+	
+	import flash.ui.Keyboard;
+	import starling.events.KeyboardEvent;
 	
 	import NavigationEvent;
 	import InGame;
@@ -33,6 +38,10 @@ package
 		public static var platforms:Array; 
 		public static var fishBones:Array;
 		public static var eyes:Array;
+		private var sc:SoundChannel;
+		
+		private var muted:Boolean;
+		private var punchSound:Sound;
 		
 
 		private var main:Main; 
@@ -40,25 +49,27 @@ package
 		public function Game() 
 		{
 			super();
-			timePassed = 90;
+			sc = new SoundChannel();
+			timePassed = 150;
+			muted = false;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}	
 		
 		private function updateScore(e:Event):void 
 		{
+
 			if (screenInGame != null)
 			{
+				
 				score = screenInGame.sphynx.score;
 				scoreLayer.score = score;
-			}
-			if (screenInGame != null)
-			{
+				
 				if(screenInGame.visible==true && screenMenu.visible == false)
 				{
 					timePassed -= 1 / 60;
 					timeScore = Math.round(timePassed);
 					scoreLayer.time = timeScore;
-				}
+				}		
 			}
 		}
 		
@@ -69,14 +80,39 @@ package
 			platforms = new Array();
 			fishBones = new Array();
 			eyes = new Array();
+			
+			screenMenu = new Menu();
+			screenMenu.initialize();
+			this.addChild(screenMenu);	
+			
+			music = Assets.getSound("Rised");
+			
 		
 			
 			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
+			this.addEventListener(KeyboardEvent.KEY_DOWN, muteSound);
 
 			
 			this.addEventListener(Event.ENTER_FRAME, updateScore);	
 			
-			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"init" }, true));
+		}
+		
+		private function muteSound(e:KeyboardEvent):void 
+		{
+			if (e.keyCode == Keyboard.M && sc!=null)
+			{	
+				if (!muted)
+				{
+					SoundMixer.soundTransform = new SoundTransform(0);
+					muted = true;
+				}
+				else
+				{
+					SoundMixer.soundTransform = new SoundTransform(1);
+					muted = false;
+				}
+				
+			}
 		}
 		
 		private function initArrays():void 
@@ -85,11 +121,11 @@ package
 
 			//(x, y, "type")
 			
-			platforms = [[0, 350, "floor1"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
+			platforms = [[405, 305, "wall"],[0, 350, "floor1"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
 			[898, 348, "invisibleWall"], [1300, 348, "invisibleWall"], [2550, 348, "invisibleWall"], [2998, 348, "invisibleWall"], [4498, 348, "invisibleWall"],
-			[3600, 350, "floor2"], [4050, 150, "smallFloor"], [405, 305, "wall"],
+			[3600, 350, "floor2"], [4050, 150, "smallFloor"], 
 			[1045, 225,"platUp"], [2090, 187.5,"platUp"], [1860, 350,"platSides"], [2320, 350,"platSides"],
-			[3245, 350, "platSides"],  [1640, 305, "wall"], [3600, 294, "biggerWall"],  [3835, 175, "platSides"]];
+			[3245, 350, "platSides"],  [1640, 305, "wall"], [3600, 294, "biggerWall"],  [3835, 200, "plat"]];
 			
 			
 			//raspas
@@ -106,8 +142,7 @@ package
 			//enemigos
 
 			//(x, y, bonus, generates)
-			eyes = [[650, 253, false, true], [1450, 253, true, true], [2700, 253, false, true], [4000, 253, true, true]];
-			
+			eyes = [[700, 270, true, true], [1450, 270, false, true], [2700, 270, false, true], [4000, 270, true, true]];
 		}
 		
 		private function onChangeScreen(event:NavigationEvent):void
@@ -124,29 +159,22 @@ package
 						gameOverLayer.dispose();
 					}
 					
-					trace("jo");
-					screenInGame = new InGame(0, 0, true);
-					screenInGame.disposeTemporaly();
+					screenMenu.disposeTemporaly();
+					
+					screenInGame = new InGame(37, 0, true);
+					screenInGame.initialize();
 					this.addChild(screenInGame);
 					
 					scoreLayer = new ScoreLayer();
 					this.addChild(scoreLayer);
 					
-					screenMenu = new Menu();
-					screenInGame.initialize();
-					this.addChild(screenMenu);						
-					
 					pauseLayer = new PauseLayer();
 					pauseLayer.disposePause();
 					this.addChild(pauseLayer);
-					break;
 					
-				case "play":
-					screenMenu.disposeTemporaly();
 					pauseLayer.disposePause();
-					music = Assets.getSound("Music");
-					//var sc:SoundChannel = music.play(0, 0);
-					screenInGame.initialize();
+					sc = music.play(1860, 0);
+		
 					break;
 				
 				case"minigame":
@@ -162,13 +190,18 @@ package
 				case"pause":
 					screenInGame.disposeTemporaly();
 					pauseLayer.initializePause();
-					break;			
+					break;	
+				
+				case"play":
+					screenInGame.initialize();
+					pauseLayer.disposePause();
+					break;
 				
 				case"play2":
 					score += screenDontMiss.score;
 					screenDontMiss.disposeTemporaly();
 					screenDontMiss.dispose();
-					screenInGame = new InGame(3600, score, false);
+					screenInGame = new InGame(3650, score, false);
 					this.addChild(screenInGame);
 					scoreLayer.dispose();
 					scoreLayer = new ScoreLayer();
@@ -180,10 +213,11 @@ package
 					screenInGame.dispose();
 					scoreLayer.visible = false;
 					scoreLayer.dispose();
-					gameOverLayer = new GameOver(score);
+					gameOverLayer = new GameOver(score,timeScore);
 					this.addChild(gameOverLayer);
 					score = 0;
-					timePassed = 90;
+					timePassed = 150;
+					sc.stop();
 					break;
 			}
 		}

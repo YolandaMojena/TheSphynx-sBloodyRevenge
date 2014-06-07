@@ -38,6 +38,7 @@ package
 		private var posY:Number;
 		private var type:String;
 		private var velocity:Number;
+		private var k:Number = 0;
 		
 		public function Platform(worldPhysics:PhysInjector, x:Number, y:Number,spriteType:String)
 		{
@@ -135,16 +136,28 @@ package
 		 
 		private function injectPhysics():void
 		{
-			if (type == "floor1" ||type == "smallFloor" || type == "floor2" )
+			if (type == "floor1" ||type == "floor2" )
 			{
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.name = "floor" + new String(platformObject.x);
 				platformObject.physicsProperties.contactGroup = "floor";
+				platformObject.data = "fishBones";
 			}
+			
+			else if (type == "smallFloor")
+			{
+				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
+				platformObject.name = "floor" + new String(platformObject.x);
+				platformObject.physicsProperties.contactGroup = "floor";
+				platformObject.data = "noFishBones";
+			}
+			
+			
 			
 			else if (type == "wall" || type == "biggerWall") { 
 				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
 				platformObject.physicsProperties.contactGroup = "walls";
+				platformObject.data = "fishBones";
 	
 			}
 			
@@ -172,12 +185,12 @@ package
 		
 		}
 		
-		var k:Number = 0;
+		
 		
 		private function update(e:Event):void 
 		{
 			
-			if (type == "platSides")
+			if (type == "platSides" || type == "plat")
 			{
 		
 				velocity = Math.cos(k/80);

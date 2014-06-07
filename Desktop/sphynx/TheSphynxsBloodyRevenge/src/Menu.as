@@ -7,6 +7,8 @@ package
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.core.Starling;
+	import flash.ui.Keyboard;
+	import starling.events.KeyboardEvent;
 	
 	/**
 	 * ...
@@ -14,16 +16,19 @@ package
 	 */
 	public class Menu extends Sprite 
 	{
-		private var gname:Image;
 		private var background:Image;
 		
 		private var playBtn:Button;
+		private var howTo:Button;
+		private var howToImage:Image;
 		
 		
 		public function Menu() 
 		{
 			super();
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			this.addEventListener(KeyboardEvent.KEY_DOWN, closeHowTo);
+			
 			
 		}
 		
@@ -36,21 +41,25 @@ package
 		
 		private function drawScreen():void
 		{
-			background = new Image(Assets.getTexture("Background"));
+			background = new Image(Assets.getTexture("MenuPic"));
 			this.addChild(background);
 			//background.x =
 			//background.y = 
-			
-			gname = new Image(Assets.getTexture("Gname"));
-			this.addChild(gname);
-			gname.x = 250;
-			gname.y = 15;
+		
 			
 			playBtn = new Button(Assets.getTexture("Play"));
 			this.addChild(playBtn);
 			playBtn.x = 425;
-			playBtn.y = 275;
+			playBtn.y = 205;
 			
+			howTo = new Button(Assets.getTexture("HowTo"));
+			this.addChild(howTo);
+			howTo.x = 360;
+			howTo.y = 325;
+			
+			howToImage = new Image(Assets.getTexture("HowToText"));
+			this.addChild(howToImage);
+			howToImage.visible = false;
 			this.addEventListener(Event.TRIGGERED, onMainMenuClick);
 			
 		}
@@ -62,16 +71,27 @@ package
 			
 			if (buttonClicked as Button == playBtn)
 			{
-				this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"play" }, true));
+				this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"init" }, true));
 				trace("PLAY");
 			}
 			
-			/*
-			else if (buttonClicked as Button == aboutBtn)
+			
+			else if (buttonClicked as Button == howTo)
 			{
-				trace("ABOUT");
+				howToImage.visible = true;
 			}
-			*/
+			
+		}
+		
+		private function closeHowTo(e:KeyboardEvent):void 
+		{
+			if (howToImage.visible)
+			{
+				if (e.keyCode == Keyboard.R)
+				{
+						howToImage.visible = false;		
+				}
+			}	
 		}
 		
 		public function disposeTemporaly():void
