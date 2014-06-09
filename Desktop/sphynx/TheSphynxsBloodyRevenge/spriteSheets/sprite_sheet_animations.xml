@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:91c316d9870305cebd1881998aed00cc:c415b928b9817a8897a59700b24410ce:e8ad3e251516ad2f6752750c4071f37a$ -->
+<TextureAtlas imagePath="sprite_sheet_animations.png">
+    <SubTexture name="attack__ 1" x="489" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 10" x="208" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 11" x="133" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 2" x="283" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 3" x="58" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 4" x="1010" y="120" width="73" height="120"/>
+    <SubTexture name="attack__ 5" x="358" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 6" x="564" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 7" x="789" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 8" x="714" y="242" width="73" height="120"/>
+    <SubTexture name="attack__ 9" x="639" y="242" width="73" height="120"/>
+    <SubTexture name="attack__12" x="864" y="242" width="73" height="120"/>
+    <SubTexture name="attack__12_1" x="864" y="242" width="73" height="120"/>
+    <SubTexture name="attack__12_2" x="864" y="242" width="73" height="120"/>
+    <SubTexture name="attack__13" x="133" y="242" width="73" height="120"/>
+    <SubTexture name="attack__14" x="639" y="242" width="73" height="120"/>
+    <SubTexture name="attack__15" x="714" y="242" width="73" height="120"/>
+    <SubTexture name="attack__16" x="789" y="242" width="73" height="120"/>
+    <SubTexture name="attack__17" x="564" y="242" width="73" height="120"/>
+    <SubTexture name="attack__18" x="358" y="242" width="73" height="120"/>
+    <SubTexture name="attack__19" x="1010" y="120" width="73" height="120"/>
+    <SubTexture name="attack__20" x="283" y="242" width="73" height="120"/>
+    <SubTexture name="death__003" x="602" y="367" width="98" height="123"/>
+    <SubTexture name="death__004" x="802" y="367" width="98" height="123"/>
+    <SubTexture name="death__005" x="1002" y="367" width="98" height="123"/>
+    <SubTexture name="death__006" x="102" y="367" width="98" height="123"/>
+    <SubTexture name="death__007" x="939" y="242" width="98" height="123"/>
+    <SubTexture name="death__008" x="302" y="367" width="98" height="123"/>
+    <SubTexture name="death__009" x="402" y="367" width="98" height="123"/>
+    <SubTexture name="death__010" x="202" y="367" width="98" height="123"/>
+    <SubTexture name="death__011" x="2" y="367" width="98" height="123"/>
+    <SubTexture name="death__012" x="502" y="367" width="98" height="123"/>
+    <SubTexture name="death__013" x="702" y="367" width="98" height="123"/>
+    <SubTexture name="death__014" x="902" y="367" width="98" height="123"/>
+    <SubTexture name="dieEye1" x="490" y="2" width="120" height="85"/>
+    <SubTexture name="dieEye2" x="246" y="2" width="120" height="85"/>
+    <SubTexture name="eye1" x="368" y="2" width="120" height="85"/>
+    <SubTexture name="eye2" x="124" y="2" width="120" height="85"/>
+    <SubTexture name="eye3" x="2" y="2" width="120" height="85"/>
+    <SubTexture name="eye4" x="612" y="2" width="120" height="85"/>
+    <SubTexture name="eye5" x="2" y="2" width="120" height="85"/>
+    <SubTexture name="eye6" x="124" y="2" width="120" height="85"/>
+    <SubTexture name="jumpAir" x="433" y="242" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 1" x="954" y="120" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 2" x="842" y="120" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 3" x="618" y="120" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 4" x="674" y="120" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 5" x="898" y="120" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 6" x="786" y="120" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 7" x="2" y="242" width="54" height="120"/>
+    <SubTexture name="jumpUp_ 8" x="730" y="120" width="54" height="120"/>
+    <SubTexture name="move__004" x="141" y="120" width="51" height="119"/>
+    <SubTexture name="move__005" x="300" y="120" width="51" height="119"/>
+    <SubTexture name="move__006" x="88" y="120" width="51" height="119"/>
+    <SubTexture name="move__007" x="459" y="120" width="51" height="119"/>
+    <SubTexture name="move__008" x="512" y="120" width="51" height="119"/>
+    <SubTexture name="move__009" x="565" y="120" width="51" height="119"/>
+    <SubTexture name="move__010" x="406" y="120" width="51" height="119"/>
+    <SubTexture name="move__011" x="353" y="120" width="51" height="119"/>
+    <SubTexture name="move__012" x="247" y="120" width="51" height="119"/>
+    <SubTexture name="move__013" x="194" y="120" width="51" height="119"/>
+    <SubTexture name="move__014" x="194" y="120" width="51" height="119"/>
+    <SubTexture name="move__015" x="194" y="120" width="51" height="119"/>
+    <SubTexture name="still01" x="949" y="2" width="41" height="116"/>
+    <SubTexture name="still02" x="1035" y="2" width="41" height="116"/>
+    <SubTexture name="still03" x="2" y="120" width="41" height="116"/>
+    <SubTexture name="still04" x="992" y="2" width="41" height="116"/>
+    <SubTexture name="still05" x="906" y="2" width="41" height="116"/>
+    <SubTexture name="still06" x="734" y="2" width="41" height="116"/>
+    <SubTexture name="still07" x="863" y="2" width="41" height="116"/>
+    <SubTexture name="still08" x="777" y="2" width="41" height="116"/>
+    <SubTexture name="still09" x="820" y="2" width="41" height="116"/>
+    <SubTexture name="still10" x="45" y="120" width="41" height="116"/>
+</TextureAtlas>
