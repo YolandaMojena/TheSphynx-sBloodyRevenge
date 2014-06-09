@@ -173,26 +173,23 @@ package
 		
 		private function update(e:Event):void 
 		{
-			
-			if (type == "platSides" || type == "plat")
+			if (Game.pauseLayer.visible == false)
 			{
+				if (type == "platSides" || type == "plat")
+				{
 		
-				velocity = Math.cos(k/80);
-				k++;
-				platformObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));
-			}
-			if (type == "platUp")
-			{	
-				velocity = Math.cos(k/75);
-				k++;
+					velocity = Math.cos(k/90);
+					k++;
+					platformObject.body.SetLinearVelocity(new b2Vec2(velocity, 0));
+				}
+				if (type == "platUp")
+				{	
+					velocity = Math.cos(k/75);
+					k++;
 		
-				platformObject.body.SetLinearVelocity(new b2Vec2(0, velocity));		
-			}
-			
-		} 
-		
-
-		
+					platformObject.body.SetLinearVelocity(new b2Vec2(0, velocity));		
+				}
+			}		
+		}	
 	}
-
 }

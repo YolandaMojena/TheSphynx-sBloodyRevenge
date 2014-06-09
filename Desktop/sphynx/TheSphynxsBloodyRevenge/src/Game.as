@@ -26,7 +26,7 @@ package
 		public var screenMenu:Menu;
 		public var screenInGame:InGame;
 		public var screenDontMiss:DontMiss;
-		public var pauseLayer:PauseLayer;
+		public static var pauseLayer:PauseLayer;
 		public var gameOverLayer:GameOver;
 		private var score:Number;
 		private var lives:Number;
@@ -46,6 +46,7 @@ package
 		
 		private var meowmeow:Sound;
 		
+		
 
 		
 		public function Game() 
@@ -54,6 +55,7 @@ package
 			sc = new SoundChannel();
 			sc2 = new SoundChannel();
 			timePassed = 150;
+
 			muted = false;
 			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);

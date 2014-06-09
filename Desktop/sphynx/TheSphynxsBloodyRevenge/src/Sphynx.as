@@ -74,6 +74,8 @@ package
 		private var dead:Boolean = false;
 		private var canDie:Boolean = false;
 		
+		private var canMove:Boolean = false;
+		
 		private var sc:SoundChannel;
 		private var sc2:SoundChannel;
 		private var sc3:SoundChannel;
@@ -84,12 +86,13 @@ package
 
 		private var firstRight:Boolean = true;
 		private var firstLeft:Boolean = true;
-		private var firstStill:Boolean = true;
+		private var firstStill:Boolean = false;
 		
 		private var deadTime:Number;
 		
-		private var jumpStill:Boolean;
+		private var jumpStill:Boolean = false;
 		private var jumpTime:Number;
+		
 		
 		public function Sphynx(worldPhysics:PhysInjector, posX:Number,score:Number, minigame:Boolean) 
 		{
@@ -104,7 +107,7 @@ package
 			attackTime = 0;
 			deadTime = 0;
 			jumpTime = 0;
-		
+			
 			sc = new SoundChannel();
 			this.minigame = minigame;
 			this.score = score;
@@ -171,9 +174,7 @@ package
 			sphynxObject.body.SetFixedRotation(true);
 			sphynxObject.name = "cat";
 			sphynxObject.physicsProperties.contactGroup = "cats";
-			//sphynxObject.x = this.x;
 			sphynxObject.x = posX;
-			trace(sphynxObject.body.GetMass());
 			
 			ContactManager.onContactBegin("cats", "walls", handleContactPlat,true);
 			ContactManager.onContactBegin("cats", "floor", handleContactFloor, true);
@@ -225,7 +226,7 @@ package
 					break;
 					
 				case Keyboard.SPACE:
-					if (canJump && !attackActive) 
+					if (canJump && !attackActive && canMove) 
 					{
 						sphynxAttack();
 					}
@@ -284,7 +285,6 @@ package
 			}
 			else
 			{
-				trace("porquee");
 				if (!dead)
 				{
 					if (sameHeight) canDie=true;
@@ -302,11 +302,16 @@ package
 				{
 					canJump = true;
 				}
-	
-			
+				if (!jumpStill)
+				{
+					changeSprites("still", 15);
+					jumpStill = true;
+				}
+				
 				handle = true;
 				cameraY = true;
 				sameHeight = false;	
+				canMove = true;
 			}	
 		}
 		
@@ -320,10 +325,17 @@ package
 				{
 					canJump = true;
 				}
+				
+				if (!jumpStill)
+				{
+					changeSprites("still", 15);
+					jumpStill = true;
+				}
 			
 				handle = true;
 				cameraY = true;
 				sameHeight = true;
+				canMove = true;
 			}
 		}
 		
@@ -349,6 +361,7 @@ package
 			{
 				sc2 = madCat.play(149, 1);
 			}
+			
 		}
 		private function sphynxStops(event:KeyboardEvent):void
 		{ 
@@ -381,7 +394,7 @@ package
 			{	
 				if (first) 
 				{
-					changeSprites("attack_",10);
+					changeSprites("attack_", 8);
 					first = false;
 					second = true;	
 				}
@@ -392,7 +405,7 @@ package
 				{
 					if (second)
 					{
-						changeSprites("still",15);
+						changeSprites("still", 15);
 					}
 					
 					attackTime = 0;
@@ -415,6 +428,7 @@ package
 				_sphynxSprites.scaleX = 1;
 				this.x = 37;
 				sphynxObject.x = 37;
+				canMove = false;
 				this.y = 0;
 				sphynxObject.y = 0
 				sphynxObject.body.GetLinearVelocity().x = 0;
@@ -428,6 +442,10 @@ package
 			if (left) {
 				if (Math.abs(sphynxObject.body.GetLinearVelocity().x) < limit)
 				{
+					if (firstLeft)
+					{
+						firstLeft = false;
+					}
 					if (_sphynxSprites.scaleX > 0)
 					{
 						_sphynxSprites.scaleX *= -1;
@@ -469,6 +487,7 @@ package
 					sphynxObject.body.GetLinearVelocity().y -= 4.5;
 					jump = false;
 					counter = 2;
+					jumpStill = false;
 				}
 			}
 				
@@ -480,19 +499,6 @@ package
 				changeSprites("jumpAir", 8);
 				if (goingUp) sphynxObject.body.GetLinearVelocity().y -= 3; 
 				else sphynxObject.body.GetLinearVelocity().y -= 3;	
-				jumpStill = true;
-			}
-			
-			if (jumpStill)
-			{
-				jumpTime += 1 / 60;
-				trace(jumpTime);
-			}
-			if (!goingUp && !canJump && (jumpTime ==0 || jumpTime >= 0.8)) 
-			{
-				jumpStill = false;
-				jumpTime = 0;
-				changeSprites("still", 15);
 			}
 			
 			
@@ -505,14 +511,30 @@ package
 				handle = false;
 			}	
 			
-			if ((right || left) && !_attackActive && !dead && canJump)
+			if ((right || left) && !_attackActive && !dead && !goingUp)
 			{
 				if (firstRight || firstLeft)
 				{
-					changeSprites("move",20);
-					firstRight = false;
-					firstLeft = false;
-					firstStill = true;
+					 if (jumpStill)
+					 {
+						changeSprites("move", 20);
+						firstRight = false;
+						firstLeft = false;
+						firstStill = true;
+					 }
+					 firstStill = true;
+				}
+				
+				else if (firstRight && firstLeft)
+				{
+					 if (jumpStill)
+					 {
+						changeSprites("move", 20);
+						firstRight = false;
+						firstLeft = false;
+						firstStill = true;
+					 }
+					 firstStill = true;
 				}
 			}
 			
@@ -520,10 +542,12 @@ package
 			{
 				if (firstStill)
 				{
-					changeSprites("still",15);
+					changeSprites("still", 15);
 					firstStill = false;
 				}
+
 			}
+			
 			
 			if (dead)
 			{
@@ -549,7 +573,7 @@ package
 					if (deadTime >= 0.5)
 					{
 						dead = false
-						changeSprites("still",15);
+						changeSprites("still", 15);
 						deadTime = 0;
 						_sphynxSprites.visible = false;
 						cameraY = false;
@@ -558,8 +582,6 @@ package
 				}
 				
 			}
-			
-
 		}	
 		
 		public function get score():Number 
