@@ -80,7 +80,7 @@ package
 			timeText = new TextField(110, 80, "2:30", "WithoutRain", 28, 0xba1a1a);
 			this.addChild(timeText);
 			
-			bones = new Image(Assets.getTexture("Bones"));
+			bones = new Image(Assets.getAtlas().getTexture("montoncito"));
 			bones.x = 775;
 			bones.y = 5;
 			this.addChild(bones);

@@ -63,9 +63,9 @@ package
 		private function fishboneArt():void
 		{
 			
-			if (value == 5) fishBoneSprite = new Image(Assets.getTexture("FishBoneG"));
-			else if (value == 2) fishBoneSprite = new Image(Assets.getTexture("FishBoneR"));
-			else fishBoneSprite = new Image(Assets.getTexture("FishBoneB"));
+			if (value == 5) fishBoneSprite = new Image(Assets.getAtlas().getTexture("goldFish"));
+			else if (value == 2) fishBoneSprite = new Image(Assets.getAtlas().getTexture("redFish"));
+			else fishBoneSprite = new Image(Assets.getAtlas().getTexture("blueFish"));
 			
 			fishBoneSprite.x = posX;
 			fishBoneSprite.y = posY;

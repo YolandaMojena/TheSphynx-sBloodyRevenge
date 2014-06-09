@@ -119,7 +119,7 @@ package
 			}
 			
 			else if(type == "invisibleWall") {
-				wallSprite= new Image(Assets.getTexture("InvisibleWall"));
+				wallSprite= new Image(Assets.getAtlas().getTexture("invisibleWall"));
 				wallSprite.x = posX;
 				wallSprite.y = posY;
 				this.addChild(wallSprite);	

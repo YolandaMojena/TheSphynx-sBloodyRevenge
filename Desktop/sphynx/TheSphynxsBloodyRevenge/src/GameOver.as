@@ -37,12 +37,12 @@ package
 			
 			if (time ==0)
 			{
-				over = new Image(Assets.getTexture("GameOverImage"));
+				over = new Image(Assets.getAtlas().getTexture("gameOver"));
 				this.addChild(over);
 			}
 			else
 			{
-				over = new Image(Assets.getTexture("RevengeImage"));
+				over = new Image(Assets.getAtlas().getTexture("revenge"));
 				scoreText = new TextField(1200, 578, "" + score, "MyFontName", 24, 0x670f10);
 				scoreText.x = 0;
 				scoreText.y = 0;

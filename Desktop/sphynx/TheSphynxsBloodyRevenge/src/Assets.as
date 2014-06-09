@@ -19,61 +19,34 @@ package
 		private static var gameTextureAtlas2:TextureAtlas;
 		private static var gameTextureAtlas:TextureAtlas; //para el minijuego
 		private static var gameTextureAtlas3:TextureAtlas; //para las animaciones del gato
-		
-		[Embed(source = "../tempAssets/cat.png")]
-		public static const Cat:Class;
-		
-		[Embed(source = "../tempAssets/blueFish.png")]
-		public static const FishBoneB:Class;
-		
-		[Embed(source = "../tempAssets/goldFish.png")]
-		public static const FishBoneG:Class;
-		
-		[Embed(source = "../tempAssets/redFish.png")]
-		public static const FishBoneR:Class
-		
-		[Embed(source = "../tempAssets/invisibleWall.png")]
-		public static const InvisibleWall:Class;
-		
-		[Embed(source = "../tempAssets/montoncito.png")]
-		public static const Bones:Class;
-		
-		[Embed(source = "../tempAssets/play.png")]
-		public static const Play:Class;
-		
-		[Embed(source = "../tempAssets/gameOver.jpg")]
-		public static const GameOverImage:Class;
-		
-		[Embed(source = "../tempAssets/revenge.jpg")]
-		public static const RevengeImage:Class;
 	
+
+		// backgrounds 
 		
-		[Embed(source = "../tempAssets/hb1.jpg")]
+		[Embed(source = "../Assets/hb1.jpg")]
 		public static const Background1:Class;
 		
-		[Embed(source = "../tempAssets/hb2.jpg")]
+		[Embed(source = "../Assets/hb2.jpg")]
 		public static const Background2:Class;
 		
-		[Embed(source = "../tempAssets/hb3.jpg")]
+		[Embed(source = "../Assets/hb3.jpg")]
 		public static const Background3:Class;
 		
-		[Embed(source = "../tempAssets/hb4.jpg")]
+		[Embed(source = "../Assets/hb4.jpg")]
 		public static const Background4:Class;
 		
-		[Embed(source = "../tempAssets/menu.jpg")]
-		public static const MenuPic:Class;
-		
-		[Embed(source = "../tempAssets/howToText.png")]
-		public static const HowTo:Class;
-		
-		[Embed(source = "../tempAssets/hb5.jpg")]
+		[Embed(source = "../Assets/hb5.jpg")]
 		public static const Background5:Class;
+		
+		//fonts
 		
 		[Embed(source = "../fonts/myFont.TTF", fontFamily ="MyFontName", embedAsCFF = false)]
 		public static const MyFontName:Class;
 		
 		[Embed(source = "../fonts/AYearWithoutRain.ttf", fontFamily ="WithoutRain", embedAsCFF = false)]
 		public static const WithoutRain:Class;
+		
+		//sprite_sheets
 		
 		[Embed(source = "../spriteSheets/minigameSpriteSheet.png")]
 		public static const MinigameSheet:Class;
@@ -93,9 +66,8 @@ package
 		[Embed(source = "../spriteSheets/sprite_sheet_animations.xml", mimeType ="application/octet-stream")]
 		public static const AtlasMoves:Class;
 		
-		[Embed(source = "../tempAssets/howTo.jpg")]
-		public static const HowToText:Class;
-
+		// sounds 
+		
 		[Embed(source = "../sounds/deadCat.mp3")]
 		public static const MadCat:Class;
 		
@@ -114,13 +86,15 @@ package
 		[Embed(source = "../sounds/meowmeowmeow.mp3")]
 		public static const MeowMeow:Class;
 		
-		[Embed(source = "../tempAssets/cin1.jpg")]
+		//cutscenes 
+		
+		[Embed(source = "../Assets/cin1.jpg")]
 		public static const Cin1:Class;
 		
-		[Embed(source = "../tempAssets/cin2.jpg")]
+		[Embed(source = "../Assets/cin2.jpg")]
 		public static const Cin2:Class;
 		
-		[Embed(source = "../tempAssets/cin3.jpg")]
+		[Embed(source = "../Assets/cin3.jpg")]
 		public static const Cin3:Class;
 		
 		
