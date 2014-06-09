@@ -5,6 +5,7 @@ package
 	import flash.media.SoundChannel;
 	import flash.media.SoundMixer;
 	import flash.media.SoundTransform;
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.core.Starling;
@@ -39,19 +40,22 @@ package
 		public static var fishBones:Array;
 		public static var eyes:Array;
 		private var sc:SoundChannel;
+		private var sc2:SoundChannel;
 		
 		private var muted:Boolean;
-		private var punchSound:Sound;
+		
+		private var meowmeow:Sound;
 		
 
-		private var main:Main; 
 		
 		public function Game() 
 		{
 			super();
 			sc = new SoundChannel();
+			sc2 = new SoundChannel();
 			timePassed = 150;
 			muted = false;
+			
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}	
 		
@@ -60,7 +64,6 @@ package
 
 			if (screenInGame != null)
 			{
-				
 				score = screenInGame.sphynx.score;
 				scoreLayer.score = score;
 				
@@ -86,16 +89,17 @@ package
 			this.addChild(screenMenu);	
 			
 			music = Assets.getSound("Rised");
+			meowmeow = Assets.getSound("MeowMeow");
 			
-		
+			sc2 = meowmeow.play(0,50);
 			
 			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
 			this.addEventListener(KeyboardEvent.KEY_DOWN, muteSound);
 
-			
 			this.addEventListener(Event.ENTER_FRAME, updateScore);	
-			
 		}
+		
+
 		
 		private function muteSound(e:KeyboardEvent):void 
 		{
@@ -124,7 +128,7 @@ package
 			platforms = [[405, 305, "wall"],[0, 350, "floor1"], [1300, 350, "smallFloor"], [2550, 350, "smallFloor"],
 			[898, 348, "invisibleWall"], [1300, 348, "invisibleWall"], [2550, 348, "invisibleWall"], [2998, 348, "invisibleWall"], [4498, 348, "invisibleWall"],
 			[3600, 350, "floor2"], [4050, 150, "smallFloor"], 
-			[1045, 225,"platUp"], [2090, 187.5,"platUp"], [1860, 350,"platSides"], [2320, 350,"platSides"],
+			[1045, 250,"platUp"], [2090, 187.5,"platUp"], [1860, 350,"platSides"], [2320, 350,"platSides"],
 			[3245, 350, "platSides"],  [1640, 305, "wall"], [3600, 294, "biggerWall"],  [3835, 200, "plat"]];
 			
 			
@@ -148,10 +152,14 @@ package
 		private function onChangeScreen(event:NavigationEvent):void
 		{
 			switch (event.params.id)
-			{
+			{	
 				case "init":
 					
+					sc2.stop();
+					
 					initArrays();
+					
+					if(!muted) SoundMixer.soundTransform = new SoundTransform(1);
 					
 					if (gameOverLayer != null)
 					{

@@ -29,6 +29,7 @@ package
 	
 	import starling.text.TextField;
 	import starling.text.TextFieldAutoSize;
+
 	
 	/**
 	 * ...
@@ -60,7 +61,7 @@ package
 		private var punch:Platform;
 		private var counter:Number;
 		private var pause:Boolean;
-		private var canJump:Boolean = true;	
+		private var canJump:Boolean;
 		private var passed:Number;
 		private var minigame:Boolean;
 		private var _cameraY:Boolean;
@@ -71,13 +72,25 @@ package
 		private var sameHeight:Boolean = false;
 		private var lookingLeft:Boolean = false;
 		private var dead:Boolean = false;
+		private var canDie:Boolean = false;
 		
 		private var sc:SoundChannel;
 		private var sc2:SoundChannel;
+		private var sc3:SoundChannel;
 		private var punchSound:Sound;
 		private var madCat:Sound;
+		private var deadCat:Sound;
 		
 
+		private var firstRight:Boolean = true;
+		private var firstLeft:Boolean = true;
+		private var firstStill:Boolean = true;
+		
+		private var deadTime:Number;
+		
+		private var jumpStill:Boolean;
+		private var jumpTime:Number;
+		
 		public function Sphynx(worldPhysics:PhysInjector, posX:Number,score:Number, minigame:Boolean) 
 		{
 			super();
@@ -89,6 +102,9 @@ package
 			pause = false;
 			cameraY = false;
 			attackTime = 0;
+			deadTime = 0;
+			jumpTime = 0;
+		
 			sc = new SoundChannel();
 			this.minigame = minigame;
 			this.score = score;
@@ -120,7 +136,32 @@ package
 			
 			punchSound = Assets.getSound("PunchSound");
 			madCat = Assets.getSound("Meow");
+			deadCat = Assets.getSound("MadCat");
+		}
+		
+		//method to change the animations of the Sphynx, including pivot and scale
+		private function changeSprites(name:String,rate:Number):void
+		{
+			_sphynxSprites.visible = false;
+					
+			if (_sphynxSprites.scaleX < 0)
+			{
+				_sphynxSprites = new MovieClip(Assets.getMoves().getTextures(name), rate);
+				_sphynxSprites.scaleX *= -1;
+				if(name!="attack")_sphynxSprites.pivotX += 20;			
+			}
+			else
+			{
+				_sphynxSprites = new MovieClip(Assets.getMoves().getTextures(name),rate);
+				if(name!="attack") _sphynxSprites.pivotX += 20;	
+						
+			}
 			
+			if (name == "still") _sphynxSprites.pivotY -= 3;
+					
+			_sphynxSprites.visible = true;
+			starling.core.Starling.juggler.add(_sphynxSprites);
+			this.addChild(_sphynxSprites);
 			
 		}
 		
@@ -145,7 +186,6 @@ package
 		{
 			attackActive = true;
 			sc = punchSound.play(0, 1);
-			
 		}
 		
 		
@@ -157,7 +197,7 @@ package
 		
 		private function sphynxMoves(event:KeyboardEvent):void
 		{ 
-			if (!pause)
+			if (!pause && !dead)
 			{
 				switch(event.keyCode)
 				{
@@ -176,7 +216,6 @@ package
 					if (canJump)
 					{					
 						jump = true;
-						
 					}
 					
 					if (counter == 2)
@@ -210,6 +249,7 @@ package
 			}		
 		}
 		
+		// handles core on contact with fishbones
 		private function scoreContact(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void 
 		{
 			score += objectB.data[0] as Number;
@@ -222,75 +262,87 @@ package
 		private function handleContactLives(sphynxObj:PhysicsObject, eyeObject:PhysicsObject,contact:b2Contact):void
 		{
 			//we manage attacks, the cat can only kill an eye if he's attacking and facing him
-			if (attackActive && attackTime <= 0.5 && sameHeight)
+			if (attackActive)
 			{
 				if (eyeObject.body.GetLinearVelocity().x < 0)
 				{
-					if (sphynxObj.physicsProperties.x < eyeObject.physicsProperties.x)
+
+					if (sphynxObj.physicsProperties.x <= eyeObject.physicsProperties.x)
 					{
 						eyeObject.name = "dead";
 						Game.eyes[eyeObject.data[1]][3] = false;
 					}
-					else _sphynxSprites.visible = false;
 				}
 				else
 				{
-					if (sphynxObj.physicsProperties.x > eyeObject.physicsProperties.x)
+					if (sphynxObj.physicsProperties.x >= eyeObject.physicsProperties.x)
 					{
 						eyeObject.name = "dead";
 						Game.eyes[eyeObject.data[1]][3] = false;
 					}
-					else _sphynxSprites.visible = false;
 				}		
 			}
 			else
 			{
-				dead = true;
-				_sphynxSprites.visible = false;
+				trace("porquee");
+				if (!dead)
+				{
+					if (sameHeight) canDie=true;
+					dead = true;	
+				}
 			}
 		}			
 		
 		private function handleContactPlat(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
 		{
-			counter = 0;
-			if (upNotPressed)
+			if (_sphynxSprites.visible)
 			{
-				canJump = true;
-			}
+				counter = 0;
+				if (upNotPressed)
+				{
+					canJump = true;
+				}
+	
 			
-			handle = true;
-			cameraY = true;
-			sameHeight = false;
+				handle = true;
+				cameraY = true;
+				sameHeight = false;	
+			}	
 		}
 		
 		private function handleContactFloor(sphynxObj:PhysicsObject, objectB:PhysicsObject, contact:b2Contact):void
 		{
-			counter = 0;
-			if (upNotPressed)
-			{
-				canJump = true;
-			}
 			
-			handle = true;
-			cameraY = true;
-			sameHeight = true;
+			if (_sphynxSprites.visible)
+			{
+				counter = 0;
+				if (upNotPressed)
+				{
+					canJump = true;
+				}
+			
+				handle = true;
+				cameraY = true;
+				sameHeight = true;
+			}
 		}
 		
 		private function fall():void
 		{	
+			//death by falling down a gap or navigation to minigame
 			
 			if ( sphynxObject.y >430)
 			{
 				cameraY = false;
 				if (sphynxObject.x > 2900 && sphynxObject.x < 3600 && minigame) 
 				{
+					sc2 = madCat.play(149, 1);
 					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"minigame" }, true));
 				}
 				else
 				{
 					sphynxSprites.visible = false;	
 				}
-				
 			}
 			
 			if (sphynxObject.y >= 350 && sphynxObject.y<=360)
@@ -304,10 +356,15 @@ package
 			{
 				case Keyboard.A:
 					left = false;
+					firstLeft = true;
+					firstRight = true;
 					break;
 					
 				case Keyboard.D:
 					right = false;
+					firstRight = true;
+					firstLeft = true;
+
 					break;
 					
 				case Keyboard.W:
@@ -315,82 +372,30 @@ package
 					break;
 			}	
 		}
-		
-		/*
-		private function handleContactAttack(punchObject:PhysicsObject, eyeObject:PhysicsObject,contact:b2Contact):void
-		{
-			eyeObject.name = "dead";
-			Game.eyes[eyeObject.data[1]][3] = false;
-			trace("jop");
-		}
-		*/
 
 		private function update(e:Event):void 
 		{		
+			
+			if (!canJump) canDie = false;
 			if (attackActive)
 			{	
 				if (first) 
 				{
-					_sphynxSprites.visible = false;
-					if (_sphynxSprites.scaleX < 0)
-					{
-						_sphynxSprites = new MovieClip(Assets.getMoves().getTextures("attack"), 20);
-						_sphynxSprites.scaleX *= -1;
-						_sphynxSprites.pivotX +=20;
-						
-					}
-					else
-					{
-						_sphynxSprites = new MovieClip(Assets.getMoves().getTextures("attack"), 20);
-						_sphynxSprites.pivotX +=20;
-						
-					}
-				
-					
-					
-					
-					_sphynxSprites.visible = true;
-					starling.core.Starling.juggler.add(_sphynxSprites);
-					this.addChild(_sphynxSprites);
+					changeSprites("attack_",10);
 					first = false;
-					second = true;
-					
-					
+					second = true;	
 				}
 				 
 				attackTime += 1 / 60;
-				if (attackTime >= 0.8)
+
+				if (attackTime >= 0.5)
 				{
-					
 					if (second)
 					{
-						_sphynxSprites.visible = false;
-						if (_sphynxSprites.scaleX < 0)
-						{
-							_sphynxSprites = new MovieClip(Assets.getMoves().getTextures("still"), 10);
-							_sphynxSprites.scaleX *= -1;
-							_sphynxSprites.pivotX = _sphynxSprites.width / 2;
-							
-						}
-						else 
-						{
-							
-							_sphynxSprites = new MovieClip(Assets.getMoves().getTextures("still"), 10);
-							_sphynxSprites.pivotX = _sphynxSprites.width / 2;
-						}
-						
-						
-						
-						_sphynxSprites.visible = true;
-						starling.core.Starling.juggler.add(_sphynxSprites);
-						this.addChild(_sphynxSprites);
-						second = false;
-						
+						changeSprites("still",15);
 					}
 					
 					attackTime = 0;
-					//punch.visible = false;
-					//this.removeChild(punch);
 					attackActive = false;	
 					first = true;
 				}
@@ -398,10 +403,10 @@ package
 			}
 			
 			if (sphynxObject.x < sphynxSprites.width / 2) sphynxObject.x =sphynxSprites.width / 2;
-			if (sphynxObject.x > Game.STAGEWIDTH - sphynxSprites.width / 2) 
+			if (sphynxObject.x > 4440 ) 
 			{
 				if (sphynxObject.y < 150) this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"deleteAll" }, true));
-				else sphynxObject.x = Game.STAGEWIDTH - sphynxSprites.width / 2;
+				else if(sphynxObject.x > Game.STAGEWIDTH - sphynxSprites.width / 2) sphynxObject.x = Game.STAGEWIDTH - sphynxSprites.width / 2;
 				
 			}
 			
@@ -437,25 +442,31 @@ package
 			if (right) { 
 				if (Math.abs(sphynxObject.body.GetLinearVelocity().x) < limit)
 				{
+					if (firstRight)
+					{
+						firstRight = false;
+					}
+					
 					if (_sphynxSprites.scaleX < 0)
 					{
 						_sphynxSprites.scaleX *= -1;
 					}
+					
 					else sphynxObject.body.GetLinearVelocity().x += velocity;
 					
 					
 				}
 			}
 			
+			
 			if (jump) {
 				
 				if (canJump)
 				{
-					trace("whaaatda...");
+					goingUp = true;
+					changeSprites("jumpUp_ 8", 10);
 					canJump = false;
 					sphynxObject.body.GetLinearVelocity().y -= 4.5;
-					
-					//sphynxObject.body.ApplyImpulse(new b2Vec2(0, -5), sphynxObject.body.GetWorldCenter());
 					jump = false;
 					counter = 2;
 				}
@@ -463,19 +474,92 @@ package
 				
 			if (smallJump)
 			{
-				counter = 0;
+				counter = 0; 
+				
 				smallJump = false;
-				if (goingUp) sphynxObject.body.GetLinearVelocity().y -= 3; //sphynxObject.body.ApplyImpulse(new b2Vec2(0, -3), sphynxObject.body.GetWorldCenter());
-				else sphynxObject.body.GetLinearVelocity().y -= 3;//sphynxObject.body.ApplyImpulse(new b2Vec2(0, -4), sphynxObject.body.GetWorldCenter());
+				changeSprites("jumpAir", 8);
+				if (goingUp) sphynxObject.body.GetLinearVelocity().y -= 3; 
+				else sphynxObject.body.GetLinearVelocity().y -= 3;	
+				jumpStill = true;
 			}
+			
+			if (jumpStill)
+			{
+				jumpTime += 1 / 60;
+				trace(jumpTime);
+			}
+			if (!goingUp && !canJump && (jumpTime ==0 || jumpTime >= 0.8)) 
+			{
+				jumpStill = false;
+				jumpTime = 0;
+				changeSprites("still", 15);
+			}
+			
 			
 			fall();	
 
+			// avoids getting stuck
 			if(handle)
 			{
 				sphynxObject.y -= 0.5;
 				handle = false;
-			}		
+			}	
+			
+			if ((right || left) && !_attackActive && !dead && canJump)
+			{
+				if (firstRight || firstLeft)
+				{
+					changeSprites("move",20);
+					firstRight = false;
+					firstLeft = false;
+					firstStill = true;
+				}
+			}
+			
+			if (firstRight == true && firstLeft == true && !attackActive && !dead && !goingUp)
+			{
+				if (firstStill)
+				{
+					changeSprites("still",15);
+					firstStill = false;
+				}
+			}
+			
+			if (dead)
+			{
+				if (!canDie) 
+				{
+					dead = false;
+					sc3 = deadCat.play(0, 1);
+					cameraY = false;
+					
+					_sphynxSprites.visible = false;
+				}
+				
+				else
+				{
+					if(deadTime == 0)
+					{
+						changeSprites("death", 22);
+						sc3 = deadCat.play(0, 1);
+					}
+				
+					deadTime += 1 / 60;
+
+					if (deadTime >= 0.5)
+					{
+						dead = false
+						changeSprites("still",15);
+						deadTime = 0;
+						_sphynxSprites.visible = false;
+						cameraY = false;
+						canDie = false;
+					}
+				}
+				
+			}
+			
+
 		}	
 		
 		public function get score():Number 

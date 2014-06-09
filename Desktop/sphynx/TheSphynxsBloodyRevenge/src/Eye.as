@@ -58,7 +58,7 @@ package
 			posX = x;
 			posY = y;
 			animationTime = 0;
-			velocity = new Number(-0.75);
+			velocity = new Number(0.75);
 			this.bonus = bonus;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
@@ -76,12 +76,13 @@ package
 		
 		private function eyeArt():void
 		{
-			eyeSprite = new MovieClip(Assets.getAtlas().getTextures("eye"), 5);
+			eyeSprite = new MovieClip(Assets.getMoves().getTextures("eye"), 5);
 			eyeSprite.pivotX = eyeSprite.width / 2;
 			eyeSprite.x = posX;
 			eyeSprite.y = posY;
 			starling.core.Starling.juggler.add(eyeSprite);
 			this.addChild(eyeSprite);
+			eyeSprite.scaleX *= -1;
 			
 			smudge = Assets.getSound("SmudgeSound");
 			
@@ -160,7 +161,7 @@ package
 			if (first)
 			{
 				sc = smudge.play(0, 1);
-				deadSprite = new MovieClip(Assets.getAtlas().getTextures("die"), 6);
+				deadSprite = new MovieClip(Assets.getMoves().getTextures("die"), 6);
 				starling.core.Starling.juggler.add(deadSprite);
 				
 				deadSprite.x = tempX;

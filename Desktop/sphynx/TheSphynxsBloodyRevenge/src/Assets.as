@@ -57,7 +57,7 @@ package
 		[Embed(source = "../tempAssets/hb3.jpg")]
 		public static const Background3:Class;
 		
-		[Embed(source = "../tempAssets/hb2.jpg")]
+		[Embed(source = "../tempAssets/hb4.jpg")]
 		public static const Background4:Class;
 		
 		[Embed(source = "../tempAssets/menu.jpg")]
@@ -87,16 +87,16 @@ package
 		[Embed(source = "../spriteSheets/sprite_sheet_1.xml", mimeType ="application/octet-stream")]
 		public static const AtlasGame:Class;
 		
-		[Embed(source = "../spriteSheets/sphynxMoves.png")]
+		[Embed(source = "../spriteSheets/sprite_sheet_animations.png")]
 		public static const MovesSheet:Class;
 		
-		[Embed(source = "../spriteSheets/sphynxMoves.xml", mimeType ="application/octet-stream")]
+		[Embed(source = "../spriteSheets/sprite_sheet_animations.xml", mimeType ="application/octet-stream")]
 		public static const AtlasMoves:Class;
 		
 		[Embed(source = "../tempAssets/howTo.jpg")]
 		public static const HowToText:Class;
 
-		[Embed(source = "../sounds/madCat.mp3")]
+		[Embed(source = "../sounds/deadCat.mp3")]
 		public static const MadCat:Class;
 		
 		[Embed(source = "../sounds/Meow2.mp3")]
@@ -111,6 +111,18 @@ package
 		[Embed(source = "../sounds/RisedDontFall.mp3")]
 		public static const Rised:Class;
 		
+		[Embed(source = "../sounds/meowmeowmeow.mp3")]
+		public static const MeowMeow:Class;
+		
+		[Embed(source = "../tempAssets/cin1.jpg")]
+		public static const Cin1:Class;
+		
+		[Embed(source = "../tempAssets/cin2.jpg")]
+		public static const Cin2:Class;
+		
+		[Embed(source = "../tempAssets/cin3.jpg")]
+		public static const Cin3:Class;
+		
 		
 		public static function getTexture(name:String):Texture
 		{
@@ -122,6 +134,7 @@ package
 			return gameTextures[name];	
 		}
 		
+		// minigame spritesheet
 		public static function getAtlasMini():TextureAtlas
 		{	
 			if (gameTextureAtlas == null) {
@@ -133,6 +146,7 @@ package
 			return gameTextureAtlas;	
 		}
 		
+		// game spritesheet
 		public static function getAtlas():TextureAtlas
 		{	
 			if (gameTextureAtlas2 == null) {
@@ -144,6 +158,7 @@ package
 			return gameTextureAtlas2;	
 		}
 		
+		//sounds
 		public static function getSound(name:String):Sound
 		{
 			if (gameSounds[name] == undefined)
@@ -154,7 +169,7 @@ package
 			return gameSounds[name];	
 		}
 		
-		
+		//animations spritesheet
 		public static function getMoves():TextureAtlas
 		{	
 			if (gameTextureAtlas3 == null) {

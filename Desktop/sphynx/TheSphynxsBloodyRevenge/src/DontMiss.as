@@ -3,6 +3,7 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.ui.Mouse;
+	import starling.display.MovieClip;
 	
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -76,7 +77,6 @@ package
 		private var lives:Number;
 		
 		private var fishTime:Number;
-		
 		private var time:Number;
 		
 		private var previousPos:Point;
@@ -87,6 +87,8 @@ package
 		private var collides:Boolean;
 		
 		private var lose:Image;
+		
+		private var howTo:MovieClip;
 		
 		public function DontMiss()
 		{
@@ -112,6 +114,10 @@ package
 		private function onAddedToStage(e:Event):void 
 		{
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			
+			howTo = new MovieClip(Assets.getAtlas().getTextures("howToDM"), 1);
+			starling.core.Starling.juggler.add(howTo);
+			this.addChild(howTo);
 			Mouse.hide();
 			trace("aish");
 			fishBones = new Vector.<PhysicsObject>;
@@ -121,13 +127,9 @@ package
 			fishPhysics = new PhysInjector(Starling.current.nativeStage, new b2Vec2(0, 2.5), false); // false y asi no se puede mover con raton 
 			gameArea = new Rectangle(100, 0, 700, 400);
 			
-			drawPaw();
-			
-			addEventListener(TouchEvent.TOUCH, onTouch);
-			addEventListener(TouchEvent.TOUCH, onClick);
-			addEventListener(Event.ENTER_FRAME, update);
 			
 			
+			addEventListener(KeyboardEvent.KEY_DOWN, disposeTutorial);		
 		}
 		
 		private function drawPaw():void
@@ -177,6 +179,7 @@ package
 
 		}
 		
+		//gets paw position and direction
 		private function onTouch(event:TouchEvent):void
 		{
 			touchPaw = event.getTouch(stage);
@@ -209,6 +212,7 @@ package
 			else valor = 0;
 		}
 		
+		//applys impulse on the clicked fisbone, bases on the paw's direction
 		private function onClick(event:TouchEvent):void
 		{	
 			touch = event.getTouch(this, TouchPhase.BEGAN);
@@ -226,6 +230,7 @@ package
 			}	
 		}
 
+		//creates fishbones with a random position and colour
 		private function createFishBones():void 
 		{
 		
@@ -270,7 +275,6 @@ package
 
 		private function update(e:Event):void 
 		{	
-
 			for (var i:uint = 0; i < fishBones.length; i++)
 			{
 				if (fishBones[i].body.GetAngularVelocity() > 0.8) fishBones[i].body.SetAngularVelocity(0.8);
@@ -340,6 +344,18 @@ package
 			if (e.keyCode == Keyboard.R)
 			{	
 				this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, { id:"play2" }, true));
+			}
+		}
+		
+		private function disposeTutorial(e:KeyboardEvent):void 
+		{
+			if (e.keyCode == Keyboard.R)
+			{	
+				howTo.visible = false;
+				drawPaw();
+				addEventListener(TouchEvent.TOUCH, onTouch);
+				addEventListener(TouchEvent.TOUCH, onClick);
+				addEventListener(Event.ENTER_FRAME, update);
 			}
 		}
 		

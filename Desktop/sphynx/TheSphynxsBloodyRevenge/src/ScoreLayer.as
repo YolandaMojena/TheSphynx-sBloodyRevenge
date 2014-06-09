@@ -34,7 +34,6 @@ package
 			
 			if (time <= 150 && time >=120)
 			{
-				trace("waat");
 				var thisTime:Number = time-120;
 				
 				if (thisTime < 10)
@@ -43,7 +42,6 @@ package
 				}
 				else
 				{
-					trace("es broma no?");
 					timeText.text = "2:" + thisTime;
 				}
 			}

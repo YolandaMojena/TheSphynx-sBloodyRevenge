@@ -5,6 +5,7 @@ package
 	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import starling.display.MovieClip;
 	import starling.events.KeyboardEvent;
 	import starling.animation.Tween;
 	import starling.display.Button;
@@ -56,7 +57,6 @@ package
 		private var camera:Number;
 		
 		
-		
 		private var left_limit:Number;
 		private var right_limit:Number;
 		
@@ -66,12 +66,15 @@ package
 		private var score:Number;
 		private var generate:Boolean;
 		
-		
 		private var background1:Image;
 		private var background2:Image;
 		private var background3:Image;
 		private var background4:Image;
 		private var background5:Image;
+		
+		private var vortex:Image;
+		
+		private var bewareSign:MovieClip;
 		
 		
 		public function InGame(sphynxX:Number,score:Number, generate:Boolean) 
@@ -130,17 +133,29 @@ package
 			background4.y = -400;
 			this.addChild(background4);
 			
-						
+			bewareSign = new MovieClip(Assets.getAtlas().getTextures("beware"), 1);
+			bewareSign.scaleX = 0.7;
+			bewareSign.scaleY = 0.7;
+			bewareSign.x = 3250;
+			bewareSign.y = 125;
+			starling.core.Starling.juggler.add(bewareSign);
+			this.addChild(bewareSign);
+			
 			background5 = new Image(Assets.getTexture("Background5"));
 			background5.x = 3600;
 			background5.y = -400;
 			this.addChild(background5);
 			
+			vortex = new Image(Assets.getAtlas().getTexture("vortice"));
+			vortex.x = 4400;
+			vortex.y = 20;
+			this.addChild(vortex);
+			
 			//plataformas
 
 			for(var i:int = 0; i<Game.platforms.length; i++)
 			{
-				//platform = new Platform(phyisics, x, y, type)
+				//platform = new Platform(physics, x, y, type)
 				platform = new Platform(worldPhysics, Game.platforms[i][0], Game.platforms[i][1], Game.platforms[i][2]);
 				this.addChild(platform);
 			}
@@ -201,13 +216,6 @@ package
 				this.x = 0
 				worldPhysics.globalOffsetX = 0
 			}
-			/*
-			if (sphynx.x == 3600 + CAM_OFFSET)
-			{
-				this.x = -3600 + CAM_OFFSET; //calcular número
-				worldPhysics.globalOffsetX = -3600 + CAM_OFFSET;
-			}
-			*/
 			
 			if (sphynx.cameraY && sphynx.y <= CAM_OFFSET_Y)
 			{

@@ -96,13 +96,6 @@ package
 				this.addChild(wallSprite);	
 			}
 			
-			else if(type == "punch") {
-				punchSprite = new Image(Assets.getTexture("InvisibleWall"));
-				punchSprite.x = posX;
-				punchSprite.y = posY;
-				this.addChild(punchSprite);	
-			}
-			
 			else if (type == "platSides")
 			{
 				platSprite = new Image(Assets.getAtlas().getTexture("plat 2"));
@@ -152,10 +145,8 @@ package
 				platformObject.data = "noFishBones";
 			}
 			
-			
-			
 			else if (type == "wall" || type == "biggerWall") { 
-				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
+				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.25, restitution:0 } ));
 				platformObject.physicsProperties.contactGroup = "walls";
 				platformObject.data = "fishBones";
 	
@@ -167,17 +158,10 @@ package
 				platformObject.physicsProperties.contactGroup = "walls";
 				platformObject.physicsProperties.isSensor = true;
 			}
-			else if (type == "punch") 
-			{
-				platformObject = platformPhysics.injectPhysics(this, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
-				platformObject.physicsProperties.contactGroup = "punch";
-				platformObject.physicsProperties.isSensor = true;
-				
-			}
 			
 			else if (type == "plat" || type == "platUp" || type == "platSides")
 			{
-				platformObject = platformPhysics.injectPhysics(platSprite, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.5, restitution:0 } ));
+				platformObject = platformPhysics.injectPhysics(platSprite, PhysInjector.SQUARE, new PhysicsProperties( { isDynamic:false, friction:0.25, restitution:0 } ));
 				platformObject.body.SetFixedRotation(true);  // si se quita la plataforma se queda moviendose y dndo vueltas en plan guay =)
 				platformObject.body.SetType(1);
 				platformObject.physicsProperties.contactGroup = "floor";
